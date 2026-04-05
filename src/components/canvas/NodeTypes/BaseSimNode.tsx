@@ -48,10 +48,11 @@ export interface SimNodeData {
   errorRate: number;
   icon: ReactNode;
   nodeType?: string;
+  config?: Record<string, any>;
   [key: string]: unknown;
 }
 
-function BaseSimNode({ data }: NodeProps & { data: SimNodeData }) {
+function BaseSimNode({ data, children, actionContent }: NodeProps & { data: SimNodeData; children?: ReactNode; actionContent?: ReactNode }) {
   const { label, status, currentLoad, capacity, latency, errorRate, icon } = data;
   const utilization = capacity > 0 ? Math.min((currentLoad / capacity) * 100, 100) : 0;
   const config = statusConfig[status];
@@ -69,12 +70,12 @@ function BaseSimNode({ data }: NodeProps & { data: SimNodeData }) {
       <Handle
         type="target"
         position={Position.Left}
-        className="!w-1.5 !h-1.5 !bg-zinc-600 !border-0 !rounded-full !-left-0.5"
+        className="!w-2.5 !h-2.5 !bg-zinc-600 !border-0 !rounded-full !-left-1"
       />
       <Handle
         type="source"
         position={Position.Right}
-        className="!w-1.5 !h-1.5 !bg-zinc-600 !border-0 !rounded-full !-right-0.5"
+        className="!w-2.5 !h-2.5 !bg-zinc-600 !border-0 !rounded-full !-right-1"
       />
 
       {/* Top accent line */}
@@ -91,7 +92,10 @@ function BaseSimNode({ data }: NodeProps & { data: SimNodeData }) {
             <div className="text-[12px] font-semibold text-zinc-200 truncate leading-tight">{label}</div>
             <div className="text-[9px] text-zinc-500 font-medium capitalize">{status}</div>
           </div>
-          <div className={`w-1.5 h-1.5 rounded-full ring-2 ${config.dot} ${config.ring}`} />
+          <div className="flex items-center gap-2">
+            <div className={`w-1.5 h-1.5 rounded-full ring-2 ${config.dot} ${config.ring}`} />
+            {actionContent}
+          </div>
         </div>
 
         {/* Utilization bar */}
@@ -117,6 +121,7 @@ function BaseSimNode({ data }: NodeProps & { data: SimNodeData }) {
           )}
         </div>
       </div>
+      {children}
     </div>
   );
 }

@@ -27,9 +27,17 @@ export function detectSingleInstanceSpofs(nodes: SimNode[]): string[] {
   const reasons: string[] = [];
 
   for (const t of REDUNDANCY_TYPES) {
-    const c = countByType(nodes, t);
-    if (c === 1) {
-      reasons.push(`${t} has only one instance`);
+    const ofType = nodes.filter((n) => n.type === t);
+    if (ofType.length === 1) {
+      const node = ofType[0];
+      if (['database', 'sqlDatabase', 'noSqlDatabase'].includes(t)) {
+        const replicas = node.config?.replicas ?? 1;
+        if (replicas < 2) {
+          reasons.push(`${node.label} has only one replica (Single Point of Failure)`);
+        }
+      } else {
+        reasons.push(`${t} has only one instance`);
+      }
     }
   }
 

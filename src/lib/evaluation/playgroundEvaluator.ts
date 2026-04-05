@@ -1,7 +1,7 @@
 import type { PlaygroundEvaluationResult, PlaygroundInsight } from '@/types/evaluation';
 import type { Insight } from '@/types/simulation';
 import type { SimEdge, SimNode } from '@/types/simulation';
-import { analyzeBottlenecks } from './analysis/bottleneckAnalyzer';
+import { analyzeBottlenecks, extractBottlenecks } from './analysis/bottleneckAnalyzer';
 import { analyzeLatencyChains } from './analysis/latencyAnalyzer';
 import { analyzeReliability } from './analysis/reliabilityAnalyzer';
 import { detectSingleInstanceSpofs } from './checkEvaluators/spofCheck';
@@ -150,6 +150,7 @@ export function evaluatePlayground(
   ];
 
   const score = computeScalabilityScore(simulatedNodes, spofReasons);
+  const bottlenecks = extractBottlenecks(simulatedNodes);
 
-  return { insights: dedupePlaygroundInsights(merged), score };
+  return { insights: dedupePlaygroundInsights(merged), bottlenecks, score };
 }

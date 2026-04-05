@@ -66,8 +66,8 @@ const nodeTypes: NodeTypes = {
   mobileClient:  GenericNode,
   worker:        GenericNode,
   queue:         GenericNode,
-  sqlDatabase:   GenericNode,
-  noSqlDatabase: GenericNode,
+  sqlDatabase:   DbNode,
+  noSqlDatabase: DbNode,
   cdn:           GenericNode,
   messageBroker: GenericNode,
 };
@@ -122,6 +122,7 @@ export default function FlowCanvas() {
           latency: n.latency,
           errorRate: n.errorRate,
           nodeType: n.type,
+          config: n.config,
         },
         selectable: true,
         selected: selectedById[n.id] ?? false,

@@ -82,9 +82,39 @@ export function simulateTick(
     const node = nodeMap.get(currentId)!;
     const load = node.currentLoad;
 
-    node.status = computeStatus(load, node.capacity);
-    node.latency = computeLatency(node.baseLatency, load, node.capacity);
-    node.errorRate = computeErrorRate(load, node.capacity);
+    let effectiveRatio = load / node.capacity;
+    const isDb = ['database', 'sqlDatabase', 'noSqlDatabase'].includes(node.type);
+
+    if (isDb) {
+      const replicas = node.config?.replicas ?? 1;
+      const shards = node.config?.shards ?? 1;
+      const effectiveWriteCapacity = node.capacity * shards;
+      const effectiveReadCapacity = node.capacity * replicas * shards;
+
+      // Assuming a default 100:1 read:write ratio typical for such systems if not specified
+      const writeRatioParams = node.config?.writeRatio ?? 0.01;
+      const readRatioParams = 1 - writeRatioParams;
+
+      const writeLoad = load * writeRatioParams;
+      const readLoad = load * readRatioParams;
+
+      const writeOverload = writeLoad / effectiveWriteCapacity;
+      const readOverload = readLoad / effectiveReadCapacity;
+
+      effectiveRatio = Math.max(writeOverload, readOverload);
+
+      node.config = {
+        ...node.config,
+        _writeBottleneck: writeOverload > 1 && writeOverload >= readOverload,
+        _readBottleneck: readOverload > 1 && readOverload > writeOverload,
+        _effectiveRatio: effectiveRatio,
+      };
+    }
+
+    const simulatedLoad = effectiveRatio * node.capacity;
+    node.status = computeStatus(simulatedLoad, node.capacity);
+    node.latency = computeLatency(node.baseLatency, simulatedLoad, node.capacity);
+    node.errorRate = computeErrorRate(simulatedLoad, node.capacity);
 
     // Propagate: downstream receives (load minus dropped requests)
     const successfulRequests = load * (1 - node.errorRate);
@@ -125,21 +155,62 @@ export function generateInsights(nodes: SimNode[]): Insight[] {
   }
 
   // DB-specific insights
-  const db = nodes.find((n) => n.type === 'database');
-  if (db && db.status === 'overloaded' && !hasCache) {
-    insights.push({
-      id: 'suggest-cache',
-      message: 'Database is the bottleneck. Consider adding a cache layer to reduce DB load.',
-      severity: 'critical',
-    });
-  }
+  const dbs = nodes.filter((n) => ['database', 'sqlDatabase', 'noSqlDatabase'].includes(n.type));
+  
+  for (const db of dbs) {
+    if (db.status === 'overloaded' && !hasCache) {
+      insights.push({
+        id: `suggest-cache-${db.id}`,
+        message: 'Database is the bottleneck. Consider adding a cache layer to reduce DB load.',
+        severity: 'critical',
+      });
+    }
 
-  if (db && db.status === 'stressed' && !hasCache) {
-    insights.push({
-      id: 'suggest-cache-early',
-      message: 'Database is under pressure. A cache would help absorb read traffic.',
-      severity: 'warning',
-    });
+    if (db.status === 'stressed' && !hasCache) {
+      insights.push({
+        id: `suggest-cache-early-${db.id}`,
+        message: 'Database is under pressure. A cache would help absorb read traffic.',
+        severity: 'warning',
+      });
+    }
+
+    if (db.status === 'overloaded' || db.status === 'stressed') {
+      if (db.config?._writeBottleneck) {
+        insights.push({
+          id: `db-write-bottleneck-${db.id}`,
+          message: `Write capacity exceeded on ${db.label}.`,
+          severity: 'critical',
+          nodeId: db.id,
+        });
+
+        const shards = db.config?.shards ?? 1;
+        if (shards === 1) {
+          insights.push({
+            id: `db-suggest-sharding-${db.id}`,
+            message: `${db.label} is write-heavy. Suggest adding shards to distribute writes.`,
+            severity: 'warning',
+            nodeId: db.id,
+          });
+        }
+      } else if (db.config?._readBottleneck) {
+        insights.push({
+          id: `db-read-bottleneck-${db.id}`,
+          message: `Read capacity exceeded on ${db.label}.`,
+          severity: 'critical',
+          nodeId: db.id,
+        });
+
+        const replicas = db.config?.replicas ?? 1;
+        if (replicas === 1) {
+          insights.push({
+            id: `db-suggest-replicas-${db.id}`,
+            message: `${db.label} is read-heavy. Suggest adding replicas to distribute reads.`,
+            severity: 'warning',
+            nodeId: db.id,
+          });
+        }
+      }
+    }
   }
 
   // Single point of failure

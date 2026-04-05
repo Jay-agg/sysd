@@ -35,6 +35,7 @@ interface SimulationState {
   addEdge: (source: string, target: string) => void;
   removeEdge: (id: string) => void;
   updateNodePosition: (id: string, position: { x: number; y: number }) => void;
+  updateNodeConfig: (id: string, config: Record<string, any>) => void;
 }
 
 export const useSimulationStore = create<SimulationState>((set, get) => ({
@@ -144,5 +145,19 @@ export const useSimulationStore = create<SimulationState>((set, get) => ({
     set((s) => ({
       nodes: s.nodes.map((n) => (n.id === id ? { ...n, position } : n)),
     }));
+  },
+
+  updateNodeConfig: (id, config) => {
+    set((s) => ({
+      nodes: s.nodes.map((n) => (n.id === id ? { ...n, config: { ...(n.config || {}), ...config } } : n)),
+    }));
+    // Trigger recalculation if running, or just trigger tick to update UI
+    if (get().isRunning) {
+      get().tick();
+    } else {
+      // Even if paused, we want the node to reflect new potential capacity/behavior?
+      // Wait, let's just trigger tick so the visual metrics update immediately
+      get().tick();
+    }
   },
 }));

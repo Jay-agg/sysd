@@ -26,6 +26,7 @@ export interface SimNode {
   errorRate: number;
   status: NodeStatus;
   position: { x: number; y: number };
+  config?: Record<string, any>;
 }
 
 export interface SimEdge {

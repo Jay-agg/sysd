@@ -68,8 +68,15 @@ export interface ChallengeEvaluationResult {
   overallScore: number;
 }
 
+export interface PlaygroundBottleneck {
+  type: 'write' | 'read' | 'compute' | 'network' | 'general';
+  node: string;
+  message: string;
+}
+
 export interface PlaygroundEvaluationResult {
   insights: PlaygroundInsight[];
+  bottlenecks?: PlaygroundBottleneck[];
   /** 0–100 scalability / architecture health. */
   score: number;
 }

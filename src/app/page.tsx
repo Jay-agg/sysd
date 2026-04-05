@@ -136,10 +136,10 @@ export default function QuestionBankPage() {
         {/* Pagination & Stats footer (Fixed) */}
         <div className="shrink-0 mt-4 border-t border-zinc-800/80 pt-4 flex items-center justify-between">
           <div className="flex items-center gap-6 text-[12px] text-zinc-600">
-            <div className="flex items-center gap-1.5">
+            {/* <div className="flex items-center gap-1.5">
               <Flame size={13} />
               <span>{challenges.length} challenges</span>
-            </div>
+            </div> */}
             {/* <div className="flex items-center gap-1.5">
               <Zap size={13} />
               <span>{challenges.reduce((s, c) => s + c.visibleTests.length + c.hiddenTests.length, 0)} total tests</span>
