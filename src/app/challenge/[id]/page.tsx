@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { ReactFlowProvider } from '@xyflow/react';
-import { Play, Send, FlaskConical, Square } from 'lucide-react';
+import { Send, FlaskConical } from 'lucide-react';
 
 import { getChallengeById } from '@/lib/challenges';
 import { useChallengeStore } from '@/store/useChallengeStore';
@@ -33,9 +33,6 @@ export default function ChallengePage() {
   const nodes = useSimulationStore((s) => s.nodes);
   const edges = useSimulationStore((s) => s.edges);
   const loadScenario = useSimulationStore((s) => s.loadScenario);
-  const isRunning = useSimulationStore((s) => s.isRunning);
-  const startSimulation = useSimulationStore((s) => s.startSimulation);
-  const stopSimulation = useSimulationStore((s) => s.stopSimulation);
 
   useEffect(() => {
     const c = getChallengeById(challengeId);
@@ -75,22 +72,6 @@ export default function ChallengePage() {
         <AppNavbar
           rightContent={
             <>
-              <button
-                type="button"
-                disabled={nodes.length === 0 && !isRunning}
-                onClick={isRunning ? stopSimulation : startSimulation}
-                className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-[13px] font-semibold transition-all cursor-pointer ${
-                  isRunning
-                    ? 'bg-red-500/10 text-red-400 ring-1 ring-red-500/20 hover:bg-red-500/15'
-                    : nodes.length > 0
-                      ? 'bg-zinc-800 border border-zinc-700 text-zinc-300 hover:text-white hover:bg-zinc-700'
-                      : 'cursor-not-allowed opacity-50 bg-zinc-800/50 border border-zinc-800 text-zinc-600'
-                }`}
-                title={nodes.length === 0 && !isRunning ? 'Add nodes on the canvas first' : undefined}
-              >
-                {isRunning ? <Square size={14} fill="currentColor" /> : <Play size={14} fill="currentColor" />}
-                {isRunning ? 'Stop' : 'Run sim'}
-              </button>
               <button
                 onClick={handleRunTest}
                 className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-[13px] font-semibold

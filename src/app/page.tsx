@@ -140,10 +140,10 @@ export default function QuestionBankPage() {
               <Flame size={13} />
               <span>{challenges.length} challenges</span>
             </div>
-            <div className="flex items-center gap-1.5">
+            {/* <div className="flex items-center gap-1.5">
               <Zap size={13} />
               <span>{challenges.reduce((s, c) => s + c.visibleTests.length + c.hiddenTests.length, 0)} total tests</span>
-            </div>
+            </div> */}
           </div>
           
           {totalPages > 1 && (
