@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo, DragEvent } from 'react';
+import { useCallback, useEffect, useMemo, useState, DragEvent } from 'react';
 import {
   ReactFlow,
   Background,
@@ -79,9 +79,18 @@ export default function FlowCanvas() {
   const traffic = useSimulationStore((s) => s.traffic);
   const addNode = useSimulationStore((s) => s.addNode);
   const addEdge = useSimulationStore((s) => s.addEdge);
+  const removeNode = useSimulationStore((s) => s.removeNode);
   const updateNodePosition = useSimulationStore((s) => s.updateNodePosition);
+  const scenarioName = useSimulationStore((s) => s.scenarioName);
 
   const { screenToFlowPosition } = useReactFlow();
+
+  /** Selection is UI-only; sim ticks replace `nodes` without this field. */
+  const [selectedById, setSelectedById] = useState<Record<string, boolean>>({});
+
+  useEffect(() => {
+    setSelectedById({});
+  }, [scenarioName]);
 
   // Determine edge color based on system health
   const worstStatus = simNodes.reduce((worst, n) => {
@@ -114,9 +123,10 @@ export default function FlowCanvas() {
           errorRate: n.errorRate,
           nodeType: n.type,
         },
-        selectable: false,
+        selectable: true,
+        selected: selectedById[n.id] ?? false,
       })),
-    [simNodes]
+    [simNodes, selectedById]
   );
 
   const edges: Edge[] = useMemo(
@@ -131,6 +141,7 @@ export default function FlowCanvas() {
           strokeWidth: isRunning && traffic > 0 ? 2.5 : 1.5,
           transition: 'stroke 0.5s ease, stroke-width 0.3s ease',
         },
+        selectable: false,
       })),
     [simEdges, isRunning, edgeColor, traffic]
   );
@@ -167,12 +178,21 @@ export default function FlowCanvas() {
   const onNodesChange: OnNodesChange = useCallback(
     (changes: NodeChange[]) => {
       for (const change of changes) {
-        if (change.type === 'position' && change.position && change.id) {
+        if (change.type === 'select') {
+          setSelectedById((prev) => ({ ...prev, [change.id]: change.selected }));
+        } else if (change.type === 'remove') {
+          removeNode(change.id);
+          setSelectedById((prev) => {
+            const next = { ...prev };
+            delete next[change.id];
+            return next;
+          });
+        } else if (change.type === 'position' && change.position && change.id) {
           updateNodePosition(change.id, change.position);
         }
       }
     },
-    [updateNodePosition]
+    [updateNodePosition, removeNode]
   );
 
   return (
@@ -192,7 +212,8 @@ export default function FlowCanvas() {
         proOptions={{ hideAttribution: true }}
         nodesDraggable={true}
         nodesConnectable={true}
-        elementsSelectable={false}
+        elementsSelectable={true}
+        deleteKeyCode={['Backspace', 'Delete']}
         panOnDrag
         zoomOnScroll
         minZoom={0.25}

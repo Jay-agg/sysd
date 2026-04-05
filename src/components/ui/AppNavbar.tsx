@@ -26,7 +26,7 @@ export default function AppNavbar({ rightContent }: AppNavbarProps) {
             <Zap size={16} className="text-white" strokeWidth={2.5} />
           </div> */}
           <div className="flex items-baseline gap-1.5">
-            <span className="text-[15px] font-semibold text-white tracking-tight">ScaleCode</span>
+            <span className="text-[15px] font-semibold text-white tracking-tight">Scalab</span>
           </div>
         </Link>
 

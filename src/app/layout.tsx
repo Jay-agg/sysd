@@ -9,7 +9,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "FlowSim Learn — System Design Simulator",
+  title: "Scalab",
   description:
     "Interactive system design learning tool. Simulate traffic, visualize bottlenecks, and understand why systems break.",
 };
