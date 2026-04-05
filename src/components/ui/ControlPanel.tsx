@@ -1,11 +1,17 @@
 'use client';
 
+import { Play, Square } from 'lucide-react';
 import { useSimulationStore } from '@/store/useSimulationStore';
 
 export default function ControlPanel() {
   const traffic = useSimulationStore((s) => s.traffic);
   const updateTraffic = useSimulationStore((s) => s.updateTraffic);
   const isRunning = useSimulationStore((s) => s.isRunning);
+  const nodes = useSimulationStore((s) => s.nodes);
+  const startSimulation = useSimulationStore((s) => s.startSimulation);
+  const stopSimulation = useSimulationStore((s) => s.stopSimulation);
+
+  const canRun = nodes.length > 0;
 
   const trafficPercent = (traffic / 10000) * 100;
 
@@ -26,6 +32,33 @@ export default function ControlPanel() {
         </svg>
         <span className="text-[11px] font-semibold text-zinc-500 uppercase tracking-widest">Controls</span>
       </div>
+
+      {/* ── Run / Stop ── */}
+      <button
+        type="button"
+        disabled={!canRun && !isRunning}
+        onClick={isRunning ? stopSimulation : startSimulation}
+        className={`flex w-full items-center justify-center gap-2 rounded-2xl px-4 py-3 text-sm font-semibold transition-all ${
+          isRunning
+            ? 'bg-red-500/10 text-red-400 ring-1 ring-red-500/25 hover:bg-red-500/15'
+            : canRun
+              ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:scale-[1.01] active:scale-[0.99]'
+              : 'cursor-not-allowed bg-zinc-800/80 text-zinc-500 ring-1 ring-zinc-700/60'
+        }`}
+        title={!canRun && !isRunning ? 'Add at least one node on the canvas' : undefined}
+      >
+        {isRunning ? (
+          <>
+            <Square size={14} fill="currentColor" />
+            Stop simulation
+          </>
+        ) : (
+          <>
+            <Play size={14} fill="currentColor" className="text-white/90" />
+            Run simulation
+          </>
+        )}
+      </button>
 
       {/* ── Traffic Control Card ── */}
       <div className="rounded-2xl bg-zinc-900/70 backdrop-blur-sm border border-zinc-800/60 p-4 shadow-lg shadow-black/20">
