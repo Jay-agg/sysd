@@ -1,0 +1,3139 @@
+[
+    {
+        "id": "sd-001",
+        "title": "URL Shortener Service",
+        "difficulty": "easy",
+        "description": "Design a URL shortening service that maps long URLs to compact short codes. Support high read traffic for redirects with low latency and durable storage. Many URL shorteners use Base62-encoded identifiers for compact short codes.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "url-shortener"
+        ],
+        "requirements": [
+            "Handle 500 requests per second for primary operations",
+            "Maintain p95 latency under 300ms for read operations",
+            "Keep error rate under 2.0% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains",
+            "Support at least 10 million unique shortened URLs with constant-time lookup"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 500
+                },
+                "checks": {
+                    "maxLatency": 300,
+                    "maxErrorRate": 2.0,
+                    "minThroughput": 400,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 2500
+                },
+                "checks": {
+                    "maxLatency": 250,
+                    "maxErrorRate": 1.0,
+                    "minThroughput": 1750,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-002",
+        "title": "Basic Key-Value Store",
+        "difficulty": "easy",
+        "description": "Design the Basic Key-Value Store to handle moderate traffic within a single region. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "kv-store"
+        ],
+        "requirements": [
+            "Handle 500 requests per second for primary operations",
+            "Maintain p95 latency under 300ms for read operations",
+            "Keep error rate under 2.0% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 500
+                },
+                "checks": {
+                    "maxLatency": 300,
+                    "maxErrorRate": 2.0,
+                    "minThroughput": 400,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 2500
+                },
+                "checks": {
+                    "maxLatency": 250,
+                    "maxErrorRate": 1.0,
+                    "minThroughput": 1750,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-003",
+        "title": "API Gateway Rate Limiter",
+        "difficulty": "easy",
+        "description": "Design the API Gateway Rate Limiter to handle moderate traffic within a single region. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "rate-limiter"
+        ],
+        "requirements": [
+            "Handle 500 requests per second for primary operations",
+            "Maintain p95 latency under 300ms for read operations",
+            "Keep error rate under 2.0% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 500
+                },
+                "checks": {
+                    "maxLatency": 300,
+                    "maxErrorRate": 2.0,
+                    "minThroughput": 400,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 2500
+                },
+                "checks": {
+                    "maxLatency": 250,
+                    "maxErrorRate": 1.0,
+                    "minThroughput": 1750,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-004",
+        "title": "User Authentication Service",
+        "difficulty": "easy",
+        "description": "Design the User Authentication Service to handle moderate traffic within a single region. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "auth"
+        ],
+        "requirements": [
+            "Handle 500 requests per second for primary operations",
+            "Maintain p95 latency under 300ms for read operations",
+            "Keep error rate under 2.0% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 500
+                },
+                "checks": {
+                    "maxLatency": 300,
+                    "maxErrorRate": 2.0,
+                    "minThroughput": 400,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 2500
+                },
+                "checks": {
+                    "maxLatency": 250,
+                    "maxErrorRate": 1.0,
+                    "minThroughput": 1750,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-005",
+        "title": "Email Notification Dispatcher",
+        "difficulty": "easy",
+        "description": "Design the Email Notification Dispatcher to handle moderate traffic within a single region. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "notification"
+        ],
+        "requirements": [
+            "Handle 500 requests per second for primary operations",
+            "Maintain p95 latency under 300ms for read operations",
+            "Keep error rate under 2.0% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains",
+            "Deliver 99% of notifications within 60 seconds of event generation"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 500
+                },
+                "checks": {
+                    "maxLatency": 300,
+                    "maxErrorRate": 2.0,
+                    "minThroughput": 400,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 2500
+                },
+                "checks": {
+                    "maxLatency": 250,
+                    "maxErrorRate": 1.0,
+                    "minThroughput": 1750,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-006",
+        "title": "Image Thumbnail Generator",
+        "difficulty": "easy",
+        "description": "Design the Image Thumbnail Generator to handle moderate traffic within a single region. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "media",
+            "images"
+        ],
+        "requirements": [
+            "Handle 500 requests per second for primary operations",
+            "Maintain p95 latency under 300ms for read operations",
+            "Keep error rate under 2.0% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 500
+                },
+                "checks": {
+                    "maxLatency": 300,
+                    "maxErrorRate": 2.0,
+                    "minThroughput": 400,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 2500
+                },
+                "checks": {
+                    "maxLatency": 250,
+                    "maxErrorRate": 1.0,
+                    "minThroughput": 1750,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-007",
+        "title": "Health Check Status Page",
+        "difficulty": "easy",
+        "description": "Design the Health Check Status Page to handle moderate traffic within a single region. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "observability"
+        ],
+        "requirements": [
+            "Handle 500 requests per second for primary operations",
+            "Maintain p95 latency under 300ms for read operations",
+            "Keep error rate under 2.0% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 500
+                },
+                "checks": {
+                    "maxLatency": 300,
+                    "maxErrorRate": 2.0,
+                    "minThroughput": 400,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 2500
+                },
+                "checks": {
+                    "maxLatency": 250,
+                    "maxErrorRate": 1.0,
+                    "minThroughput": 1750,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-008",
+        "title": "Pastebin Text Sharing",
+        "difficulty": "easy",
+        "description": "Design the Pastebin Text Sharing to handle moderate traffic within a single region. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "pastebin"
+        ],
+        "requirements": [
+            "Handle 500 requests per second for primary operations",
+            "Maintain p95 latency under 300ms for read operations",
+            "Keep error rate under 2.0% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 500
+                },
+                "checks": {
+                    "maxLatency": 300,
+                    "maxErrorRate": 2.0,
+                    "minThroughput": 400,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 2500
+                },
+                "checks": {
+                    "maxLatency": 250,
+                    "maxErrorRate": 1.0,
+                    "minThroughput": 1750,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-009",
+        "title": "Page View Counter Service",
+        "difficulty": "easy",
+        "description": "Design the Page View Counter Service to handle moderate traffic within a single region. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "analytics"
+        ],
+        "requirements": [
+            "Handle 500 requests per second for primary operations",
+            "Maintain p95 latency under 300ms for read operations",
+            "Keep error rate under 2.0% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 500
+                },
+                "checks": {
+                    "maxLatency": 300,
+                    "maxErrorRate": 2.0,
+                    "minThroughput": 400,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 2500
+                },
+                "checks": {
+                    "maxLatency": 250,
+                    "maxErrorRate": 1.0,
+                    "minThroughput": 1750,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-010",
+        "title": "Feature Flag Management",
+        "difficulty": "easy",
+        "description": "Design the Feature Flag Management to handle moderate traffic within a single region. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "feature-flags"
+        ],
+        "requirements": [
+            "Handle 500 requests per second for primary operations",
+            "Maintain p95 latency under 300ms for read operations",
+            "Keep error rate under 2.0% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 500
+                },
+                "checks": {
+                    "maxLatency": 300,
+                    "maxErrorRate": 2.0,
+                    "minThroughput": 400,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 2500
+                },
+                "checks": {
+                    "maxLatency": 250,
+                    "maxErrorRate": 1.0,
+                    "minThroughput": 1750,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-011",
+        "title": "Single-Room Chat",
+        "difficulty": "easy",
+        "description": "Design the Single-Room Chat to handle moderate traffic within a single region. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "chat"
+        ],
+        "requirements": [
+            "Handle 500 requests per second for primary operations",
+            "Maintain p95 latency under 300ms for read operations",
+            "Keep error rate under 2.0% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains",
+            "Support at least 50,000 concurrent connected clients with message fan-out under 1 second"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 500
+                },
+                "checks": {
+                    "maxLatency": 300,
+                    "maxErrorRate": 2.0,
+                    "minThroughput": 400,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 2500
+                },
+                "checks": {
+                    "maxLatency": 250,
+                    "maxErrorRate": 1.0,
+                    "minThroughput": 1750,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-012",
+        "title": "User Profile Service",
+        "difficulty": "easy",
+        "description": "Design the User Profile Service to handle moderate traffic within a single region. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "user-profile"
+        ],
+        "requirements": [
+            "Handle 500 requests per second for primary operations",
+            "Maintain p95 latency under 300ms for read operations",
+            "Keep error rate under 2.0% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 500
+                },
+                "checks": {
+                    "maxLatency": 300,
+                    "maxErrorRate": 2.0,
+                    "minThroughput": 400,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 2500
+                },
+                "checks": {
+                    "maxLatency": 250,
+                    "maxErrorRate": 1.0,
+                    "minThroughput": 1750,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-013",
+        "title": "Configuration Service",
+        "difficulty": "easy",
+        "description": "Design the Configuration Service to handle moderate traffic within a single region. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "config"
+        ],
+        "requirements": [
+            "Handle 500 requests per second for primary operations",
+            "Maintain p95 latency under 300ms for read operations",
+            "Keep error rate under 2.0% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 500
+                },
+                "checks": {
+                    "maxLatency": 300,
+                    "maxErrorRate": 2.0,
+                    "minThroughput": 400,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 2500
+                },
+                "checks": {
+                    "maxLatency": 250,
+                    "maxErrorRate": 1.0,
+                    "minThroughput": 1750,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-014",
+        "title": "Low-Volume Log Ingestion",
+        "difficulty": "easy",
+        "description": "Design the Low-Volume Log Ingestion to handle moderate traffic within a single region. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "logging"
+        ],
+        "requirements": [
+            "Handle 500 requests per second for primary operations",
+            "Maintain p95 latency under 300ms for read operations",
+            "Keep error rate under 2.0% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 500
+                },
+                "checks": {
+                    "maxLatency": 300,
+                    "maxErrorRate": 2.0,
+                    "minThroughput": 400,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 2500
+                },
+                "checks": {
+                    "maxLatency": 250,
+                    "maxErrorRate": 1.0,
+                    "minThroughput": 1750,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-015",
+        "title": "Simple File Upload Service",
+        "difficulty": "easy",
+        "description": "Design the Simple File Upload Service to handle moderate traffic within a single region. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "file-storage"
+        ],
+        "requirements": [
+            "Handle 500 requests per second for primary operations",
+            "Maintain p95 latency under 300ms for read operations",
+            "Keep error rate under 2.0% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains",
+            "Store at least 100 TB of files with 11 nines of annual durability"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 500
+                },
+                "checks": {
+                    "maxLatency": 300,
+                    "maxErrorRate": 2.0,
+                    "minThroughput": 400,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 2500
+                },
+                "checks": {
+                    "maxLatency": 250,
+                    "maxErrorRate": 1.0,
+                    "minThroughput": 1750,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-016",
+        "title": "Scalable URL Shortener with Analytics",
+        "difficulty": "medium",
+        "description": "Design the Scalable URL Shortener with Analytics to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "url-shortener",
+            "analytics"
+        ],
+        "requirements": [
+            "Handle 5000 requests per second for primary operations",
+            "Maintain p95 latency under 250ms for read operations",
+            "Keep error rate under 1.0% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains",
+            "Support at least 10 million unique shortened URLs with constant-time lookup"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 5000
+                },
+                "checks": {
+                    "maxLatency": 250,
+                    "maxErrorRate": 1.0,
+                    "minThroughput": 4000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 25000
+                },
+                "checks": {
+                    "maxLatency": 200,
+                    "maxErrorRate": 0.5,
+                    "minThroughput": 17500,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-017",
+        "title": "Real-Time Chat System",
+        "difficulty": "medium",
+        "description": "Design the Real-Time Chat System to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "chat"
+        ],
+        "requirements": [
+            "Handle 5000 requests per second for primary operations",
+            "Maintain p95 latency under 250ms for read operations",
+            "Keep error rate under 1.0% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains",
+            "Support at least 50,000 concurrent connected clients with message fan-out under 1 second"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 5000
+                },
+                "checks": {
+                    "maxLatency": 250,
+                    "maxErrorRate": 1.0,
+                    "minThroughput": 4000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 25000
+                },
+                "checks": {
+                    "maxLatency": 200,
+                    "maxErrorRate": 0.5,
+                    "minThroughput": 17500,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-018",
+        "title": "Social News Feed",
+        "difficulty": "medium",
+        "description": "Design the Social News Feed to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "news-feed"
+        ],
+        "requirements": [
+            "Handle 5000 requests per second for primary operations",
+            "Maintain p95 latency under 250ms for read operations",
+            "Keep error rate under 1.0% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains",
+            "Generate personalized feeds for 1 million daily active users within 2 seconds per request"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 5000
+                },
+                "checks": {
+                    "maxLatency": 250,
+                    "maxErrorRate": 1.0,
+                    "minThroughput": 4000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 25000
+                },
+                "checks": {
+                    "maxLatency": 200,
+                    "maxErrorRate": 0.5,
+                    "minThroughput": 17500,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-019",
+        "title": "City Ride Matching Service",
+        "difficulty": "medium",
+        "description": "Design the City Ride Matching Service to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "ride-sharing"
+        ],
+        "requirements": [
+            "Handle 5000 requests per second for primary operations",
+            "Maintain p95 latency under 250ms for read operations",
+            "Keep error rate under 1.0% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains",
+            "Match riders and drivers within 5 seconds for 95% of ride requests in a city"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 5000
+                },
+                "checks": {
+                    "maxLatency": 250,
+                    "maxErrorRate": 1.0,
+                    "minThroughput": 4000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 25000
+                },
+                "checks": {
+                    "maxLatency": 200,
+                    "maxErrorRate": 0.5,
+                    "minThroughput": 17500,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-020",
+        "title": "Multi-Channel Notification System",
+        "difficulty": "medium",
+        "description": "Design the Multi-Channel Notification System to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "notification"
+        ],
+        "requirements": [
+            "Handle 5000 requests per second for primary operations",
+            "Maintain p95 latency under 250ms for read operations",
+            "Keep error rate under 1.0% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains",
+            "Deliver 99% of notifications within 60 seconds of event generation"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 5000
+                },
+                "checks": {
+                    "maxLatency": 250,
+                    "maxErrorRate": 1.0,
+                    "minThroughput": 4000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 25000
+                },
+                "checks": {
+                    "maxLatency": 200,
+                    "maxErrorRate": 0.5,
+                    "minThroughput": 17500,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-021",
+        "title": "Search Autocomplete Service",
+        "difficulty": "medium",
+        "description": "Design the Search Autocomplete Service to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "search"
+        ],
+        "requirements": [
+            "Handle 5000 requests per second for primary operations",
+            "Maintain p95 latency under 250ms for read operations",
+            "Keep error rate under 1.0% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains",
+            "Index new documents so they become searchable within 60 seconds of ingestion"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 5000
+                },
+                "checks": {
+                    "maxLatency": 250,
+                    "maxErrorRate": 1.0,
+                    "minThroughput": 4000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 25000
+                },
+                "checks": {
+                    "maxLatency": 200,
+                    "maxErrorRate": 0.5,
+                    "minThroughput": 17500,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-022",
+        "title": "Document Search Service",
+        "difficulty": "medium",
+        "description": "Design the Document Search Service to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "search",
+            "full-text"
+        ],
+        "requirements": [
+            "Handle 5000 requests per second for primary operations",
+            "Maintain p95 latency under 250ms for read operations",
+            "Keep error rate under 1.0% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains",
+            "Index new documents so they become searchable within 60 seconds of ingestion"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 5000
+                },
+                "checks": {
+                    "maxLatency": 250,
+                    "maxErrorRate": 1.0,
+                    "minThroughput": 4000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 25000
+                },
+                "checks": {
+                    "maxLatency": 200,
+                    "maxErrorRate": 0.5,
+                    "minThroughput": 17500,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-023",
+        "title": "File Storage and Sharing",
+        "difficulty": "medium",
+        "description": "Design the File Storage and Sharing to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "file-storage"
+        ],
+        "requirements": [
+            "Handle 5000 requests per second for primary operations",
+            "Maintain p95 latency under 250ms for read operations",
+            "Keep error rate under 1.0% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains",
+            "Store at least 100 TB of files with 11 nines of annual durability"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 5000
+                },
+                "checks": {
+                    "maxLatency": 250,
+                    "maxErrorRate": 1.0,
+                    "minThroughput": 4000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 25000
+                },
+                "checks": {
+                    "maxLatency": 200,
+                    "maxErrorRate": 0.5,
+                    "minThroughput": 17500,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-024",
+        "title": "Video Streaming Platform",
+        "difficulty": "medium",
+        "description": "Design the Video Streaming Platform to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "video-streaming"
+        ],
+        "requirements": [
+            "Handle 5000 requests per second for primary operations",
+            "Maintain p95 latency under 250ms for read operations",
+            "Keep error rate under 1.0% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains",
+            "Stream video to 100,000 concurrent viewers with less than 5 seconds startup time"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 5000
+                },
+                "checks": {
+                    "maxLatency": 250,
+                    "maxErrorRate": 1.0,
+                    "minThroughput": 4000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 25000
+                },
+                "checks": {
+                    "maxLatency": 200,
+                    "maxErrorRate": 0.5,
+                    "minThroughput": 17500,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-025",
+        "title": "Real-Time Gaming Leaderboard",
+        "difficulty": "medium",
+        "description": "Design the Real-Time Gaming Leaderboard to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "leaderboard"
+        ],
+        "requirements": [
+            "Handle 5000 requests per second for primary operations",
+            "Maintain p95 latency under 250ms for read operations",
+            "Keep error rate under 1.0% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains",
+            "Update and read leaderboard positions for 1 million players with p95 latency under 150ms"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 5000
+                },
+                "checks": {
+                    "maxLatency": 250,
+                    "maxErrorRate": 1.0,
+                    "minThroughput": 4000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 25000
+                },
+                "checks": {
+                    "maxLatency": 200,
+                    "maxErrorRate": 0.5,
+                    "minThroughput": 17500,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-026",
+        "title": "Geo-Distributed Counter",
+        "difficulty": "medium",
+        "description": "Design the Geo-Distributed Counter to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "geo-distributed"
+        ],
+        "requirements": [
+            "Handle 5000 requests per second for primary operations",
+            "Maintain p95 latency under 250ms for read operations",
+            "Keep error rate under 1.0% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 5000
+                },
+                "checks": {
+                    "maxLatency": 250,
+                    "maxErrorRate": 1.0,
+                    "minThroughput": 4000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 25000
+                },
+                "checks": {
+                    "maxLatency": 200,
+                    "maxErrorRate": 0.5,
+                    "minThroughput": 17500,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-027",
+        "title": "E-commerce Checkout Backend",
+        "difficulty": "medium",
+        "description": "Design the E-commerce Checkout Backend to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "e-commerce"
+        ],
+        "requirements": [
+            "Handle 5000 requests per second for primary operations",
+            "Maintain p95 latency under 250ms for read operations",
+            "Keep error rate under 1.0% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 5000
+                },
+                "checks": {
+                    "maxLatency": 250,
+                    "maxErrorRate": 1.0,
+                    "minThroughput": 4000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 25000
+                },
+                "checks": {
+                    "maxLatency": 200,
+                    "maxErrorRate": 0.5,
+                    "minThroughput": 17500,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-028",
+        "title": "Background Task Queue and Workers",
+        "difficulty": "medium",
+        "description": "Design the Background Task Queue and Workers to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "workers"
+        ],
+        "requirements": [
+            "Handle 5000 requests per second for primary operations",
+            "Maintain p95 latency under 250ms for read operations",
+            "Keep error rate under 1.0% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 5000
+                },
+                "checks": {
+                    "maxLatency": 250,
+                    "maxErrorRate": 1.0,
+                    "minThroughput": 4000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 25000
+                },
+                "checks": {
+                    "maxLatency": 200,
+                    "maxErrorRate": 0.5,
+                    "minThroughput": 17500,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-029",
+        "title": "Metrics and Monitoring Pipeline",
+        "difficulty": "medium",
+        "description": "Design the Metrics and Monitoring Pipeline to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "metrics"
+        ],
+        "requirements": [
+            "Handle 5000 requests per second for primary operations",
+            "Maintain p95 latency under 250ms for read operations",
+            "Keep error rate under 1.0% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 5000
+                },
+                "checks": {
+                    "maxLatency": 250,
+                    "maxErrorRate": 1.0,
+                    "minThroughput": 4000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 25000
+                },
+                "checks": {
+                    "maxLatency": 200,
+                    "maxErrorRate": 0.5,
+                    "minThroughput": 17500,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-030",
+        "title": "Ad Impression Tracker",
+        "difficulty": "medium",
+        "description": "Design the Ad Impression Tracker to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "ads"
+        ],
+        "requirements": [
+            "Handle 5000 requests per second for primary operations",
+            "Maintain p95 latency under 250ms for read operations",
+            "Keep error rate under 1.0% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 5000
+                },
+                "checks": {
+                    "maxLatency": 250,
+                    "maxErrorRate": 1.0,
+                    "minThroughput": 4000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 25000
+                },
+                "checks": {
+                    "maxLatency": 200,
+                    "maxErrorRate": 0.5,
+                    "minThroughput": 17500,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-031",
+        "title": "Collaborative Document Editing",
+        "difficulty": "medium",
+        "description": "Design the Collaborative Document Editing to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "collaboration"
+        ],
+        "requirements": [
+            "Handle 5000 requests per second for primary operations",
+            "Maintain p95 latency under 250ms for read operations",
+            "Keep error rate under 1.0% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 5000
+                },
+                "checks": {
+                    "maxLatency": 250,
+                    "maxErrorRate": 1.0,
+                    "minThroughput": 4000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 25000
+                },
+                "checks": {
+                    "maxLatency": 200,
+                    "maxErrorRate": 0.5,
+                    "minThroughput": 17500,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-032",
+        "title": "Real-Time Bidding Service",
+        "difficulty": "medium",
+        "description": "Design the Real-Time Bidding Service to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "ads",
+            "rtb"
+        ],
+        "requirements": [
+            "Handle 5000 requests per second for primary operations",
+            "Maintain p95 latency under 250ms for read operations",
+            "Keep error rate under 1.0% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 5000
+                },
+                "checks": {
+                    "maxLatency": 250,
+                    "maxErrorRate": 1.0,
+                    "minThroughput": 4000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 25000
+                },
+                "checks": {
+                    "maxLatency": 200,
+                    "maxErrorRate": 0.5,
+                    "minThroughput": 17500,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-033",
+        "title": "IoT Device Command Hub",
+        "difficulty": "medium",
+        "description": "Design the IoT Device Command Hub to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "iot"
+        ],
+        "requirements": [
+            "Handle 5000 requests per second for primary operations",
+            "Maintain p95 latency under 250ms for read operations",
+            "Keep error rate under 1.0% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 5000
+                },
+                "checks": {
+                    "maxLatency": 250,
+                    "maxErrorRate": 1.0,
+                    "minThroughput": 4000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 25000
+                },
+                "checks": {
+                    "maxLatency": 200,
+                    "maxErrorRate": 0.5,
+                    "minThroughput": 17500,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-034",
+        "title": "Recommendation Feed Generator",
+        "difficulty": "medium",
+        "description": "Design the Recommendation Feed Generator to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "recommendation"
+        ],
+        "requirements": [
+            "Handle 5000 requests per second for primary operations",
+            "Maintain p95 latency under 250ms for read operations",
+            "Keep error rate under 1.0% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 5000
+                },
+                "checks": {
+                    "maxLatency": 250,
+                    "maxErrorRate": 1.0,
+                    "minThroughput": 4000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 25000
+                },
+                "checks": {
+                    "maxLatency": 200,
+                    "maxErrorRate": 0.5,
+                    "minThroughput": 17500,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-035",
+        "title": "Comment and Like Service",
+        "difficulty": "medium",
+        "description": "Design the Comment and Like Service to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "social"
+        ],
+        "requirements": [
+            "Handle 5000 requests per second for primary operations",
+            "Maintain p95 latency under 250ms for read operations",
+            "Keep error rate under 1.0% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 5000
+                },
+                "checks": {
+                    "maxLatency": 250,
+                    "maxErrorRate": 1.0,
+                    "minThroughput": 4000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 25000
+                },
+                "checks": {
+                    "maxLatency": 200,
+                    "maxErrorRate": 0.5,
+                    "minThroughput": 17500,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-036",
+        "title": "Global Ride-Sharing Platform",
+        "difficulty": "hard",
+        "description": "Design the Global Ride-Sharing Platform to handle internet-scale, multi-region traffic and failures. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "ride-sharing",
+            "global"
+        ],
+        "requirements": [
+            "Handle 20000 requests per second for primary operations",
+            "Maintain p95 latency under 200ms for read operations",
+            "Keep error rate under 0.5% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains",
+            "Match riders and drivers within 5 seconds for 95% of ride requests in a city"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 20000
+                },
+                "checks": {
+                    "maxLatency": 200,
+                    "maxErrorRate": 0.5,
+                    "minThroughput": 16000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 100000
+                },
+                "checks": {
+                    "maxLatency": 150,
+                    "maxErrorRate": 0.2,
+                    "minThroughput": 70000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-037",
+        "title": "Multi-Region News Feed with Ranking",
+        "difficulty": "hard",
+        "description": "Design the Multi-Region News Feed with Ranking to handle internet-scale, multi-region traffic and failures. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "news-feed",
+            "ranking"
+        ],
+        "requirements": [
+            "Handle 20000 requests per second for primary operations",
+            "Maintain p95 latency under 200ms for read operations",
+            "Keep error rate under 0.5% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains",
+            "Generate personalized feeds for 1 million daily active users within 2 seconds per request"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 20000
+                },
+                "checks": {
+                    "maxLatency": 200,
+                    "maxErrorRate": 0.5,
+                    "minThroughput": 16000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 100000
+                },
+                "checks": {
+                    "maxLatency": 150,
+                    "maxErrorRate": 0.2,
+                    "minThroughput": 70000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-038",
+        "title": "End-to-End Encrypted Messaging",
+        "difficulty": "hard",
+        "description": "Design the End-to-End Encrypted Messaging to handle internet-scale, multi-region traffic and failures. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "chat",
+            "encryption"
+        ],
+        "requirements": [
+            "Handle 20000 requests per second for primary operations",
+            "Maintain p95 latency under 200ms for read operations",
+            "Keep error rate under 0.5% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains",
+            "Support at least 50,000 concurrent connected clients with message fan-out under 1 second"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 20000
+                },
+                "checks": {
+                    "maxLatency": 200,
+                    "maxErrorRate": 0.5,
+                    "minThroughput": 16000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 100000
+                },
+                "checks": {
+                    "maxLatency": 150,
+                    "maxErrorRate": 0.2,
+                    "minThroughput": 70000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-039",
+        "title": "Large-Scale Distributed Cache",
+        "difficulty": "hard",
+        "description": "Design the Large-Scale Distributed Cache to handle internet-scale, multi-region traffic and failures. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "cache"
+        ],
+        "requirements": [
+            "Handle 20000 requests per second for primary operations",
+            "Maintain p95 latency under 200ms for read operations",
+            "Keep error rate under 0.5% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 20000
+                },
+                "checks": {
+                    "maxLatency": 200,
+                    "maxErrorRate": 0.5,
+                    "minThroughput": 16000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 100000
+                },
+                "checks": {
+                    "maxLatency": 150,
+                    "maxErrorRate": 0.2,
+                    "minThroughput": 70000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-040",
+        "title": "Cross-Region Strongly Consistent File Store",
+        "difficulty": "hard",
+        "description": "Design the Cross-Region Strongly Consistent File Store to handle internet-scale, multi-region traffic and failures. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "file-storage",
+            "strong-consistency"
+        ],
+        "requirements": [
+            "Handle 20000 requests per second for primary operations",
+            "Maintain p95 latency under 200ms for read operations",
+            "Keep error rate under 0.5% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains",
+            "Store at least 100 TB of files with 11 nines of annual durability"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 20000
+                },
+                "checks": {
+                    "maxLatency": 200,
+                    "maxErrorRate": 0.5,
+                    "minThroughput": 16000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 100000
+                },
+                "checks": {
+                    "maxLatency": 150,
+                    "maxErrorRate": 0.2,
+                    "minThroughput": 70000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-041",
+        "title": "Live Video Streaming with Chat",
+        "difficulty": "hard",
+        "description": "Design the Live Video Streaming with Chat to handle internet-scale, multi-region traffic and failures. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "video-streaming",
+            "chat"
+        ],
+        "requirements": [
+            "Handle 20000 requests per second for primary operations",
+            "Maintain p95 latency under 200ms for read operations",
+            "Keep error rate under 0.5% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains",
+            "Support at least 50,000 concurrent connected clients with message fan-out under 1 second"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 20000
+                },
+                "checks": {
+                    "maxLatency": 200,
+                    "maxErrorRate": 0.5,
+                    "minThroughput": 16000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 100000
+                },
+                "checks": {
+                    "maxLatency": 150,
+                    "maxErrorRate": 0.2,
+                    "minThroughput": 70000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-042",
+        "title": "Multi-Tenant SaaS Platform",
+        "difficulty": "hard",
+        "description": "Design the Multi-Tenant SaaS Platform to handle internet-scale, multi-region traffic and failures. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "saas"
+        ],
+        "requirements": [
+            "Handle 20000 requests per second for primary operations",
+            "Maintain p95 latency under 200ms for read operations",
+            "Keep error rate under 0.5% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 20000
+                },
+                "checks": {
+                    "maxLatency": 200,
+                    "maxErrorRate": 0.5,
+                    "minThroughput": 16000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 100000
+                },
+                "checks": {
+                    "maxLatency": 150,
+                    "maxErrorRate": 0.2,
+                    "minThroughput": 70000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-043",
+        "title": "Real-Time Fraud Detection Engine",
+        "difficulty": "hard",
+        "description": "Design the Real-Time Fraud Detection Engine to handle internet-scale, multi-region traffic and failures. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "fraud-detection"
+        ],
+        "requirements": [
+            "Handle 20000 requests per second for primary operations",
+            "Maintain p95 latency under 200ms for read operations",
+            "Keep error rate under 0.5% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains",
+            "Score at least 10,000 transactions per second with decision latency under 200ms"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 20000
+                },
+                "checks": {
+                    "maxLatency": 200,
+                    "maxErrorRate": 0.5,
+                    "minThroughput": 16000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 100000
+                },
+                "checks": {
+                    "maxLatency": 150,
+                    "maxErrorRate": 0.2,
+                    "minThroughput": 70000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-044",
+        "title": "Global Search Indexing Pipeline",
+        "difficulty": "hard",
+        "description": "Design the Global Search Indexing Pipeline to handle internet-scale, multi-region traffic and failures. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "search",
+            "indexing"
+        ],
+        "requirements": [
+            "Handle 20000 requests per second for primary operations",
+            "Maintain p95 latency under 200ms for read operations",
+            "Keep error rate under 0.5% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains",
+            "Index new documents so they become searchable within 60 seconds of ingestion"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 20000
+                },
+                "checks": {
+                    "maxLatency": 200,
+                    "maxErrorRate": 0.5,
+                    "minThroughput": 16000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 100000
+                },
+                "checks": {
+                    "maxLatency": 150,
+                    "maxErrorRate": 0.2,
+                    "minThroughput": 70000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-045",
+        "title": "HTAP Analytics Service",
+        "difficulty": "hard",
+        "description": "Design the HTAP Analytics Service to handle internet-scale, multi-region traffic and failures. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "htap"
+        ],
+        "requirements": [
+            "Handle 20000 requests per second for primary operations",
+            "Maintain p95 latency under 200ms for read operations",
+            "Keep error rate under 0.5% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 20000
+                },
+                "checks": {
+                    "maxLatency": 200,
+                    "maxErrorRate": 0.5,
+                    "minThroughput": 16000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 100000
+                },
+                "checks": {
+                    "maxLatency": 150,
+                    "maxErrorRate": 0.2,
+                    "minThroughput": 70000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-046",
+        "title": "Event-Driven Microservices Platform",
+        "difficulty": "hard",
+        "description": "Design the Event-Driven Microservices Platform to handle internet-scale, multi-region traffic and failures. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "microservices",
+            "events"
+        ],
+        "requirements": [
+            "Handle 20000 requests per second for primary operations",
+            "Maintain p95 latency under 200ms for read operations",
+            "Keep error rate under 0.5% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 20000
+                },
+                "checks": {
+                    "maxLatency": 200,
+                    "maxErrorRate": 0.5,
+                    "minThroughput": 16000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 100000
+                },
+                "checks": {
+                    "maxLatency": 150,
+                    "maxErrorRate": 0.2,
+                    "minThroughput": 70000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-047",
+        "title": "Multi-Region Notification Orchestrator",
+        "difficulty": "hard",
+        "description": "Design the Multi-Region Notification Orchestrator to handle internet-scale, multi-region traffic and failures. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "notification",
+            "global"
+        ],
+        "requirements": [
+            "Handle 20000 requests per second for primary operations",
+            "Maintain p95 latency under 200ms for read operations",
+            "Keep error rate under 0.5% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains",
+            "Deliver 99% of notifications within 60 seconds of event generation"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 20000
+                },
+                "checks": {
+                    "maxLatency": 200,
+                    "maxErrorRate": 0.5,
+                    "minThroughput": 16000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 100000
+                },
+                "checks": {
+                    "maxLatency": 150,
+                    "maxErrorRate": 0.2,
+                    "minThroughput": 70000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-048",
+        "title": "Offline Sync for Mobile Clients",
+        "difficulty": "hard",
+        "description": "Design the Offline Sync for Mobile Clients to handle internet-scale, multi-region traffic and failures. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "offline-sync"
+        ],
+        "requirements": [
+            "Handle 20000 requests per second for primary operations",
+            "Maintain p95 latency under 200ms for read operations",
+            "Keep error rate under 0.5% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains",
+            "Synchronize changes from 1 million devices with conflict resolution completing under 10 seconds per sync batch"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 20000
+                },
+                "checks": {
+                    "maxLatency": 200,
+                    "maxErrorRate": 0.5,
+                    "minThroughput": 16000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 100000
+                },
+                "checks": {
+                    "maxLatency": 150,
+                    "maxErrorRate": 0.2,
+                    "minThroughput": 70000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-049",
+        "title": "Global Payments Processing System",
+        "difficulty": "hard",
+        "description": "Design the Global Payments Processing System to handle internet-scale, multi-region traffic and failures. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "payments"
+        ],
+        "requirements": [
+            "Handle 20000 requests per second for primary operations",
+            "Maintain p95 latency under 200ms for read operations",
+            "Keep error rate under 0.5% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains",
+            "Process 99.99% of payment transactions successfully with end-to-end latency under 3 seconds"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 20000
+                },
+                "checks": {
+                    "maxLatency": 200,
+                    "maxErrorRate": 0.5,
+                    "minThroughput": 16000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 100000
+                },
+                "checks": {
+                    "maxLatency": 150,
+                    "maxErrorRate": 0.2,
+                    "minThroughput": 70000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "id": "sd-050",
+        "title": "Multi-Datacenter Disaster Recovery Control Plane",
+        "difficulty": "hard",
+        "description": "Design the Multi-Datacenter Disaster Recovery Control Plane to handle internet-scale, multi-region traffic and failures. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+        "tags": [
+            "caching",
+            "scaling",
+            "database",
+            "queue",
+            "real-time",
+            "consistency",
+            "disaster-recovery"
+        ],
+        "requirements": [
+            "Handle 20000 requests per second for primary operations",
+            "Maintain p95 latency under 200ms for read operations",
+            "Keep error rate under 0.5% during normal load",
+            "Eliminate single points of failure via redundancy in critical components",
+            "Store data durably with at least 2 replicas across failure domains",
+            "Achieve a recovery point objective (RPO) under 60 seconds and recovery time objective (RTO) under 5 minutes"
+        ],
+        "visibleTests": [
+            {
+                "name": "Baseline Load Test",
+                "input": {
+                    "traffic": 20000
+                },
+                "checks": {
+                    "maxLatency": 200,
+                    "maxErrorRate": 0.5,
+                    "minThroughput": 16000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database"
+                    ]
+                }
+            }
+        ],
+        "hiddenTests": [
+            {
+                "name": "Stress and Resiliency Test",
+                "input": {
+                    "traffic": 100000
+                },
+                "checks": {
+                    "maxLatency": 150,
+                    "maxErrorRate": 0.2,
+                    "minThroughput": 70000,
+                    "noSinglePointOfFailure": true,
+                    "requiredComponents": [
+                        "load_balancer",
+                        "application_servers",
+                        "database",
+                        "cache",
+                        "message_queue"
+                    ]
+                }
+            }
+        ]
+    }
+]
