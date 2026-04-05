@@ -22,12 +22,11 @@ export default function AppNavbar({ rightContent }: AppNavbarProps) {
       <div className="flex items-center gap-4">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/30 transition-shadow">
+          {/* <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/30 transition-shadow">
             <Zap size={16} className="text-white" strokeWidth={2.5} />
-          </div>
+          </div> */}
           <div className="flex items-baseline gap-1.5">
-            <span className="text-[15px] font-semibold text-white tracking-tight">FlowSim</span>
-            <span className="text-[10px] font-medium text-indigo-400 bg-indigo-500/10 px-1.5 py-0.5 rounded-md uppercase tracking-wider">Learn</span>
+            <span className="text-[15px] font-semibold text-white tracking-tight">ScaleCode</span>
           </div>
         </Link>
 

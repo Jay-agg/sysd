@@ -7,6 +7,7 @@ import { Save } from 'lucide-react';
 import { useSimulationStore } from '@/store/useSimulationStore';
 
 import AppNavbar from '@/components/ui/AppNavbar';
+import CollapsibleAside from '@/components/ui/CollapsibleAside';
 import ComponentLibrary from '@/components/ui/ComponentLibrary';
 import ControlPanel from '@/components/ui/ControlPanel';
 import FlowCanvas from '@/components/canvas/FlowCanvas';
@@ -40,7 +41,7 @@ export default function PlaygroundPage() {
 
         <div className="flex flex-1 overflow-hidden">
           {/* Left — Component Library + Controls */}
-          <aside className="w-64 flex flex-col border-r border-zinc-800/60 overflow-hidden">
+          <CollapsibleAside side="left" expandedClassName="w-64" label="library and controls">
             <div className="flex-1 overflow-y-auto pt-2">
               <ComponentLibrary />
             </div>
@@ -48,18 +49,20 @@ export default function PlaygroundPage() {
             <div className="p-3 overflow-y-auto max-h-[45%]">
               <ControlPanel />
             </div>
-          </aside>
+          </CollapsibleAside>
 
           {/* Center — Canvas */}
-          <main className="flex-1 relative">
+          <main className="relative z-0 flex-1 min-w-0">
             <FlowCanvas />
           </main>
 
           {/* Right — Metrics + Insights */}
-          <aside className="w-80 flex flex-col gap-3 p-3 overflow-y-auto border-l border-zinc-800/60">
-            <MetricsPanel />
-            <InsightPanel />
-          </aside>
+          <CollapsibleAside side="right" expandedClassName="w-80" label="metrics and insights">
+            <div className="flex flex-col gap-3 p-3 overflow-y-auto">
+              <MetricsPanel />
+              <InsightPanel />
+            </div>
+          </CollapsibleAside>
         </div>
       </div>
     </ReactFlowProvider>

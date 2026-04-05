@@ -10,6 +10,7 @@ import { useChallengeStore } from '@/store/useChallengeStore';
 import { useSimulationStore } from '@/store/useSimulationStore';
 
 import AppNavbar from '@/components/ui/AppNavbar';
+import CollapsibleAside from '@/components/ui/CollapsibleAside';
 import ProblemPanel from '@/components/ui/ProblemPanel';
 import ComponentLibrary from '@/components/ui/ComponentLibrary';
 import FlowCanvas from '@/components/canvas/FlowCanvas';
@@ -97,31 +98,35 @@ export default function ChallengePage() {
         {/* 3-column layout */}
         <div className="flex flex-1 overflow-hidden">
           {/* Left — Problem Panel */}
-          <aside className="w-[340px] border-r border-zinc-800/60 overflow-hidden flex flex-col">
-            <div className="flex-1 overflow-y-auto">
-              <ProblemPanel challenge={challenge} />
-            </div>
+          <CollapsibleAside side="left" expandedClassName="w-[340px]" label="problem and tests">
+            <div className="flex flex-1 flex-col overflow-hidden min-h-0">
+              <div className="flex-1 overflow-y-auto min-h-0">
+                <ProblemPanel challenge={challenge} />
+              </div>
 
-            {/* Test Results — bottom of left panel */}
-            {showTestResults && showTests && (
-              <>
-                <div className="h-px bg-zinc-800/60" />
-                <div className="max-h-[40%] overflow-y-auto">
-                  <TestResultsPanel />
-                </div>
-              </>
-            )}
-          </aside>
+              {/* Test Results — bottom of left panel */}
+              {showTestResults && showTests && (
+                <>
+                  <div className="h-px bg-zinc-800/60 shrink-0" />
+                  <div className="max-h-[40%] overflow-y-auto min-h-0">
+                    <TestResultsPanel />
+                  </div>
+                </>
+              )}
+            </div>
+          </CollapsibleAside>
 
           {/* Center — Canvas */}
-          <main className="flex-1 relative">
+          <main className="relative z-0 flex-1 min-w-0">
             <FlowCanvas />
           </main>
 
           {/* Right — Component Library */}
-          <aside className="w-60 border-l border-zinc-800/60 overflow-hidden flex flex-col pt-2">
-            <ComponentLibrary />
-          </aside>
+          <CollapsibleAside side="right" expandedClassName="w-60" label="component library">
+            <div className="flex-1 overflow-hidden flex flex-col pt-2 min-h-0">
+              <ComponentLibrary />
+            </div>
+          </CollapsibleAside>
         </div>
       </div>
 
