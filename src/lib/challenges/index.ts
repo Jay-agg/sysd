@@ -1,8 +1,10 @@
 import type { Challenge } from '@/types/challenge';
-import questionsData from '../../../questions.json';
+import questionBank from '../../../data/datav3.cleaned.json';
 
-/** All available challenges loaded from questions.json */
-export const challenges: Challenge[] = questionsData as Challenge[];
+type QuestionBankFile = { questions: Challenge[] };
+
+/** All challenges from `data/datav3.cleaned.json` (`{ "questions": [...] }`). */
+export const challenges: Challenge[] = (questionBank as QuestionBankFile).questions;
 
 /** Get challenge by ID */
 export function getChallengeById(id: string): Challenge | undefined {

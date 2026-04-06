@@ -1,0 +1,2274 @@
+{
+  "questions": [
+    {
+      "id": "sd-001",
+      "title": "URL Shortener Service",
+      "difficulty": "easy",
+      "description": "Design a URL shortener service that maps long URLs to short aliases. The system must optimize for extremely high read throughput (redirects) while minimizing database load.",
+      "tags": [
+        "caching",
+        "scaling",
+        "database",
+        "url-shortener"
+      ],
+      "requirements": [
+        "Handle 5000 read requests per second",
+        "Maintain p95 read latency under 50ms",
+        "Ensure persistent storage of URL mappings"
+      ],
+      "visibleTests": [
+        {
+          "name": "Redirect Load Test",
+          "input": {
+            "traffic": 5000
+          },
+          "checks": {
+            "maxLatency": 50,
+            "maxErrorRate": 1,
+            "minThroughput": 4800,
+            "requiredComponents": [
+              "loadBalancer",
+              "appServer",
+              "cache"
+            ]
+          }
+        }
+      ],
+      "hiddenTests": [
+        {
+          "name": "Cache Miss Surge",
+          "input": {
+            "traffic": 8000
+          },
+          "checks": {
+            "maxLatency": 100,
+            "maxErrorRate": 1,
+            "minThroughput": 7500,
+            "requiredCapabilities": [
+              "caching",
+              "horizontal_scaling"
+            ]
+          }
+        }
+      ],
+      "expectedPatterns": [
+        "Uses caching to bypass database for frequent redirects",
+        "Scales read nodes horizontally behind a load balancer"
+      ],
+      "antiPatterns": [
+        "Querying the primary database for every redirect request",
+        "Single point of failure in the routing layer"
+      ],
+      "requiredCapabilities": [
+        "caching",
+        "horizontal_scaling",
+        "load_balancing"
+      ],
+      "scalingExpectations": {
+        "minReplicas": 3,
+        "minShards": 1
+      },
+      "companyTags": [
+        "Google"
+      ],
+      "idealSolutionCharacteristics": [
+        "Places a Redis/Memcached layer in front of the DB for fast short-code resolution",
+        "Uses horizontal scaling for redirect servers"
+      ]
+    },
+    {
+      "id": "sd-002",
+      "title": "Basic Key-Value Store",
+      "difficulty": "easy",
+      "description": "Design a simple distributed key-value store. Focus on data partitioning to handle datasets larger than a single machine's memory, ensuring balanced load.",
+      "tags": [
+        "database",
+        "scaling",
+        "kv-store",
+        "sharding"
+      ],
+      "requirements": [
+        "Handle 3000 read/write operations per second",
+        "Maintain p95 latency under 100ms",
+        "Distribute data evenly across nodes"
+      ],
+      "visibleTests": [
+        {
+          "name": "Balanced R/W Test",
+          "input": {
+            "traffic": 3000
+          },
+          "checks": {
+            "maxLatency": 100,
+            "maxErrorRate": 1,
+            "minThroughput": 2900,
+            "requiredComponents": [
+              "loadBalancer",
+              "database"
+            ]
+          }
+        }
+      ],
+      "hiddenTests": [
+        {
+          "name": "Storage Scaling Test",
+          "input": {
+            "traffic": 6000
+          },
+          "checks": {
+            "maxLatency": 150,
+            "maxErrorRate": 1.5,
+            "minThroughput": 5500,
+            "requiredCapabilities": [
+              "horizontal_scaling"
+            ]
+          }
+        }
+      ],
+      "expectedPatterns": [
+        "Horizontally partitions data across multiple shards"
+      ],
+      "antiPatterns": [
+        "Storing all data on a single monolithic database instance",
+        "Failing to replicate shards for redundancy"
+      ],
+      "requiredCapabilities": [
+        "horizontal_scaling",
+        "load_balancing"
+      ],
+      "scalingExpectations": {
+        "minReplicas": 2,
+        "minShards": 3
+      },
+      "companyTags": [
+        "Amazon",
+        "Microsoft"
+      ],
+      "idealSolutionCharacteristics": [
+        "Implements consistent hashing to distribute keys across shards",
+        "Replicates data to prevent loss on node failure"
+      ]
+    },
+    {
+      "id": "sd-003",
+      "title": "API Gateway Rate Limiter",
+      "difficulty": "easy",
+      "description": "Design a centralized rate limiter for an API Gateway. The system must enforce quotas strictly with minimal latency penalty to the underlying APIs.",
+      "tags": [
+        "caching",
+        "rate-limiter",
+        "real-time"
+      ],
+      "requirements": [
+        "Process 10000 token checks per second",
+        "Add no more than 15ms latency per request",
+        "Enforce IP-based and user-based limits"
+      ],
+      "visibleTests": [
+        {
+          "name": "High Throughput Token Check",
+          "input": {
+            "traffic": 10000
+          },
+          "checks": {
+            "maxLatency": 15,
+            "maxErrorRate": 0.5,
+            "minThroughput": 9800,
+            "requiredComponents": [
+              "cache"
+            ]
+          }
+        }
+      ],
+      "hiddenTests": [
+        {
+          "name": "Distributed Throttle Test",
+          "input": {
+            "traffic": 20000
+          },
+          "checks": {
+            "maxLatency": 25,
+            "maxErrorRate": 1,
+            "minThroughput": 19000,
+            "requiredCapabilities": [
+              "caching"
+            ]
+          }
+        }
+      ],
+      "expectedPatterns": [
+        "Uses an in-memory cache for fast quota lookups and decrements"
+      ],
+      "antiPatterns": [
+        "Using a disk-backed relational DB for every token check",
+        "Synchronous locks causing request queuing"
+      ],
+      "requiredCapabilities": [
+        "caching",
+        "horizontal_scaling"
+      ],
+      "scalingExpectations": {
+        "minReplicas": 2,
+        "minShards": 1
+      },
+      "companyTags": [
+        "Amazon",
+        "Google",
+        "Microsoft"
+      ],
+      "idealSolutionCharacteristics": [
+        "Implements a Token Bucket or Sliding Window algorithm using Redis",
+        "Executes atomic operations (e.g., Lua scripts) in cache to prevent race conditions"
+      ]
+    },
+    {
+      "id": "sd-004",
+      "title": "User Authentication Service",
+      "difficulty": "easy",
+      "description": "Design a centralized authentication service. The service must issue and validate session tokens securely while remaining highly available.",
+      "tags": [
+        "auth",
+        "caching",
+        "security"
+      ],
+      "requirements": [
+        "Handle 2000 token validations per second",
+        "Maintain token validation p95 latency under 30ms",
+        "Keep error rate under 0.1%"
+      ],
+      "visibleTests": [
+        {
+          "name": "Auth Validation Load",
+          "input": {
+            "traffic": 2000
+          },
+          "checks": {
+            "maxLatency": 30,
+            "maxErrorRate": 0.1,
+            "minThroughput": 1990,
+            "requiredComponents": [
+              "appServer",
+              "cache"
+            ]
+          }
+        }
+      ],
+      "hiddenTests": [
+        {
+          "name": "Login Spike",
+          "input": {
+            "traffic": 5000
+          },
+          "checks": {
+            "maxLatency": 100,
+            "maxErrorRate": 0.5,
+            "minThroughput": 4800,
+            "requiredCapabilities": [
+              "caching",
+              "load_balancing"
+            ]
+          }
+        }
+      ],
+      "expectedPatterns": [
+        "Caches active session tokens to avoid hitting the identity DB",
+        "Load balances stateless auth servers"
+      ],
+      "antiPatterns": [
+        "Stateful authentication servers storing sessions in local memory",
+        "Querying user DB for password hashes on every API request"
+      ],
+      "requiredCapabilities": [
+        "caching",
+        "load_balancing",
+        "horizontal_scaling"
+      ],
+      "scalingExpectations": {
+        "minReplicas": 3,
+        "minShards": 1
+      },
+      "companyTags": [
+        "Microsoft"
+      ],
+      "idealSolutionCharacteristics": [
+        "Uses stateless JWTs or an external distributed cache for session IDs",
+        "Decouples read-heavy validation from write-heavy login/registration"
+      ]
+    },
+    {
+      "id": "sd-005",
+      "title": "Email Notification Dispatcher",
+      "difficulty": "easy",
+      "description": "Design a system to send high volumes of transactional emails. The ingestion API must return quickly, while actual sending occurs reliably in the background.",
+      "tags": [
+        "queue",
+        "async",
+        "notification"
+      ],
+      "requirements": [
+        "Ingest 1000 notification requests per second",
+        "Ensure 0% message loss for accepted requests",
+        "API p95 latency under 50ms"
+      ],
+      "visibleTests": [
+        {
+          "name": "Async Ingestion Load",
+          "input": {
+            "traffic": 1000
+          },
+          "checks": {
+            "maxLatency": 50,
+            "maxErrorRate": 0.1,
+            "minThroughput": 990,
+            "requiredComponents": [
+              "appServer",
+              "messageBroker"
+            ]
+          }
+        }
+      ],
+      "hiddenTests": [
+        {
+          "name": "Worker Processing Capacity",
+          "input": {
+            "traffic": 3000
+          },
+          "checks": {
+            "maxLatency": 80,
+            "maxErrorRate": 0.5,
+            "minThroughput": 2800,
+            "requiredCapabilities": [
+              "async_processing",
+              "horizontal_scaling"
+            ]
+          }
+        }
+      ],
+      "expectedPatterns": [
+        "Uses a message broker to decouple API from slow external email providers"
+      ],
+      "antiPatterns": [
+        "Synchronously waiting for the SMTP server to respond before returning API success",
+        "Keeping notification state only in application memory"
+      ],
+      "requiredCapabilities": [
+        "async_processing",
+        "horizontal_scaling"
+      ],
+      "scalingExpectations": {
+        "minReplicas": 2,
+        "minShards": 1
+      },
+      "companyTags": [
+        "Amazon",
+        "Meta",
+        "Twilio"
+      ],
+      "idealSolutionCharacteristics": [
+        "API nodes write directly to a durable message queue (e.g., RabbitMQ, Kafka)",
+        "Worker nodes consume from the queue to dispatch emails, handling retries asynchronously"
+      ]
+    },
+    {
+      "id": "sd-006",
+      "title": "Image Thumbnail Generator",
+      "difficulty": "easy",
+      "description": "Design a compute-heavy service that generates thumbnails for uploaded images. The design must prevent large image uploads from blocking thumbnail generation resources.",
+      "tags": [
+        "media",
+        "async",
+        "storage"
+      ],
+      "requirements": [
+        "Process 500 image uploads per second",
+        "Upload API p95 latency under 200ms",
+        "Isolate upload logic from CPU-intensive resizing"
+      ],
+      "visibleTests": [
+        {
+          "name": "Upload and Queue Test",
+          "input": {
+            "traffic": 500
+          },
+          "checks": {
+            "maxLatency": 200,
+            "maxErrorRate": 1,
+            "minThroughput": 480,
+            "requiredComponents": [
+              "noSqlDatabase",
+              "messageBroker"
+            ]
+          }
+        }
+      ],
+      "hiddenTests": [
+        {
+          "name": "Compute Stress Test",
+          "input": {
+            "traffic": 1500
+          },
+          "checks": {
+            "maxLatency": 300,
+            "maxErrorRate": 2,
+            "minThroughput": 1200,
+            "requiredCapabilities": [
+              "async_processing",
+              "horizontal_scaling"
+            ]
+          }
+        }
+      ],
+      "expectedPatterns": [
+        "Offloads compute-intensive resizing to background workers via a queue"
+      ],
+      "antiPatterns": [
+        "Processing image resizing synchronously on the web server",
+        "Storing binary image data directly in a relational database"
+      ],
+      "requiredCapabilities": [
+        "async_processing",
+        "horizontal_scaling"
+      ],
+      "scalingExpectations": {
+        "minReplicas": 2,
+        "minShards": 1
+      },
+      "companyTags": [
+        "Amazon"
+      ],
+      "idealSolutionCharacteristics": [
+        "Upload API writes original image to Object Storage and drops an event in a Queue",
+        "Worker fleet processes the queue, generates thumbnails, and saves them to Object Storage"
+      ]
+    },
+    {
+      "id": "sd-007",
+      "title": "Health Check Status Page",
+      "difficulty": "easy",
+      "description": "Design a status page backend that ingests health pings from thousands of microservices and serves aggregated status overviews to dashboards.",
+      "tags": [
+        "observability",
+        "time-series",
+        "database"
+      ],
+      "requirements": [
+        "Ingest 5000 health pings per second",
+        "Serve dashboard views with p95 latency under 100ms",
+        "Retain 7 days of historical uptime data"
+      ],
+      "visibleTests": [
+        {
+          "name": "Ingestion and Aggregation",
+          "input": {
+            "traffic": 5000
+          },
+          "checks": {
+            "maxLatency": 100,
+            "maxErrorRate": 1,
+            "minThroughput": 4500,
+            "requiredComponents": [
+              "appServer",
+              "database",
+              "cache"
+            ]
+          }
+        }
+      ],
+      "hiddenTests": [
+        {
+          "name": "Dashboard Refresh Spike",
+          "input": {
+            "traffic": 8000
+          },
+          "checks": {
+            "maxLatency": 150,
+            "maxErrorRate": 1,
+            "minThroughput": 7500,
+            "requiredCapabilities": [
+              "caching",
+              "horizontal_scaling"
+            ]
+          }
+        }
+      ],
+      "expectedPatterns": [
+        "Uses an optimized write path for telemetry data",
+        "Caches pre-aggregated status states for dashboard reads"
+      ],
+      "antiPatterns": [
+        "Running heavy GROUP BY queries on relational DB for every dashboard load",
+        "Dropping health checks during traffic spikes"
+      ],
+      "requiredCapabilities": [
+        "caching",
+        "horizontal_scaling"
+      ],
+      "scalingExpectations": {
+        "minReplicas": 2,
+        "minShards": 2
+      },
+      "companyTags": [
+        "Microsoft"
+      ],
+      "idealSolutionCharacteristics": [
+        "Uses a Time-Series Database (TSDB) for efficient high-volume writes",
+        "Caches the current 'global status' to serve read requests instantly"
+      ]
+    },
+    {
+      "id": "sd-008",
+      "title": "Pastebin Text Sharing",
+      "difficulty": "easy",
+      "description": "Design a text sharing service where users create snippets of text that are assigned a unique URL. Focus on a write-once, read-many architecture.",
+      "tags": [
+        "pastebin",
+        "caching",
+        "storage"
+      ],
+      "requirements": [
+        "Handle 500 writes and 5000 reads per second",
+        "Read p95 latency under 50ms",
+        "Store data reliably with high availability"
+      ],
+      "visibleTests": [
+        {
+          "name": "Read-Heavy Workload",
+          "input": {
+            "traffic": 5500
+          },
+          "checks": {
+            "maxLatency": 50,
+            "maxErrorRate": 0.5,
+            "minThroughput": 5000,
+            "requiredComponents": [
+              "cache",
+              "noSqlDatabase"
+            ]
+          }
+        }
+      ],
+      "hiddenTests": [
+        {
+          "name": "Viral Paste Simulation",
+          "input": {
+            "traffic": 15000
+          },
+          "checks": {
+            "maxLatency": 80,
+            "maxErrorRate": 1,
+            "minThroughput": 14000,
+            "requiredCapabilities": [
+              "caching",
+              "load_balancing"
+            ]
+          }
+        }
+      ],
+      "expectedPatterns": [
+        "Caches text blobs heavily to serve viral pastes directly from memory"
+      ],
+      "antiPatterns": [
+        "Fetching data from deep object storage for every single read",
+        "Lack of pagination or size limits on text payloads"
+      ],
+      "requiredCapabilities": [
+        "caching",
+        "load_balancing"
+      ],
+      "scalingExpectations": {
+        "minReplicas": 2,
+        "minShards": 1
+      },
+      "companyTags": [
+        "Microsoft"
+      ],
+      "idealSolutionCharacteristics": [
+        "Uses Object Storage or a NoSQL document store for persistent text blobs",
+        "Places a CDN or distributed cache in front to absorb read traffic spikes"
+      ]
+    },
+    {
+      "id": "sd-009",
+      "title": "Page View Counter Service",
+      "difficulty": "easy",
+      "description": "Design a high-throughput view counter for articles. The system must accept view events without blocking the user and eventually consistency is acceptable.",
+      "tags": [
+        "analytics",
+        "async",
+        "aggregation"
+      ],
+      "requirements": [
+        "Ingest 10000 view events per second",
+        "Write p95 latency under 20ms",
+        "Aggregate counts accurately without losing events"
+      ],
+      "visibleTests": [
+        {
+          "name": "High Frequency Writes",
+          "input": {
+            "traffic": 10000
+          },
+          "checks": {
+            "maxLatency": 20,
+            "maxErrorRate": 1,
+            "minThroughput": 9500,
+            "requiredComponents": [
+              "messageBroker"
+            ]
+          }
+        }
+      ],
+      "hiddenTests": [
+        {
+          "name": "Aggregation Throughput",
+          "input": {
+            "traffic": 25000
+          },
+          "checks": {
+            "maxLatency": 50,
+            "maxErrorRate": 2,
+            "minThroughput": 22000,
+            "requiredCapabilities": [
+              "async_processing",
+              "horizontal_scaling"
+            ]
+          }
+        }
+      ],
+      "expectedPatterns": [
+        "Buffers write events asynchronously before applying them to the DB"
+      ],
+      "antiPatterns": [
+        "Executing SQL `UPDATE counter = counter + 1` for every single request directly",
+        "Locking database rows on every view event"
+      ],
+      "requiredCapabilities": [
+        "async_processing",
+        "horizontal_scaling"
+      ],
+      "scalingExpectations": {
+        "minReplicas": 2,
+        "minShards": 2
+      },
+      "companyTags": [
+        "Amazon",
+        "Microsoft"
+      ],
+      "idealSolutionCharacteristics": [
+        "API pushes view events to a queue or distributed log (e.g., Kafka)",
+        "Background workers aggregate events (e.g., count per minute) and flush in batches to the database"
+      ]
+    },
+    {
+      "id": "sd-010",
+      "title": "Feature Flag Management",
+      "difficulty": "easy",
+      "description": "Design a configuration system that allows toggling features for specific users or global traffic. Flag evaluations happen extremely frequently and must not block main application flows.",
+      "tags": [
+        "caching",
+        "config",
+        "low-latency"
+      ],
+      "requirements": [
+        "Evaluate flags at 5000 requests per second",
+        "Evaluation p95 latency under 10ms",
+        "Propagate flag changes within 60 seconds"
+      ],
+      "visibleTests": [
+        {
+          "name": "Flag Evaluation Latency",
+          "input": {
+            "traffic": 5000
+          },
+          "checks": {
+            "maxLatency": 10,
+            "maxErrorRate": 0.1,
+            "minThroughput": 4900,
+            "requiredComponents": [
+              "cache"
+            ]
+          }
+        }
+      ],
+      "hiddenTests": [
+        {
+          "name": "Global Edge Evaluation",
+          "input": {
+            "traffic": 15000
+          },
+          "checks": {
+            "maxLatency": 15,
+            "maxErrorRate": 0.5,
+            "minThroughput": 14000,
+            "requiredCapabilities": [
+              "caching",
+              "horizontal_scaling"
+            ]
+          }
+        }
+      ],
+      "expectedPatterns": [
+        "Caches flag rules directly in the application layer or nearest edge cache"
+      ],
+      "antiPatterns": [
+        "Making a network call to the database every time a feature flag is checked",
+        "Centralized monolithic configuration service with no failover"
+      ],
+      "requiredCapabilities": [
+        "caching",
+        "horizontal_scaling"
+      ],
+      "scalingExpectations": {
+        "minReplicas": 3,
+        "minShards": 1
+      },
+      "companyTags": [
+        "Amazon",
+        "Google",
+        "Microsoft"
+      ],
+      "idealSolutionCharacteristics": [
+        "Clients/Servers pull flag configurations and cache them in-memory",
+        "Uses a Pub/Sub mechanism to invalidate and refresh local caches when a flag is updated via the admin panel"
+      ]
+    },
+    {
+      "id": "sd-011",
+      "title": "Single-Room Chat",
+      "difficulty": "easy",
+      "description": "Design a backend for a single high-traffic chat room (like a livestream chat). Messages sent by one user must be broadcasted to all connected clients efficiently.",
+      "tags": [
+        "chat",
+        "real-time",
+        "fan-out",
+        "websockets"
+      ],
+      "requirements": [
+        "Maintain 50,000 concurrent active WebSocket connections",
+        "Broadcast messages with under 200ms latency",
+        "Handle 1000 inbound messages per second"
+      ],
+      "visibleTests": [
+        {
+          "name": "Broadcast Fan-Out Test",
+          "input": {
+            "traffic": 1000
+          },
+          "checks": {
+            "maxLatency": 200,
+            "maxErrorRate": 1,
+            "minThroughput": 900,
+            "requiredComponents": [
+              "loadBalancer",
+              "messageBroker"
+            ]
+          }
+        }
+      ],
+      "hiddenTests": [
+        {
+          "name": "Connection Storm Test",
+          "input": {
+            "traffic": 5000
+          },
+          "checks": {
+            "maxLatency": 300,
+            "maxErrorRate": 2,
+            "minThroughput": 4500,
+            "requiredCapabilities": [
+              "async_processing",
+              "horizontal_scaling"
+            ]
+          }
+        }
+      ],
+      "expectedPatterns": [
+        "Uses a Pub/Sub mechanism to fan out messages across multiple gateway servers",
+        "Maintains long-lived connections horizontally"
+      ],
+      "antiPatterns": [
+        "Storing messages in DB and having clients constantly long-poll the database",
+        "A single server handling all WebSocket connections"
+      ],
+      "requiredCapabilities": [
+        "async_processing",
+        "horizontal_scaling"
+      ],
+      "scalingExpectations": {
+        "minReplicas": 3,
+        "minShards": 1
+      },
+      "companyTags": [
+        "Amazon",
+        "Google",
+        "Microsoft"
+      ],
+      "idealSolutionCharacteristics": [
+        "Client connects to stateful WebSocket Gateway servers via a Load Balancer",
+        "Gateways subscribe to a Redis Pub/Sub channel to receive messages and push to clients"
+      ]
+    },
+    {
+      "id": "sd-016",
+      "title": "Scalable URL Shortener with Analytics",
+      "difficulty": "medium",
+      "description": "Design a highly available URL shortener that not only redirects but also tracks detailed click analytics (geolocation, device type) at scale.",
+      "tags": [
+        "url-shortener",
+        "analytics",
+        "scaling",
+        "async"
+      ],
+      "requirements": [
+        "Handle 10000 read/redirect requests per second",
+        "Ingest 10000 analytics events per second without slowing down redirects",
+        "Maintain redirect latency under 50ms"
+      ],
+      "visibleTests": [
+        {
+          "name": "Redirect and Track Load",
+          "input": {
+            "traffic": 10000
+          },
+          "checks": {
+            "maxLatency": 50,
+            "maxErrorRate": 1,
+            "minThroughput": 9500,
+            "requiredComponents": [
+              "cache",
+              "messageBroker"
+            ]
+          }
+        }
+      ],
+      "hiddenTests": [
+        {
+          "name": "Analytics Spikes",
+          "input": {
+            "traffic": 30000
+          },
+          "checks": {
+            "maxLatency": 100,
+            "maxErrorRate": 0.5,
+            "minThroughput": 28000,
+            "requiredCapabilities": [
+              "caching",
+              "async_processing",
+              "horizontal_scaling"
+            ]
+          }
+        }
+      ],
+      "expectedPatterns": [
+        "Decouples read redirect path from write analytics path",
+        "Uses queues to buffer high-volume analytics data"
+      ],
+      "antiPatterns": [
+        "Performing synchronous database INSERTs for analytics on the redirect request thread",
+        "Relying on a single relational DB for both fast key-lookups and heavy OLAP queries"
+      ],
+      "requiredCapabilities": [
+        "caching",
+        "async_processing",
+        "horizontal_scaling"
+      ],
+      "scalingExpectations": {
+        "minReplicas": 4,
+        "minShards": 2
+      },
+      "companyTags": [
+        "Amazon"
+      ],
+      "idealSolutionCharacteristics": [
+        "Uses Cache (Redis) to serve redirects extremely fast",
+        "Redirect API drops an analytics event into a message broker (Kafka) asynchronously",
+        "Analytics workers consume events and batch insert into a data warehouse or NoSQL store"
+      ]
+    },
+    {
+      "id": "sd-017",
+      "title": "Real-Time Chat System",
+      "difficulty": "medium",
+      "description": "Design a multi-room, 1-on-1 real-time chat application (like WhatsApp/Discord). The architecture must handle user presence, message routing, and reliable delivery.",
+      "tags": [
+        "chat",
+        "real-time",
+        "sharding",
+        "websockets"
+      ],
+      "requirements": [
+        "Support 500,000 concurrent connections",
+        "Process 20000 messages per second with cross-node routing",
+        "Latency from sender to receiver under 250ms"
+      ],
+      "visibleTests": [
+        {
+          "name": "Message Routing Load",
+          "input": {
+            "traffic": 20000
+          },
+          "checks": {
+            "maxLatency": 250,
+            "maxErrorRate": 1,
+            "minThroughput": 19000,
+            "requiredComponents": [
+              "appServer",
+              "messageBroker",
+              "cache"
+            ]
+          }
+        }
+      ],
+      "hiddenTests": [
+        {
+          "name": "Presence and Reconnection Spike",
+          "input": {
+            "traffic": 40000
+          },
+          "checks": {
+            "maxLatency": 350,
+            "maxErrorRate": 1.5,
+            "minThroughput": 38000,
+            "requiredCapabilities": [
+              "horizontal_scaling",
+              "async_processing",
+              "caching"
+            ]
+          }
+        }
+      ],
+      "expectedPatterns": [
+        "Routes messages between stateful gateway servers via a backend messaging bus",
+        "Caches presence state to avoid DB lookups on connection"
+      ],
+      "antiPatterns": [
+        "Broadcasting all messages to all servers rather than targeted routing",
+        "Using synchronous HTTP polling for a chat system at scale"
+      ],
+      "requiredCapabilities": [
+        "async_processing",
+        "horizontal_scaling",
+        "caching"
+      ],
+      "scalingExpectations": {
+        "minReplicas": 5,
+        "minShards": 3
+      },
+      "companyTags": [
+        "Meta",
+        "Microsoft"
+      ],
+      "idealSolutionCharacteristics": [
+        "WebSocket servers hold connections; a Session Cache maps users to their active WebSocket server",
+        "Inbound messages are routed via Pub/Sub or a Message Broker directly to the recipient's connected server",
+        "Database is used asynchronously for message history and offline storage"
+      ]
+    },
+    {
+      "id": "sd-018",
+      "title": "Social News Feed",
+      "difficulty": "medium",
+      "description": "Design a social media news feed. The system must aggregate posts from followed users, supporting users with millions of followers without latency spikes.",
+      "tags": [
+        "news-feed",
+        "fan-out",
+        "caching",
+        "sharding"
+      ],
+      "requirements": [
+        "Handle 10000 feed read requests per second",
+        "Feed load p95 latency under 200ms",
+        "Support celebrity accounts with high fan-out load"
+      ],
+      "visibleTests": [
+        {
+          "name": "Feed Aggregation Read Load",
+          "input": {
+            "traffic": 10000
+          },
+          "checks": {
+            "maxLatency": 200,
+            "maxErrorRate": 1,
+            "minThroughput": 9500,
+            "requiredComponents": [
+              "cache",
+              "appServer"
+            ]
+          }
+        }
+      ],
+      "hiddenTests": [
+        {
+          "name": "Celebrity Post Fan-Out Write",
+          "input": {
+            "traffic": 25000
+          },
+          "checks": {
+            "maxLatency": 400,
+            "maxErrorRate": 1,
+            "minThroughput": 23000,
+            "requiredCapabilities": [
+              "async_processing",
+              "caching",
+              "horizontal_scaling"
+            ]
+          }
+        }
+      ],
+      "expectedPatterns": [
+        "Employs a hybrid fan-out model (push for regular users, pull for celebrities)",
+        "Precomputes timelines and stores them in a fast cache layer"
+      ],
+      "antiPatterns": [
+        "Executing a SQL JOIN across all followed users' posts on every feed read request",
+        "Synchronous fan-out for a user with 5 million followers blocking the post API"
+      ],
+      "requiredCapabilities": [
+        "caching",
+        "async_processing",
+        "horizontal_scaling"
+      ],
+      "scalingExpectations": {
+        "minReplicas": 4,
+        "minShards": 2
+      },
+      "companyTags": [
+        "Meta",
+        "Twitter",
+        "LinkedIn"
+      ],
+      "idealSolutionCharacteristics": [
+        "Uses 'fan-out-on-write' via worker queues to pre-build news feeds in Redis for active users",
+        "Uses 'fan-out-on-read' for celebrity accounts to prevent massive queue backups",
+        "Merges cache data efficiently at read time"
+      ]
+    },
+    {
+      "id": "sd-021",
+      "title": "Search Autocomplete Service",
+      "difficulty": "medium",
+      "description": "Design a typeahead autocomplete system for a search engine. Queries must return suggestions instantly as the user types.",
+      "tags": [
+        "search",
+        "low-latency",
+        "caching",
+        "trie"
+      ],
+      "requirements": [
+        "Serve 30000 autocomplete requests per second",
+        "Maintain p95 latency under 20ms",
+        "Update suggestions based on trending searches asynchronously"
+      ],
+      "visibleTests": [
+        {
+          "name": "Low Latency Typeahead Load",
+          "input": {
+            "traffic": 30000
+          },
+          "checks": {
+            "maxLatency": 20,
+            "maxErrorRate": 0.5,
+            "minThroughput": 29000,
+            "requiredComponents": [
+              "cache",
+              "appServer"
+            ]
+          }
+        }
+      ],
+      "hiddenTests": [
+        {
+          "name": "Index Update Background Load",
+          "input": {
+            "traffic": 50000
+          },
+          "checks": {
+            "maxLatency": 30,
+            "maxErrorRate": 1,
+            "minThroughput": 48000,
+            "requiredCapabilities": [
+              "caching",
+              "horizontal_scaling",
+              "load_balancing"
+            ]
+          }
+        }
+      ],
+      "expectedPatterns": [
+        "Uses highly optimized in-memory data structures (like Tries) distributed across nodes",
+        "Caches top prefixes heavily"
+      ],
+      "antiPatterns": [
+        "Executing `LIKE 'prefix%'` queries against a relational database per keystroke",
+        "Building the autocomplete index synchronously on user query paths"
+      ],
+      "requiredCapabilities": [
+        "caching",
+        "horizontal_scaling",
+        "load_balancing"
+      ],
+      "scalingExpectations": {
+        "minReplicas": 5,
+        "minShards": 3
+      },
+      "companyTags": [
+        "Google",
+        "Elastic",
+        "Microsoft"
+      ],
+      "idealSolutionCharacteristics": [
+        "Maintains an in-memory Trie data structure for fast prefix lookups",
+        "Background workers aggregate search logs via messaging queues to update Trie weights periodically",
+        "Edge caching / CDN caches the most popular prefixes (e.g., 'a', 'ap', 'app')"
+      ]
+    },
+    {
+      "id": "sd-024",
+      "title": "Video Streaming Platform",
+      "difficulty": "medium",
+      "description": "Design a video streaming platform like Netflix. The system must handle heavy outbound bandwidth for streaming and async processing for video transcoding.",
+      "tags": [
+        "video",
+        "cdn",
+        "async",
+        "blob-storage"
+      ],
+      "requirements": [
+        "Support streaming for 100,000 concurrent viewers",
+        "Ensure low latency start times (under 500ms API response)",
+        "Process uploaded videos into multiple resolutions and bitrates"
+      ],
+      "visibleTests": [
+        {
+          "name": "Metadata and Auth API Load",
+          "input": {
+            "traffic": 10000
+          },
+          "checks": {
+            "maxLatency": 250,
+            "maxErrorRate": 0.5,
+            "minThroughput": 9800,
+            "requiredComponents": [
+              "appServer",
+              "cache"
+            ]
+          }
+        }
+      ],
+      "hiddenTests": [
+        {
+          "name": "Transcoding Worker Load",
+          "input": {
+            "traffic": 5000
+          },
+          "checks": {
+            "maxLatency": 500,
+            "maxErrorRate": 1,
+            "minThroughput": 4500,
+            "requiredCapabilities": [
+              "async_processing",
+              "horizontal_scaling"
+            ]
+          }
+        }
+      ],
+      "expectedPatterns": [
+        "Relies heavily on CDNs for actual video chunk delivery",
+        "Decouples video upload from immediate availability via async processing"
+      ],
+      "antiPatterns": [
+        "Streaming raw video files directly from application servers",
+        "Processing video encoding on the same machines serving web traffic"
+      ],
+      "requiredCapabilities": [
+        "caching",
+        "async_processing",
+        "horizontal_scaling"
+      ],
+      "scalingExpectations": {
+        "minReplicas": 3,
+        "minShards": 2
+      },
+      "companyTags": [
+        "Netflix",
+        "Amazon"
+      ],
+      "idealSolutionCharacteristics": [
+        "Web servers handle metadata, auth, and return CDN URLs for video manifests",
+        "Video files are split into chunks, transcoded by background worker clusters, and pushed to Object Storage/CDN",
+        "Uses Edge Caching aggressively to minimize origin fetches"
+      ]
+    },
+    {
+      "id": "sd-032",
+      "title": "Real-Time Bidding Service",
+      "difficulty": "medium",
+      "description": "Design an ad-tech Real-Time Bidding (RTB) engine. The system receives bid requests and must evaluate targets, run algorithms, and respond within a strict latency budget.",
+      "tags": [
+        "ads",
+        "low-latency",
+        "caching",
+        "compute"
+      ],
+      "requirements": [
+        "Process 20000 bid requests per second",
+        "Strict p99 latency deadline of 100ms",
+        "Evaluate thousands of active ad campaigns concurrently"
+      ],
+      "visibleTests": [
+        {
+          "name": "Strict Latency Bidding",
+          "input": {
+            "traffic": 20000
+          },
+          "checks": {
+            "maxLatency": 100,
+            "maxErrorRate": 1,
+            "minThroughput": 19000,
+            "requiredComponents": [
+              "appServer",
+              "cache"
+            ]
+          }
+        }
+      ],
+      "hiddenTests": [
+        {
+          "name": "Targeting Evaluation Surge",
+          "input": {
+            "traffic": 40000
+          },
+          "checks": {
+            "maxLatency": 120,
+            "maxErrorRate": 2,
+            "minThroughput": 38000,
+            "requiredCapabilities": [
+              "horizontal_scaling",
+              "caching"
+            ]
+          }
+        }
+      ],
+      "expectedPatterns": [
+        "Keeps campaign metadata and user segments entirely in fast memory/cache",
+        "Aggressively drops requests (timeouts) rather than queueing if latency budget is exceeded"
+      ],
+      "antiPatterns": [
+        "Querying disk-based relational DBs to check campaign budgets during an active bid",
+        "Garbage collection pauses causing missed bid deadlines"
+      ],
+      "requiredCapabilities": [
+        "caching",
+        "horizontal_scaling",
+        "load_balancing",
+        "async_processing"
+      ],
+      "scalingExpectations": {
+        "minReplicas": 5,
+        "minShards": 3
+      },
+      "companyTags": [
+        "Meta",
+        "Google"
+      ],
+      "idealSolutionCharacteristics": [
+        "Stores all active campaign and targeting rules in an in-memory database (e.g., Redis/Aerospike)",
+        "App servers process bid logic completely statelessly and scale horizontally",
+        "Asynchronously writes bid logs to a message queue for billing and analytics"
+      ]
+    },
+    {
+      "id": "sd-036",
+      "title": "Global Ride-Sharing Platform",
+      "difficulty": "hard",
+      "description": "Design the core routing and dispatch engine for a global ride-sharing service. The system must track high-frequency location updates from drivers and match them to riders spatially.",
+      "tags": [
+        "geo-spatial",
+        "ride-sharing",
+        "pubsub",
+        "sharding"
+      ],
+      "requirements": [
+        "Ingest 50000 location updates per second",
+        "Match riders to drivers within 3 seconds",
+        "Maintain system availability across multiple regions"
+      ],
+      "visibleTests": [
+        {
+          "name": "Geo-Update Ingestion",
+          "input": {
+            "traffic": 50000
+          },
+          "checks": {
+            "maxLatency": 150,
+            "maxErrorRate": 0.5,
+            "minThroughput": 48000,
+            "requiredComponents": [
+              "messageBroker",
+              "cache"
+            ]
+          }
+        }
+      ],
+      "hiddenTests": [
+        {
+          "name": "Matching Algorithm Load",
+          "input": {
+            "traffic": 10000
+          },
+          "checks": {
+            "maxLatency": 300,
+            "maxErrorRate": 1,
+            "minThroughput": 9500,
+            "requiredCapabilities": [
+              "async_processing",
+              "horizontal_scaling"
+            ]
+          }
+        },
+        {
+          "name": "Regional Failover",
+          "input": {
+            "traffic": 25000
+          },
+          "checks": {
+            "noSinglePointOfFailure": true,
+            "minReplicas": 4,
+            "requiredCapabilities": [
+              "load_balancing"
+            ]
+          }
+        }
+      ],
+      "expectedPatterns": [
+        "Uses geo-sharding (e.g., Geohash/S2 cells) to partition driver location data",
+        "Decouples location ingestion from complex matching algorithms via messaging"
+      ],
+      "antiPatterns": [
+        "Updating driver rows in a standard SQL DB for every GPS ping",
+        "Attempting global locking during a ride match"
+      ],
+      "requiredCapabilities": [
+        "async_processing",
+        "horizontal_scaling",
+        "caching",
+        "load_balancing"
+      ],
+      "scalingExpectations": {
+        "minReplicas": 6,
+        "minShards": 4
+      },
+      "companyTags": [
+        "Uber",
+        "Lyft",
+        "Grab"
+      ],
+      "idealSolutionCharacteristics": [
+        "Driver apps push location to an ingestion queue or memory store partitioned by Geohash",
+        "Dispatch workers subscribe to region-specific queues to compute nearest-neighbor matches",
+        "Uses WebSockets or Server-Sent Events to push match status back to clients"
+      ]
+    },
+    {
+      "id": "sd-043",
+      "title": "Real-Time Fraud Detection Engine",
+      "difficulty": "hard",
+      "description": "Design a real-time fraud detection engine for payment transactions. Every transaction must be scored against complex ML models and historical user profiles within milliseconds.",
+      "tags": [
+        "fraud",
+        "stream-processing",
+        "analytics",
+        "low-latency"
+      ],
+      "requirements": [
+        "Score 20000 transactions per second",
+        "Hard latency limit: 200ms for scoring decision",
+        "Compute aggregations over moving time windows (e.g., spend in last 1hr)"
+      ],
+      "visibleTests": [
+        {
+          "name": "High Throughput Scoring",
+          "input": {
+            "traffic": 20000
+          },
+          "checks": {
+            "maxLatency": 200,
+            "maxErrorRate": 0.1,
+            "minThroughput": 19800,
+            "requiredComponents": [
+              "appServer",
+              "cache"
+            ]
+          }
+        }
+      ],
+      "hiddenTests": [
+        {
+          "name": "Feature Store Lookups",
+          "input": {
+            "traffic": 40000
+          },
+          "checks": {
+            "maxLatency": 250,
+            "maxErrorRate": 0.5,
+            "minThroughput": 38000,
+            "requiredCapabilities": [
+              "caching",
+              "horizontal_scaling"
+            ]
+          }
+        },
+        {
+          "name": "Stream Aggregation Buffer",
+          "input": {
+            "traffic": 30000
+          },
+          "checks": {
+            "maxLatency": 300,
+            "maxErrorRate": 1,
+            "requiredCapabilities": [
+              "async_processing"
+            ]
+          }
+        }
+      ],
+      "expectedPatterns": [
+        "Employs a fast in-memory Feature Store for user history lookups",
+        "Uses stream processing for continuous sliding window aggregations"
+      ],
+      "antiPatterns": [
+        "Executing complex SQL aggregations on the main transactional database synchronously",
+        "Loading ML models from disk on every scoring request"
+      ],
+      "requiredCapabilities": [
+        "caching",
+        "horizontal_scaling",
+        "async_processing"
+      ],
+      "scalingExpectations": {
+        "minReplicas": 5,
+        "minShards": 4
+      },
+      "companyTags": [
+        "Stripe",
+        "PayPal",
+        "Amazon"
+      ],
+      "idealSolutionCharacteristics": [
+        "API node queries a low-latency Feature Store (Redis) for pre-computed user aggregates",
+        "Applies pre-loaded ML models in memory for scoring",
+        "A parallel async stream processor (e.g., Flink) consumes the transaction log to continuously update the Feature Store aggregates"
+      ]
+    },
+    {
+      "id": "sd-045",
+      "title": "HTAP Analytics Platform",
+      "difficulty": "hard",
+      "description": "Design a Hybrid Transactional/Analytical Processing (HTAP) system. The platform must accept high-volume transactional writes while allowing heavy analytical queries on fresh data.",
+      "tags": [
+        "database",
+        "htap",
+        "analytics",
+        "sharding"
+      ],
+      "requirements": [
+        "Handle 30000 writes/sec and 500 complex analytical queries/sec",
+        "Data must be available for analytics within 5 seconds of write",
+        "Analytical queries must not degrade transactional write performance"
+      ],
+      "visibleTests": [
+        {
+          "name": "High Write Throughput",
+          "input": {
+            "traffic": 30000
+          },
+          "checks": {
+            "maxLatency": 50,
+            "maxErrorRate": 0.1,
+            "minThroughput": 29000,
+            "requiredComponents": [
+              "database",
+              "messageBroker"
+            ]
+          }
+        }
+      ],
+      "hiddenTests": [
+        {
+          "name": "Heavy Analytical Read Spikes",
+          "input": {
+            "traffic": 2000
+          },
+          "checks": {
+            "maxLatency": 2000,
+            "maxErrorRate": 2,
+            "minThroughput": 1800,
+            "requiredCapabilities": [
+              "horizontal_scaling",
+              "caching"
+            ]
+          }
+        },
+        {
+          "name": "CDC Replication Lag Test",
+          "input": {
+            "traffic": 40000
+          },
+          "checks": {
+            "maxLatency": 100,
+            "noSinglePointOfFailure": true,
+            "requiredCapabilities": [
+              "async_processing"
+            ]
+          }
+        }
+      ],
+      "expectedPatterns": [
+        "Separates Row-oriented transactional stores from Column-oriented analytical stores",
+        "Replicates data near real-time via Change Data Capture (CDC)"
+      ],
+      "antiPatterns": [
+        "Running analytical aggregates on the primary operational database",
+        "Using nightly ETL batches when 5-second freshness is required"
+      ],
+      "requiredCapabilities": [
+        "async_processing",
+        "horizontal_scaling",
+        "caching"
+      ],
+      "scalingExpectations": {
+        "minReplicas": 4,
+        "minShards": 4
+      },
+      "companyTags": [
+        "Databricks",
+        "Snowflake",
+        "Google"
+      ],
+      "idealSolutionCharacteristics": [
+        "Writes land in a scalable row-store database (OLTP) optimized for fast inserts",
+        "A CDC pipeline (e.g., Debezium + Kafka) streams changes continuously",
+        "Changes are ingested into a columnar analytical database (OLAP) for fast aggregation queries"
+      ]
+    },
+    {
+      "id": "sd-049",
+      "title": "Global Payments Ledger",
+      "difficulty": "hard",
+      "description": "Design an immutable double-entry ledger system for a global payments processor. Consistency, fault tolerance, and absolute correctness are paramount.",
+      "tags": [
+        "payments",
+        "consistency",
+        "acid",
+        "ledger"
+      ],
+      "requirements": [
+        "Process 10000 payment authorizations per second",
+        "Guarantee zero lost transactions and strict idempotency",
+        "P95 latency under 500ms for authorization"
+      ],
+      "visibleTests": [
+        {
+          "name": "Strict Authorization Flow",
+          "input": {
+            "traffic": 10000
+          },
+          "checks": {
+            "maxLatency": 500,
+            "maxErrorRate": 0.01,
+            "minThroughput": 9900,
+            "requiredComponents": [
+              "loadBalancer",
+              "database"
+            ]
+          }
+        }
+      ],
+      "hiddenTests": [
+        {
+          "name": "High Ledger Write Spikes",
+          "input": {
+            "traffic": 20000
+          },
+          "checks": {
+            "maxLatency": 800,
+            "maxErrorRate": 0.1,
+            "minThroughput": 19000,
+            "requiredCapabilities": [
+              "async_processing",
+              "horizontal_scaling"
+            ]
+          }
+        },
+        {
+          "name": "Network Partition Recovery",
+          "input": {
+            "traffic": 5000
+          },
+          "checks": {
+            "noSinglePointOfFailure": true,
+            "minReplicas": 5,
+            "minShards": 3
+          }
+        }
+      ],
+      "expectedPatterns": [
+        "Uses strict ACID-compliant databases for financial state",
+        "Implements distributed idempotency keys to prevent double-charging",
+        "Buffers ledger finalization via persistent queues"
+      ],
+      "antiPatterns": [
+        "Using eventual consistency (NoSQL) for core account balances",
+        "Processing financial transactions without idempotency constraints"
+      ],
+      "requiredCapabilities": [
+        "async_processing",
+        "horizontal_scaling",
+        "load_balancing"
+      ],
+      "scalingExpectations": {
+        "minReplicas": 5,
+        "minShards": 3
+      },
+      "companyTags": [
+        "Stripe",
+        "Adyen",
+        "Amazon"
+      ],
+      "idealSolutionCharacteristics": [
+        "Synchronous API checks idempotency cache and reserves funds in the relational DB",
+        "API drops an event to a highly durable message bus (e.g., Kafka with strict acks)",
+        "Async workers securely append the double-entry records to the immutable ledger store"
+      ]
+    },
+    {
+      "id": "sd-051",
+      "title": "Distributed Job Scheduler",
+      "difficulty": "medium",
+      "description": "Design a distributed job scheduler that executes delayed and recurring tasks reliably at scale.",
+      "tags": [
+        "scheduler",
+        "async",
+        "distributed"
+      ],
+      "requirements": [
+        "Handle 5000 scheduled jobs per second",
+        "Maintain execution latency under 200ms",
+        "Ensure no missed job executions"
+      ],
+      "visibleTests": [
+        {
+          "name": "Job Scheduling Load",
+          "input": {
+            "traffic": 5000
+          },
+          "checks": {
+            "maxLatency": 200,
+            "maxErrorRate": 1,
+            "minThroughput": 4800,
+            "requiredComponents": [
+              "appServer",
+              "messageBroker"
+            ]
+          }
+        }
+      ],
+      "hiddenTests": [
+        {
+          "name": "Delayed Execution Spike",
+          "input": {
+            "traffic": 15000
+          },
+          "checks": {
+            "maxLatency": 300,
+            "requiredCapabilities": [
+              "async_processing",
+              "horizontal_scaling"
+            ]
+          }
+        }
+      ],
+      "expectedPatterns": [
+        "async_processing"
+      ],
+      "antiPatterns": [
+        "running jobs synchronously"
+      ],
+      "requiredCapabilities": [
+        "async_processing",
+        "horizontal_scaling"
+      ],
+      "scalingExpectations": {
+        "minReplicas": 3,
+        "minShards": 2
+      },
+      "companyTags": [
+        "Uber",
+        "Airbnb"
+      ],
+      "idealSolutionCharacteristics": [
+        "Uses message broker to queue scheduled jobs",
+        "Workers poll and execute jobs asynchronously"
+      ]
+    },
+    {
+      "id": "sd-052",
+      "title": "Log Aggregation System",
+      "difficulty": "medium",
+      "description": "Design a centralized logging system that collects and processes logs from distributed services.",
+      "tags": [
+        "logging",
+        "analytics"
+      ],
+      "requirements": [
+        "Ingest 20000 logs per second",
+        "Provide query results under 300ms"
+      ],
+      "visibleTests": [
+        {
+          "name": "Log Ingestion Load",
+          "input": {
+            "traffic": 20000
+          },
+          "checks": {
+            "maxLatency": 250,
+            "minThroughput": 18000,
+            "requiredComponents": [
+              "messageBroker",
+              "database"
+            ]
+          }
+        }
+      ],
+      "hiddenTests": [
+        {
+          "name": "Query Spike",
+          "input": {
+            "traffic": 5000
+          },
+          "checks": {
+            "maxLatency": 300,
+            "requiredCapabilities": [
+              "horizontal_scaling"
+            ]
+          }
+        }
+      ],
+      "expectedPatterns": [
+        "async_processing"
+      ],
+      "antiPatterns": [
+        "direct DB writes from all services"
+      ],
+      "requiredCapabilities": [
+        "async_processing",
+        "horizontal_scaling"
+      ],
+      "scalingExpectations": {
+        "minReplicas": 3,
+        "minShards": 2
+      },
+      "companyTags": [
+        "Datadog",
+        "Elastic"
+      ],
+      "idealSolutionCharacteristics": [
+        "Uses broker to buffer logs",
+        "Processes logs asynchronously before storage"
+      ]
+    },
+    {
+      "id": "sd-053",
+      "title": "File Upload Service",
+      "difficulty": "medium",
+      "description": "Design a system to upload large files efficiently without blocking application servers.",
+      "tags": [
+        "storage",
+        "upload"
+      ],
+      "requirements": [
+        "Handle 2000 uploads per second",
+        "Maintain upload latency under 300ms"
+      ],
+      "visibleTests": [
+        {
+          "name": "Upload API Load",
+          "input": {
+            "traffic": 2000
+          },
+          "checks": {
+            "maxLatency": 300,
+            "requiredComponents": [
+              "appServer",
+              "database"
+            ]
+          }
+        }
+      ],
+      "hiddenTests": [
+        {
+          "name": "Processing Load",
+          "input": {
+            "traffic": 5000
+          },
+          "checks": {
+            "requiredCapabilities": [
+              "async_processing"
+            ]
+          }
+        }
+      ],
+      "expectedPatterns": [
+        "async_processing"
+      ],
+      "antiPatterns": [
+        "processing uploads synchronously"
+      ],
+      "requiredCapabilities": [
+        "async_processing"
+      ],
+      "scalingExpectations": {
+        "minReplicas": 2,
+        "minShards": 1
+      },
+      "companyTags": [
+        "Dropbox"
+      ],
+      "idealSolutionCharacteristics": [
+        "Uses async workers to process uploads",
+        "Stores metadata separately from files"
+      ]
+    },
+    {
+      "id": "sd-054",
+      "title": "Leaderboard Service",
+      "difficulty": "medium",
+      "description": "Design a real-time leaderboard system that ranks users based on scores.",
+      "tags": [
+        "leaderboard",
+        "ranking"
+      ],
+      "requirements": [
+        "Update scores at 10000 ops/sec",
+        "Return top results under 50ms"
+      ],
+      "visibleTests": [
+        {
+          "name": "Leaderboard Query",
+          "input": {
+            "traffic": 10000
+          },
+          "checks": {
+            "maxLatency": 50,
+            "requiredComponents": [
+              "cache"
+            ]
+          }
+        }
+      ],
+      "hiddenTests": [
+        {
+          "name": "Update Surge",
+          "input": {
+            "traffic": 20000
+          },
+          "checks": {
+            "requiredCapabilities": [
+              "caching",
+              "horizontal_scaling"
+            ]
+          }
+        }
+      ],
+      "expectedPatterns": [
+        "caching"
+      ],
+      "antiPatterns": [
+        "sorting DB queries repeatedly"
+      ],
+      "requiredCapabilities": [
+        "caching",
+        "horizontal_scaling"
+      ],
+      "scalingExpectations": {
+        "minReplicas": 2,
+        "minShards": 1
+      },
+      "companyTags": [
+        "Facebook"
+      ],
+      "idealSolutionCharacteristics": [
+        "Uses sorted sets in cache for ranking",
+        "Avoids DB queries for top results"
+      ]
+    },
+    {
+      "id": "sd-055",
+      "title": "Metrics Monitoring System",
+      "difficulty": "medium",
+      "description": "Design a monitoring system that tracks metrics and triggers alerts.",
+      "tags": [
+        "monitoring"
+      ],
+      "requirements": [
+        "Ingest 15000 metrics/sec",
+        "Serve dashboards under 200ms"
+      ],
+      "visibleTests": [
+        {
+          "name": "Metrics Ingestion",
+          "input": {
+            "traffic": 15000
+          },
+          "checks": {
+            "requiredComponents": [
+              "database",
+              "appServer"
+            ]
+          }
+        }
+      ],
+      "hiddenTests": [
+        {
+          "name": "Dashboard Load",
+          "input": {
+            "traffic": 8000
+          },
+          "checks": {
+            "requiredCapabilities": [
+              "caching"
+            ]
+          }
+        }
+      ],
+      "expectedPatterns": [
+        "caching"
+      ],
+      "antiPatterns": [
+        "real-time DB aggregation"
+      ],
+      "requiredCapabilities": [
+        "caching",
+        "horizontal_scaling"
+      ],
+      "scalingExpectations": {
+        "minReplicas": 3,
+        "minShards": 2
+      },
+      "companyTags": [
+        "Datadog"
+      ],
+      "idealSolutionCharacteristics": [
+        "Caches aggregated metrics",
+        "Uses efficient write path for ingestion"
+      ]
+    },
+    {
+      "id": "sd-056",
+      "title": "Notification Preference Service",
+      "difficulty": "easy",
+      "description": "Design a system to store and retrieve user notification preferences efficiently.",
+      "tags": [
+        "config"
+      ],
+      "requirements": [
+        "Handle 3000 reads/sec",
+        "Latency under 30ms"
+      ],
+      "visibleTests": [
+        {
+          "name": "Preference Read",
+          "input": {
+            "traffic": 3000
+          },
+          "checks": {
+            "maxLatency": 30,
+            "requiredComponents": [
+              "cache"
+            ]
+          }
+        }
+      ],
+      "hiddenTests": [
+        {
+          "name": "Update Burst",
+          "input": {
+            "traffic": 6000
+          },
+          "checks": {
+            "requiredCapabilities": [
+              "caching"
+            ]
+          }
+        }
+      ],
+      "expectedPatterns": [
+        "caching"
+      ],
+      "antiPatterns": [
+        "DB lookup per request"
+      ],
+      "requiredCapabilities": [
+        "caching"
+      ],
+      "scalingExpectations": {
+        "minReplicas": 2,
+        "minShards": 1
+      },
+      "companyTags": [
+        "Google"
+      ],
+      "idealSolutionCharacteristics": [
+        "Caches preferences in memory",
+        "Updates asynchronously"
+      ]
+    },
+    {
+      "id": "sd-057",
+      "title": "URL Preview Generator",
+      "difficulty": "medium",
+      "description": "Generate previews (title, image) for URLs asynchronously.",
+      "tags": [
+        "preview"
+      ],
+      "requirements": [
+        "Process 2000 URLs/sec",
+        "Latency under 200ms"
+      ],
+      "visibleTests": [
+        {
+          "name": "Preview Request",
+          "input": {
+            "traffic": 2000
+          },
+          "checks": {
+            "requiredComponents": [
+              "messageBroker"
+            ]
+          }
+        }
+      ],
+      "hiddenTests": [
+        {
+          "name": "Processing Load",
+          "input": {
+            "traffic": 5000
+          },
+          "checks": {
+            "requiredCapabilities": [
+              "async_processing"
+            ]
+          }
+        }
+      ],
+      "expectedPatterns": [
+        "async_processing"
+      ],
+      "antiPatterns": [
+        "blocking HTTP scraping"
+      ],
+      "requiredCapabilities": [
+        "async_processing"
+      ],
+      "scalingExpectations": {
+        "minReplicas": 2,
+        "minShards": 1
+      },
+      "companyTags": [
+        "Slack"
+      ],
+      "idealSolutionCharacteristics": [
+        "Uses workers to fetch metadata",
+        "Caches previews for reuse"
+      ]
+    },
+    {
+      "id": "sd-058",
+      "title": "Search Ranking Service",
+      "difficulty": "medium",
+      "description": "Rank search results based on relevance signals.",
+      "tags": [
+        "search"
+      ],
+      "requirements": [
+        "Handle 20000 queries/sec",
+        "Latency under 100ms"
+      ],
+      "visibleTests": [
+        {
+          "name": "Search Query Load",
+          "input": {
+            "traffic": 20000
+          },
+          "checks": {
+            "maxLatency": 100,
+            "requiredComponents": [
+              "cache",
+              "appServer"
+            ]
+          }
+        }
+      ],
+      "hiddenTests": [
+        {
+          "name": "Ranking Complexity",
+          "input": {
+            "traffic": 40000
+          },
+          "checks": {
+            "requiredCapabilities": [
+              "caching",
+              "horizontal_scaling"
+            ]
+          }
+        }
+      ],
+      "expectedPatterns": [
+        "caching"
+      ],
+      "antiPatterns": [
+        "ranking in DB per request"
+      ],
+      "requiredCapabilities": [
+        "caching",
+        "horizontal_scaling"
+      ],
+      "scalingExpectations": {
+        "minReplicas": 4,
+        "minShards": 2
+      },
+      "companyTags": [
+        "Google"
+      ],
+      "idealSolutionCharacteristics": [
+        "Precomputes ranking signals",
+        "Caches top results"
+      ]
+    },
+    {
+      "id": "sd-059",
+      "title": "Session Store",
+      "difficulty": "easy",
+      "description": "Design a distributed session store for web applications.",
+      "tags": [
+        "session"
+      ],
+      "requirements": [
+        "Handle 5000 session reads/sec",
+        "Latency under 20ms"
+      ],
+      "visibleTests": [
+        {
+          "name": "Session Access",
+          "input": {
+            "traffic": 5000
+          },
+          "checks": {
+            "maxLatency": 20,
+            "requiredComponents": [
+              "cache"
+            ]
+          }
+        }
+      ],
+      "hiddenTests": [
+        {
+          "name": "Failover Load",
+          "input": {
+            "traffic": 10000
+          },
+          "checks": {
+            "requiredCapabilities": [
+              "caching",
+              "horizontal_scaling"
+            ]
+          }
+        }
+      ],
+      "expectedPatterns": [
+        "caching"
+      ],
+      "antiPatterns": [
+        "storing sessions in local memory"
+      ],
+      "requiredCapabilities": [
+        "caching",
+        "horizontal_scaling"
+      ],
+      "scalingExpectations": {
+        "minReplicas": 3,
+        "minShards": 1
+      },
+      "companyTags": [
+        "Amazon"
+      ],
+      "idealSolutionCharacteristics": [
+        "Uses distributed cache for session storage",
+        "Replicates session data"
+      ]
+    },
+    {
+      "id": "sd-060",
+      "title": "Webhook Delivery System",
+      "difficulty": "medium",
+      "description": "Deliver webhooks reliably to third-party endpoints.",
+      "tags": [
+        "webhooks",
+        "async"
+      ],
+      "requirements": [
+        "Process 5000 webhook deliveries/sec",
+        "Retry failed deliveries"
+      ],
+      "visibleTests": [
+        {
+          "name": "Webhook Dispatch",
+          "input": {
+            "traffic": 5000
+          },
+          "checks": {
+            "requiredComponents": [
+              "messageBroker",
+              "worker"
+            ]
+          }
+        }
+      ],
+      "hiddenTests": [
+        {
+          "name": "Retry Handling",
+          "input": {
+            "traffic": 10000
+          },
+          "checks": {
+            "requiredCapabilities": [
+              "async_processing",
+              "horizontal_scaling"
+            ]
+          }
+        }
+      ],
+      "expectedPatterns": [
+        "async_processing"
+      ],
+      "antiPatterns": [
+        "synchronous webhook calls"
+      ],
+      "requiredCapabilities": [
+        "async_processing",
+        "horizontal_scaling"
+      ],
+      "scalingExpectations": {
+        "minReplicas": 3,
+        "minShards": 2
+      },
+      "companyTags": [
+        "Stripe"
+      ],
+      "idealSolutionCharacteristics": [
+        "Queues webhook events",
+        "Uses retry mechanism with backoff"
+      ]
+    }
+  ]
+}

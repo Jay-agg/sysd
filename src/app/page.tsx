@@ -103,7 +103,7 @@ export default function QuestionBankPage() {
                       {diff.label}
                     </span>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     {challenge.tags.slice(0, 5).map((tag) => (
                       <span key={tag} className="text-[10px] font-medium text-zinc-600 bg-zinc-800/60 px-2 py-0.5 rounded-md">
                         {tag}
@@ -115,6 +115,18 @@ export default function QuestionBankPage() {
                       </span>
                     )}
                   </div>
+                  {challenge.companyTags && challenge.companyTags.length > 0 && (
+                    <div className="flex flex-wrap gap-1 mt-1.5">
+                      {challenge.companyTags.slice(0, 4).map((c) => (
+                        <span
+                          key={c}
+                          className="text-[9px] font-medium text-zinc-500 border border-zinc-700/40 px-1.5 py-0.5 rounded"
+                        >
+                          {c}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 {/* Arrow */}

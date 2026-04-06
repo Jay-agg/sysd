@@ -1,22 +1,27 @@
+import type { ComponentType } from '@/types/component';
 import type { SimNode, SimNodeType } from '@/types/simulation';
 import type { TestChecks } from '@/types/challenge';
 import type { CheckOutcome } from './types';
 
-/** Maps challenge JSON tokens to acceptable SimNode types. */
-const REQUIRED_TOKEN_TO_TYPES: Record<string, SimNodeType[]> = {
-  load_balancer: ['loadBalancer'],
-  application_servers: ['appServer', 'apiGateway', 'worker'],
+/** Maps canonical check tokens to canvas node types that satisfy the requirement. */
+const COMPONENT_TO_SIM_TYPES: Record<ComponentType, SimNodeType[]> = {
+  apiGateway: ['apiGateway'],
+  appServer: ['appServer', 'apiGateway', 'worker'],
   database: ['database', 'sqlDatabase', 'noSqlDatabase'],
   cache: ['cache'],
-  message_queue: ['queue', 'messageBroker'],
+  loadBalancer: ['loadBalancer'],
+  webClient: ['webClient'],
+  mobileClient: ['mobileClient'],
+  worker: ['worker'],
+  messageBroker: ['messageBroker', 'queue'],
+  sqlDatabase: ['sqlDatabase'],
+  noSqlDatabase: ['noSqlDatabase'],
+  cdn: ['cdn'],
 };
 
-function tokenSatisfied(token: string, types: Set<SimNodeType>): boolean {
-  const mapped = REQUIRED_TOKEN_TO_TYPES[token];
-  if (mapped) {
-    return mapped.some((t) => types.has(t));
-  }
-  return types.has(token as SimNodeType);
+function tokenSatisfied(token: ComponentType, types: Set<SimNodeType>): boolean {
+  const mapped = COMPONENT_TO_SIM_TYPES[token];
+  return mapped.some((t) => types.has(t));
 }
 
 export function evaluateRequiredComponents(
@@ -32,7 +37,7 @@ export function evaluateRequiredComponents(
 
   for (const req of required) {
     if (!tokenSatisfied(req, types)) {
-      missing.push(req.replace(/_/g, ' '));
+      missing.push(req.replace(/([A-Z])/g, ' $1').trim());
     }
   }
 

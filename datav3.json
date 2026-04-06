@@ -1,0 +1,6186 @@
+{
+    "questions": [
+    {
+    "id": "sd-001",
+    "title": "URL Shortener Service",
+    "difficulty": "easy",
+    "description": "Design a URL shortening service that maps long URLs to compact short codes. Support high read traffic for redirects with low latency and durable storage. Many URL shorteners use Base62-encoded identifiers for compact short codes.",
+    
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "url-shortener"
+    ],
+    "requirements": [
+    "Handle 500 requests per second for primary operations",
+    "Maintain p95 latency under 300ms for read operations",
+    "Keep error rate under 2.0% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains",
+    "Support at least 10 million unique shortened URLs with constant-time lookup"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 500
+    },
+    "checks": {
+    "maxLatency": 300,
+    "maxErrorRate": 2.0,
+    "minThroughput": 400,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 1500
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 1.0,
+    "minThroughput": 1200,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 1000
+    },
+    "checks": {
+    "maxLatency": 350,
+    "maxErrorRate": 2.0,
+    "minThroughput": 800,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 750
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 2
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.2,
+    "reliability": 0.25,
+    "latency": 0.25,
+    "architecture": 0.2,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "URL Shortener Service uses caching for short-code to URL mappings",
+    "URL Shortener Service horizontally scales app servers for redirect traffic",
+    "URL Shortener Service uses async_processing for click analytics aggregation"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "caching",
+    "horizontal_scaling",
+    "load_balancing"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 2,
+    "minShards": 1
+    },
+    "companyTags": [
+    "Google"
+    ],
+    "idealSolutionCharacteristics": [
+    "Stores short-code to URL mappings in a replicated database with read-optimized schema",
+    "Places a cache in front of the database to serve most redirect lookups",
+    "Uses a load balancer in front of multiple app servers to handle redirect traffic",
+    "Sends click and analytics events asynchronously to a queue processed by workers"
+    ]
+    },
+    {
+    "id": "sd-002",
+    "title": "Basic Key-Value Store",
+    "difficulty": "easy",
+    "description": "Design the Basic Key-Value Store to handle moderate traffic within a single region. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "kv-store"
+    ],
+    "requirements": [
+    "Handle 500 requests per second for primary operations",
+    "Maintain p95 latency under 300ms for read operations",
+    "Keep error rate under 2.0% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 500
+    },
+    "checks": {
+    "maxLatency": 300,
+    "maxErrorRate": 2.0,
+    "minThroughput": 400,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 1500
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 1.0,
+    "minThroughput": 1200,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 1000
+    },
+    "checks": {
+    "maxLatency": 350,
+    "maxErrorRate": 2.0,
+    "minThroughput": 800,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 750
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 2
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.2,
+    "reliability": 0.25,
+    "latency": 0.25,
+    "architecture": 0.2,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "Basic Key-Value Store introduces caching to relieve database hot paths",
+    "Basic Key-Value Store scales stateless services horizontally behind a load balancer",
+    "Basic Key-Value Store uses async_processing for non-critical background work"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 2,
+    "minShards": 1
+    },
+    "companyTags": [
+    "Amazon",
+    "Microsoft"
+    ],
+    "idealSolutionCharacteristics": [
+    "Keeps core APIs for Basic Key-Value Store stateless and load balanced across multiple app servers",
+    "Introduces a cache layer to reduce repeated database queries for Basic Key-Value Store",
+    "Uses a queue and workers to process background tasks for Basic Key-Value Store",
+    "Replicates the primary database to improve read scalability for Basic Key-Value Store"
+    ]
+    },
+    {
+    "id": "sd-003",
+    "title": "API Gateway Rate Limiter",
+    "difficulty": "easy",
+    "description": "Design the API Gateway Rate Limiter to handle moderate traffic within a single region. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "rate-limiter"
+    ],
+    "requirements": [
+    "Handle 500 requests per second for primary operations",
+    "Maintain p95 latency under 300ms for read operations",
+    "Keep error rate under 2.0% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 500
+    },
+    "checks": {
+    "maxLatency": 300,
+    "maxErrorRate": 2.0,
+    "minThroughput": 400,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 1500
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 1.0,
+    "minThroughput": 1200,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 1000
+    },
+    "checks": {
+    "maxLatency": 350,
+    "maxErrorRate": 2.0,
+    "minThroughput": 800,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 750
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 2
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.2,
+    "reliability": 0.25,
+    "latency": 0.25,
+    "architecture": 0.2,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "API Gateway Rate Limiter introduces caching to relieve database hot paths",
+    "API Gateway Rate Limiter scales stateless services horizontally behind a load balancer",
+    "API Gateway Rate Limiter uses async_processing for non-critical background work"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 2,
+    "minShards": 1
+    },
+    "companyTags": [
+    "Amazon",
+    "Google",
+    "Microsoft"
+    ],
+    "idealSolutionCharacteristics": [
+    "Keeps core APIs for API Gateway Rate Limiter stateless and load balanced across multiple app servers",
+    "Introduces a cache layer to reduce repeated database queries for API Gateway Rate Limiter",
+    "Uses a queue and workers to process background tasks for API Gateway Rate Limiter",
+    "Replicates the primary database to improve read scalability for API Gateway Rate Limiter"
+    ]
+    },
+    {
+    "id": "sd-004",
+    "title": "User Authentication Service",
+    "difficulty": "easy",
+    "description": "Design the User Authentication Service to handle moderate traffic within a single region. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "auth"
+    ],
+    "requirements": [
+    "Handle 500 requests per second for primary operations",
+    "Maintain p95 latency under 300ms for read operations",
+    "Keep error rate under 2.0% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 500
+    },
+    "checks": {
+    "maxLatency": 300,
+    "maxErrorRate": 2.0,
+    "minThroughput": 400,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 1500
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 1.0,
+    "minThroughput": 1200,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 1000
+    },
+    "checks": {
+    "maxLatency": 350,
+    "maxErrorRate": 2.0,
+    "minThroughput": 800,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 750
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 2
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.2,
+    "reliability": 0.25,
+    "latency": 0.25,
+    "architecture": 0.2,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "User Authentication Service introduces caching to relieve database hot paths",
+    "User Authentication Service scales stateless services horizontally behind a load balancer",
+    "User Authentication Service uses async_processing for non-critical background work"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 2,
+    "minShards": 1
+    },
+    "companyTags": [
+    "Microsoft"
+    ],
+    "idealSolutionCharacteristics": [
+    "Keeps core APIs for User Authentication Service stateless and load balanced across multiple app servers",
+    "Introduces a cache layer to reduce repeated database queries for User Authentication Service",
+    "Uses a queue and workers to process background tasks for User Authentication Service",
+    "Replicates the primary database to improve read scalability for User Authentication Service"
+    ]
+    },
+    {
+    "id": "sd-005",
+    "title": "Email Notification Dispatcher",
+    "difficulty": "easy",
+    "description": "Design the Email Notification Dispatcher to handle moderate traffic within a single region. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "notification"
+    ],
+    "requirements": [
+    "Handle 500 requests per second for primary operations",
+    "Maintain p95 latency under 300ms for read operations",
+    "Keep error rate under 2.0% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains",
+    "Deliver 99% of notifications within 60 seconds of event generation"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 500
+    },
+    "checks": {
+    "maxLatency": 300,
+    "maxErrorRate": 2.0,
+    "minThroughput": 400,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 1500
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 1.0,
+    "minThroughput": 1200,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 1000
+    },
+    "checks": {
+    "maxLatency": 350,
+    "maxErrorRate": 2.0,
+    "minThroughput": 800,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 750
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 2
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.2,
+    "reliability": 0.25,
+    "latency": 0.25,
+    "architecture": 0.2,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "Email Notification Dispatcher uses queues to decouple notification ingestion and delivery",
+    "Email Notification Dispatcher scales notification workers horizontally",
+    "Email Notification Dispatcher caches user channel preferences to reduce database lookups"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "async_processing",
+    "horizontal_scaling"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 2,
+    "minShards": 1
+    },
+    "companyTags": [
+    "Amazon",
+    "Meta",
+    "Twilio"
+    ],
+    "idealSolutionCharacteristics": [
+    "Accepts notification requests via stateless APIs behind a load balancer",
+    "Queues notifications for asynchronous delivery by workers",
+    "Caches user channel preferences to avoid repeated database lookups",
+    "Scales delivery workers horizontally to handle spikes in notifications"
+    ]
+    },
+    
+    {
+    "id": "sd-006",
+    "title": "Image Thumbnail Generator",
+    "difficulty": "easy",
+    "description": "Design the Image Thumbnail Generator to handle moderate traffic within a single region. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "media",
+    "images"
+    ],
+    "requirements": [
+    "Handle 500 requests per second for primary operations",
+    "Maintain p95 latency under 300ms for read operations",
+    "Keep error rate under 2.0% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 500
+    },
+    "checks": {
+    "maxLatency": 300,
+    "maxErrorRate": 2.0,
+    "minThroughput": 400,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 1500
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 1.0,
+    "minThroughput": 1200,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 1000
+    },
+    "checks": {
+    "maxLatency": 350,
+    "maxErrorRate": 2.0,
+    "minThroughput": 800,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 750
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 2
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.2,
+    "reliability": 0.25,
+    "latency": 0.25,
+    "architecture": 0.2,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "Image Thumbnail Generator introduces caching to relieve database hot paths",
+    "Image Thumbnail Generator scales stateless services horizontally behind a load balancer",
+    "Image Thumbnail Generator uses async_processing for non-critical background work"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 2,
+    "minShards": 1
+    },
+    "companyTags": [
+    "Amazon"
+    ],
+    "idealSolutionCharacteristics": [
+    "Keeps core APIs for Image Thumbnail Generator stateless and load balanced across multiple app servers",
+    "Introduces a cache layer to reduce repeated database queries for Image Thumbnail Generator",
+    "Uses a queue and workers to process background tasks for Image Thumbnail Generator",
+    "Replicates the primary database to improve read scalability for Image Thumbnail Generator"
+    ]
+    },
+    
+    {
+    "id": "sd-007",
+    "title": "Health Check Status Page",
+    "difficulty": "easy",
+    "description": "Design the Health Check Status Page to handle moderate traffic within a single region. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "observability"
+    ],
+    "requirements": [
+    "Handle 500 requests per second for primary operations",
+    "Maintain p95 latency under 300ms for read operations",
+    "Keep error rate under 2.0% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 500
+    },
+    "checks": {
+    "maxLatency": 300,
+    "maxErrorRate": 2.0,
+    "minThroughput": 400,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 1500
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 1.0,
+    "minThroughput": 1200,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 1000
+    },
+    "checks": {
+    "maxLatency": 350,
+    "maxErrorRate": 2.0,
+    "minThroughput": 800,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 750
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 2
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.2,
+    "reliability": 0.25,
+    "latency": 0.25,
+    "architecture": 0.2,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "Health Check Status Page introduces caching to relieve database hot paths",
+    "Health Check Status Page scales stateless services horizontally behind a load balancer",
+    "Health Check Status Page uses async_processing for non-critical background work"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 2,
+    "minShards": 1
+    },
+    "companyTags": [
+    "Microsoft"
+    ],
+    "idealSolutionCharacteristics": [
+    "Keeps core APIs for Health Check Status Page stateless and load balanced across multiple app servers",
+    "Introduces a cache layer to reduce repeated database queries for Health Check Status Page",
+    "Uses a queue and workers to process background tasks for Health Check Status Page",
+    "Replicates the primary database to improve read scalability for Health Check Status Page"
+    ]
+    },
+    
+    {
+    "id": "sd-008",
+    "title": "Pastebin Text Sharing",
+    "difficulty": "easy",
+    "description": "Design the Pastebin Text Sharing to handle moderate traffic within a single region. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "pastebin"
+    ],
+    "requirements": [
+    "Handle 500 requests per second for primary operations",
+    "Maintain p95 latency under 300ms for read operations",
+    "Keep error rate under 2.0% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 500
+    },
+    "checks": {
+    "maxLatency": 300,
+    "maxErrorRate": 2.0,
+    "minThroughput": 400,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 1500
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 1.0,
+    "minThroughput": 1200,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 1000
+    },
+    "checks": {
+    "maxLatency": 350,
+    "maxErrorRate": 2.0,
+    "minThroughput": 800,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 750
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 2
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.2,
+    "reliability": 0.25,
+    "latency": 0.25,
+    "architecture": 0.2,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "Pastebin Text Sharing introduces caching to relieve database hot paths",
+    "Pastebin Text Sharing scales stateless services horizontally behind a load balancer",
+    "Pastebin Text Sharing uses async_processing for non-critical background work"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 2,
+    "minShards": 1
+    },
+    "companyTags": [
+    "Microsoft"
+    ],
+    "idealSolutionCharacteristics": [
+    "Keeps core APIs for Pastebin Text Sharing stateless and load balanced across multiple app servers",
+    "Introduces a cache layer to reduce repeated database queries for Pastebin Text Sharing",
+    "Uses a queue and workers to process background tasks for Pastebin Text Sharing",
+    "Replicates the primary database to improve read scalability for Pastebin Text Sharing"
+    ]
+    },
+    
+    {
+    "id": "sd-009",
+    "title": "Page View Counter Service",
+    "difficulty": "easy",
+    "description": "Design the Page View Counter Service to handle moderate traffic within a single region. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "analytics"
+    ],
+    "requirements": [
+    "Handle 500 requests per second for primary operations",
+    "Maintain p95 latency under 300ms for read operations",
+    "Keep error rate under 2.0% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 500
+    },
+    "checks": {
+    "maxLatency": 300,
+    "maxErrorRate": 2.0,
+    "minThroughput": 400,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 1500
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 1.0,
+    "minThroughput": 1200,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 1000
+    },
+    "checks": {
+    "maxLatency": 350,
+    "maxErrorRate": 2.0,
+    "minThroughput": 800,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 750
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 2
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.2,
+    "reliability": 0.25,
+    "latency": 0.25,
+    "architecture": 0.2,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "Page View Counter Service introduces caching to relieve database hot paths",
+    "Page View Counter Service scales stateless services horizontally behind a load balancer",
+    "Page View Counter Service uses async_processing for non-critical background work"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 2,
+    "minShards": 1
+    },
+    "companyTags": [
+    "Amazon",
+    "Microsoft"
+    ],
+    "idealSolutionCharacteristics": [
+    "Keeps core APIs for Page View Counter Service stateless and load balanced across multiple app servers",
+    "Introduces a cache layer to reduce repeated database queries for Page View Counter Service",
+    "Uses a queue and workers to process background tasks for Page View Counter Service",
+    "Replicates the primary database to improve read scalability for Page View Counter Service"
+    ]
+    },
+    
+    {
+    "id": "sd-010",
+    "title": "Feature Flag Management",
+    "difficulty": "easy",
+    "description": "Design the Feature Flag Management to handle moderate traffic within a single region. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "feature-flags"
+    ],
+    "requirements": [
+    "Handle 500 requests per second for primary operations",
+    "Maintain p95 latency under 300ms for read operations",
+    "Keep error rate under 2.0% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 500
+    },
+    "checks": {
+    "maxLatency": 300,
+    "maxErrorRate": 2.0,
+    "minThroughput": 400,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 1500
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 1.0,
+    "minThroughput": 1200,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 1000
+    },
+    "checks": {
+    "maxLatency": 350,
+    "maxErrorRate": 2.0,
+    "minThroughput": 800,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 750
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 2
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.2,
+    "reliability": 0.25,
+    "latency": 0.25,
+    "architecture": 0.2,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "Feature Flag Management introduces caching to relieve database hot paths",
+    "Feature Flag Management scales stateless services horizontally behind a load balancer",
+    "Feature Flag Management uses async_processing for non-critical background work"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 2,
+    "minShards": 1
+    },
+    "companyTags": [
+    "Amazon",
+    "Google",
+    "Microsoft"
+    ],
+    "idealSolutionCharacteristics": [
+    "Keeps core APIs for Feature Flag Management stateless and load balanced across multiple app servers",
+    "Introduces a cache layer to reduce repeated database queries for Feature Flag Management",
+    "Uses a queue and workers to process background tasks for Feature Flag Management",
+    "Replicates the primary database to improve read scalability for Feature Flag Management"
+    ]
+    },
+    
+    {
+    "id": "sd-011",
+    "title": "Single-Room Chat",
+    "difficulty": "easy",
+    "description": "Design the Single-Room Chat to handle moderate traffic within a single region. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "chat"
+    ],
+    "requirements": [
+    "Handle 500 requests per second for primary operations",
+    "Maintain p95 latency under 300ms for read operations",
+    "Keep error rate under 2.0% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains",
+    "Support at least 50,000 concurrent connected clients with message fan-out under 1 second"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 500
+    },
+    "checks": {
+    "maxLatency": 300,
+    "maxErrorRate": 2.0,
+    "minThroughput": 400,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 1500
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 1.0,
+    "minThroughput": 1200,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 1000
+    },
+    "checks": {
+    "maxLatency": 350,
+    "maxErrorRate": 2.0,
+    "minThroughput": 800,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 750
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 2
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.2,
+    "reliability": 0.25,
+    "latency": 0.25,
+    "architecture": 0.2,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "Single-Room Chat uses async_processing to fan out messages",
+    "Single-Room Chat horizontally scales chat gateways handling connections",
+    "Single-Room Chat leverages caching for recent conversations and presence state"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 2,
+    "minShards": 1
+    },
+    "companyTags": [
+    "Amazon",
+    "Google",
+    "Microsoft"
+    ],
+    "idealSolutionCharacteristics": [
+    "Keeps chat gateways stateless and scales them horizontally behind a load balancer",
+    "Uses a message broker or queue to fan out messages to recipients asynchronously",
+    "Stores message history in a database with efficient write patterns",
+    "Caches recent conversations and presence to reduce database reads"
+    ]
+    },
+    
+    {
+    "id": "sd-012",
+    "title": "User Profile Service",
+    "difficulty": "easy",
+    "description": "Design the User Profile Service to handle moderate traffic within a single region. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "user-profile"
+    ],
+    "requirements": [
+    "Handle 500 requests per second for primary operations",
+    "Maintain p95 latency under 300ms for read operations",
+    "Keep error rate under 2.0% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 500
+    },
+    "checks": {
+    "maxLatency": 300,
+    "maxErrorRate": 2.0,
+    "minThroughput": 400,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 1500
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 1.0,
+    "minThroughput": 1200,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 1000
+    },
+    "checks": {
+    "maxLatency": 350,
+    "maxErrorRate": 2.0,
+    "minThroughput": 800,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 750
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 2
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.2,
+    "reliability": 0.25,
+    "latency": 0.25,
+    "architecture": 0.2,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "User Profile Service introduces caching to relieve database hot paths",
+    "User Profile Service scales stateless services horizontally behind a load balancer",
+    "User Profile Service uses async_processing for non-critical background work"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 2,
+    "minShards": 1
+    },
+    "companyTags": [
+    "Amazon",
+    "Google"
+    ],
+    "idealSolutionCharacteristics": [
+    "Keeps core APIs for User Profile Service stateless and load balanced across multiple app servers",
+    "Introduces a cache layer to reduce repeated database queries for User Profile Service",
+    "Uses a queue and workers to process background tasks for User Profile Service",
+    "Replicates the primary database to improve read scalability for User Profile Service"
+    ]
+    },
+    
+    {
+    "id": "sd-013",
+    "title": "Configuration Service",
+    "difficulty": "easy",
+    "description": "Design the Configuration Service to handle moderate traffic within a single region. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "config"
+    ],
+    "requirements": [
+    "Handle 500 requests per second for primary operations",
+    "Maintain p95 latency under 300ms for read operations",
+    "Keep error rate under 2.0% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 500
+    },
+    "checks": {
+    "maxLatency": 300,
+    "maxErrorRate": 2.0,
+    "minThroughput": 400,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 1500
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 1.0,
+    "minThroughput": 1200,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 1000
+    },
+    "checks": {
+    "maxLatency": 350,
+    "maxErrorRate": 2.0,
+    "minThroughput": 800,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 750
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 2
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.2,
+    "reliability": 0.25,
+    "latency": 0.25,
+    "architecture": 0.2,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "Configuration Service introduces caching to relieve database hot paths",
+    "Configuration Service scales stateless services horizontally behind a load balancer",
+    "Configuration Service uses async_processing for non-critical background work"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 2,
+    "minShards": 1
+    },
+    "companyTags": [
+    "Amazon",
+    "Google",
+    "Microsoft"
+    ],
+    "idealSolutionCharacteristics": [
+    "Keeps core APIs for Configuration Service stateless and load balanced across multiple app servers",
+    "Introduces a cache layer to reduce repeated database queries for Configuration Service",
+    "Uses a queue and workers to process background tasks for Configuration Service",
+    "Replicates the primary database to improve read scalability for Configuration Service"
+    ]
+    },
+    
+    {
+    "id": "sd-014",
+    "title": "Low-Volume Log Ingestion",
+    "difficulty": "easy",
+    "description": "Design the Low-Volume Log Ingestion to handle moderate traffic within a single region. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "logging"
+    ],
+    "requirements": [
+    "Handle 500 requests per second for primary operations",
+    "Maintain p95 latency under 300ms for read operations",
+    "Keep error rate under 2.0% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 500
+    },
+    "checks": {
+    "maxLatency": 300,
+    "maxErrorRate": 2.0,
+    "minThroughput": 400,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 1500
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 1.0,
+    "minThroughput": 1200,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 1000
+    },
+    "checks": {
+    "maxLatency": 350,
+    "maxErrorRate": 2.0,
+    "minThroughput": 800,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 750
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 2
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.2,
+    "reliability": 0.25,
+    "latency": 0.25,
+    "architecture": 0.2,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "Low-Volume Log Ingestion introduces caching to relieve database hot paths",
+    "Low-Volume Log Ingestion scales stateless services horizontally behind a load balancer",
+    "Low-Volume Log Ingestion uses async_processing for non-critical background work"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 2,
+    "minShards": 1
+    },
+    "companyTags": [
+    "Amazon",
+    "Google",
+    "Microsoft"
+    ],
+    "idealSolutionCharacteristics": [
+    "Keeps core APIs for Low-Volume Log Ingestion stateless and load balanced across multiple app servers",
+    "Introduces a cache layer to reduce repeated database queries for Low-Volume Log Ingestion",
+    "Uses a queue and workers to process background tasks for Low-Volume Log Ingestion",
+    "Replicates the primary database to improve read scalability for Low-Volume Log Ingestion"
+    ]
+    },
+    
+    {
+    "id": "sd-015",
+    "title": "Simple File Upload Service",
+    "difficulty": "easy",
+    "description": "Design the Simple File Upload Service to handle moderate traffic within a single region. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "file-storage"
+    ],
+    "requirements": [
+    "Handle 500 requests per second for primary operations",
+    "Maintain p95 latency under 300ms for read operations",
+    "Keep error rate under 2.0% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains",
+    "Store at least 100 TB of files with 11 nines of annual durability"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 500
+    },
+    "checks": {
+    "maxLatency": 300,
+    "maxErrorRate": 2.0,
+    "minThroughput": 400,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 1500
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 1.0,
+    "minThroughput": 1200,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 1000
+    },
+    "checks": {
+    "maxLatency": 350,
+    "maxErrorRate": 2.0,
+    "minThroughput": 800,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 750
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 2
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.2,
+    "reliability": 0.25,
+    "latency": 0.25,
+    "architecture": 0.2,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "Simple File Upload Service uses caching for frequently accessed file metadata",
+    "Simple File Upload Service scales storage and metadata services horizontally",
+    "Simple File Upload Service processes background tasks like thumbnails asynchronously"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "caching",
+    "horizontal_scaling",
+    "load_balancing"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 2,
+    "minShards": 1
+    },
+    "companyTags": [
+    "Box",
+    "Dropbox",
+    "Google"
+    ],
+    "idealSolutionCharacteristics": [
+    "Stores file metadata in a durable database and blobs in object storage",
+    "Uses caching for frequently accessed metadata and signed URLs",
+    "Processes heavy operations like virus scanning via async workers",
+    "Scales upload and download endpoints horizontally behind a load balancer"
+    ]
+    },
+    
+    {
+    "id": "sd-016",
+    "title": "Scalable URL Shortener with Analytics",
+    "difficulty": "medium",
+    "description": "Design the Scalable URL Shortener with Analytics to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "url-shortener",
+    "analytics"
+    ],
+    "requirements": [
+    "Handle 5000 requests per second for primary operations",
+    "Maintain p95 latency under 250ms for read operations",
+    "Keep error rate under 1.0% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains",
+    "Support at least 10 million unique shortened URLs with constant-time lookup"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 5000
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 1.0,
+    "minThroughput": 4000,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 15000
+    },
+    "checks": {
+    "maxLatency": 200,
+    "maxErrorRate": 0.5,
+    "minThroughput": 12000,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 10000
+    },
+    "checks": {
+    "maxLatency": 300,
+    "maxErrorRate": 1.0,
+    "minThroughput": 8000,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 7500
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 3
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.25,
+    "reliability": 0.25,
+    "latency": 0.2,
+    "architecture": 0.2,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "Scalable URL Shortener with Analytics uses caching for short-code to URL mappings",
+    "Scalable URL Shortener with Analytics horizontally scales app servers for redirect traffic",
+    "Scalable URL Shortener with Analytics uses async_processing for click analytics aggregation"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "caching",
+    "horizontal_scaling",
+    "load_balancing"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 3,
+    "minShards": 2
+    },
+    "companyTags": [
+    "Amazon"
+    ],
+    "idealSolutionCharacteristics": [
+    "Stores short-code to URL mappings in a replicated database with read-optimized schema",
+    "Places a cache in front of the database to serve most redirect lookups",
+    "Uses a load balancer in front of multiple app servers to handle redirect traffic",
+    "Sends click and analytics events asynchronously to a queue processed by workers"
+    ]
+    },
+    
+    {
+    "id": "sd-017",
+    "title": "Real-Time Chat System",
+    "difficulty": "medium",
+    "description": "Design the Real-Time Chat System to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "chat"
+    ],
+    "requirements": [
+    "Handle 5000 requests per second for primary operations",
+    "Maintain p95 latency under 250ms for read operations",
+    "Keep error rate under 1.0% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains",
+    "Support at least 50,000 concurrent connected clients with message fan-out under 1 second"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 5000
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 1.0,
+    "minThroughput": 4000,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 15000
+    },
+    "checks": {
+    "maxLatency": 200,
+    "maxErrorRate": 0.5,
+    "minThroughput": 12000,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 10000
+    },
+    "checks": {
+    "maxLatency": 300,
+    "maxErrorRate": 1.0,
+    "minThroughput": 8000,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 7500
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 3
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.25,
+    "reliability": 0.25,
+    "latency": 0.2,
+    "architecture": 0.2,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "Real-Time Chat System uses async_processing to fan out messages",
+    "Real-Time Chat System horizontally scales chat gateways handling connections",
+    "Real-Time Chat System leverages caching for recent conversations and presence state"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 3,
+    "minShards": 2
+    },
+    "companyTags": [
+    "Amazon",
+    "Microsoft"
+    ],
+    "idealSolutionCharacteristics": [
+    "Keeps chat gateways stateless and scales them horizontally behind a load balancer",
+    "Uses a message broker or queue to fan out messages to recipients asynchronously",
+    "Stores message history in a database with efficient write patterns",
+    "Caches recent conversations and presence to reduce database reads"
+    ]
+    },
+    
+    {
+    "id": "sd-018",
+    "title": "Social News Feed",
+    "difficulty": "medium",
+    "description": "Design the Social News Feed to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "news-feed"
+    ],
+    "requirements": [
+    "Handle 5000 requests per second for primary operations",
+    "Maintain p95 latency under 250ms for read operations",
+    "Keep error rate under 1.0% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains",
+    "Generate personalized feeds for 1 million daily active users within 2 seconds per request"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 5000
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 1.0,
+    "minThroughput": 4000,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 15000
+    },
+    "checks": {
+    "maxLatency": 200,
+    "maxErrorRate": 0.5,
+    "minThroughput": 12000,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 10000
+    },
+    "checks": {
+    "maxLatency": 300,
+    "maxErrorRate": 1.0,
+    "minThroughput": 8000,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 7500
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 3
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.25,
+    "reliability": 0.25,
+    "latency": 0.2,
+    "architecture": 0.2,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "Social News Feed precomputes feeds asynchronously via queues",
+    "Social News Feed scales horizontally for feed reads and writes",
+    "Social News Feed caches feed pages to reduce database load"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "caching",
+    "horizontal_scaling",
+    "load_balancing"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 3,
+    "minShards": 2
+    },
+    "companyTags": [
+    "LinkedIn",
+    "Meta",
+    "Twitter"
+    ],
+    "idealSolutionCharacteristics": [
+    "Generates feeds asynchronously using workers consuming from a queue",
+    "Stores feed entries in a database optimized for time-ordered reads",
+    "Caches feed pages per user to serve read-heavy workloads",
+    "Scales feed read APIs horizontally behind a load balancer"
+    ]
+    },
+    
+    {
+    "id": "sd-019",
+    "title": "City Ride Matching Service",
+    "difficulty": "medium",
+    "description": "Design the City Ride Matching Service to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "ride-sharing"
+    ],
+    "requirements": [
+    "Handle 5000 requests per second for primary operations",
+    "Maintain p95 latency under 250ms for read operations",
+    "Keep error rate under 1.0% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains",
+    "Match riders and drivers within 5 seconds for 95% of ride requests in a city"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 5000
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 1.0,
+    "minThroughput": 4000,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 15000
+    },
+    "checks": {
+    "maxLatency": 200,
+    "maxErrorRate": 0.5,
+    "minThroughput": 12000,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 10000
+    },
+    "checks": {
+    "maxLatency": 300,
+    "maxErrorRate": 1.0,
+    "minThroughput": 8000,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 7500
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 3
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.25,
+    "reliability": 0.25,
+    "latency": 0.2,
+    "architecture": 0.2,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "City Ride Matching Service processes ride events asynchronously via queues",
+    "City Ride Matching Service scales dispatch services horizontally",
+    "City Ride Matching Service caches nearby driver locations for fast matching"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "async_processing",
+    "horizontal_scaling"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 3,
+    "minShards": 2
+    },
+    "companyTags": [
+    "Grab",
+    "Lyft",
+    "Uber"
+    ],
+    "idealSolutionCharacteristics": [
+    "Maintains driver and rider state in a fast, centralized store",
+    "Uses async queues to process ride events and pricing updates",
+    "Horizontally scales matching and dispatch services behind a load balancer",
+    "Caches nearby driver lists per region to accelerate matching queries"
+    ]
+    },
+    
+    {
+    "id": "sd-020",
+    "title": "Multi-Channel Notification System",
+    "difficulty": "medium",
+    "description": "Design the Multi-Channel Notification System to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "notification"
+    ],
+    "requirements": [
+    "Handle 5000 requests per second for primary operations",
+    "Maintain p95 latency under 250ms for read operations",
+    "Keep error rate under 1.0% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains",
+    "Deliver 99% of notifications within 60 seconds of event generation"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 5000
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 1.0,
+    "minThroughput": 4000,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 15000
+    },
+    "checks": {
+    "maxLatency": 200,
+    "maxErrorRate": 0.5,
+    "minThroughput": 12000,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 10000
+    },
+    "checks": {
+    "maxLatency": 300,
+    "maxErrorRate": 1.0,
+    "minThroughput": 8000,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 7500
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 3
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.25,
+    "reliability": 0.25,
+    "latency": 0.2,
+    "architecture": 0.2,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "Multi-Channel Notification System uses queues to decouple notification ingestion and delivery",
+    "Multi-Channel Notification System scales notification workers horizontally",
+    "Multi-Channel Notification System caches user channel preferences to reduce database lookups"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "async_processing",
+    "horizontal_scaling"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 3,
+    "minShards": 2
+    },
+    "companyTags": [
+    "Meta"
+    ],
+    "idealSolutionCharacteristics": [
+    "Accepts notification requests via stateless APIs behind a load balancer",
+    "Queues notifications for asynchronous delivery by workers",
+    "Caches user channel preferences to avoid repeated database lookups",
+    "Scales delivery workers horizontally to handle spikes in notifications"
+    ]
+    },
+    
+    {
+    "id": "sd-021",
+    "title": "Search Autocomplete Service",
+    "difficulty": "medium",
+    "description": "Design the Search Autocomplete Service to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "search"
+    ],
+    "requirements": [
+    "Handle 5000 requests per second for primary operations",
+    "Maintain p95 latency under 250ms for read operations",
+    "Keep error rate under 1.0% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains",
+    "Index new documents so they become searchable within 60 seconds of ingestion"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 5000
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 1.0,
+    "minThroughput": 4000,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 15000
+    },
+    "checks": {
+    "maxLatency": 200,
+    "maxErrorRate": 0.5,
+    "minThroughput": 12000,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 10000
+    },
+    "checks": {
+    "maxLatency": 300,
+    "maxErrorRate": 1.0,
+    "minThroughput": 8000,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 7500
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 3
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.25,
+    "reliability": 0.25,
+    "latency": 0.2,
+    "architecture": 0.2,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "Search Autocomplete Service ingests documents asynchronously for indexing",
+    "Search Autocomplete Service shards and scales search index horizontally",
+    "Search Autocomplete Service uses caching for hot queries and autocomplete suggestions"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "caching",
+    "horizontal_scaling",
+    "load_balancing"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 3,
+    "minShards": 2
+    },
+    "companyTags": [
+    "Elastic",
+    "Google",
+    "Microsoft"
+    ],
+    "idealSolutionCharacteristics": [
+    "Separates read APIs from indexing pipelines using queues",
+    "Shards the search index and scales query nodes horizontally",
+    "Caches popular queries and suggestions at the application layer",
+    "Uses background workers to update the index without blocking writes"
+    ]
+    },
+    
+    {
+    "id": "sd-022",
+    "title": "Document Search Service",
+    "difficulty": "medium",
+    "description": "Design the Document Search Service to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "search",
+    "full-text"
+    ],
+    "requirements": [
+    "Handle 5000 requests per second for primary operations",
+    "Maintain p95 latency under 250ms for read operations",
+    "Keep error rate under 1.0% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains",
+    "Index new documents so they become searchable within 60 seconds of ingestion"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 5000
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 1.0,
+    "minThroughput": 4000,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 15000
+    },
+    "checks": {
+    "maxLatency": 200,
+    "maxErrorRate": 0.5,
+    "minThroughput": 12000,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 10000
+    },
+    "checks": {
+    "maxLatency": 300,
+    "maxErrorRate": 1.0,
+    "minThroughput": 8000,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 7500
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 3
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.25,
+    "reliability": 0.25,
+    "latency": 0.2,
+    "architecture": 0.2,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "Document Search Service ingests documents asynchronously for indexing",
+    "Document Search Service shards and scales search index horizontally",
+    "Document Search Service uses caching for hot queries and autocomplete suggestions"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "caching",
+    "horizontal_scaling",
+    "load_balancing"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 3,
+    "minShards": 2
+    },
+    "companyTags": [
+    "Elastic",
+    "Google",
+    "Microsoft"
+    ],
+    "idealSolutionCharacteristics": [
+    "Separates read APIs from indexing pipelines using queues",
+    "Shards the search index and scales query nodes horizontally",
+    "Caches popular queries and suggestions at the application layer",
+    "Uses background workers to update the index without blocking writes"
+    ]
+    },
+    
+    {
+    "id": "sd-023",
+    "title": "File Storage and Sharing",
+    "difficulty": "medium",
+    "description": "Design the File Storage and Sharing to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "file-storage"
+    ],
+    "requirements": [
+    "Handle 5000 requests per second for primary operations",
+    "Maintain p95 latency under 250ms for read operations",
+    "Keep error rate under 1.0% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains",
+    "Store at least 100 TB of files with 11 nines of annual durability"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 5000
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 1.0,
+    "minThroughput": 4000,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 15000
+    },
+    "checks": {
+    "maxLatency": 200,
+    "maxErrorRate": 0.5,
+    "minThroughput": 12000,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 10000
+    },
+    "checks": {
+    "maxLatency": 300,
+    "maxErrorRate": 1.0,
+    "minThroughput": 8000,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 7500
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 3
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.25,
+    "reliability": 0.25,
+    "latency": 0.2,
+    "architecture": 0.2,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "File Storage and Sharing uses caching for frequently accessed file metadata",
+    "File Storage and Sharing scales storage and metadata services horizontally",
+    "File Storage and Sharing processes background tasks like thumbnails asynchronously"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "caching",
+    "horizontal_scaling",
+    "load_balancing"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 3,
+    "minShards": 2
+    },
+    "companyTags": [
+    "Box",
+    "Dropbox",
+    "Google"
+    ],
+    "idealSolutionCharacteristics": [
+    "Stores file metadata in a durable database and blobs in object storage",
+    "Uses caching for frequently accessed metadata and signed URLs",
+    "Processes heavy operations like virus scanning via async workers",
+    "Scales upload and download endpoints horizontally behind a load balancer"
+    ]
+    },
+    
+    {
+    "id": "sd-024",
+    "title": "Video Streaming Platform",
+    "difficulty": "medium",
+    "description": "Design the Video Streaming Platform to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "video-streaming"
+    ],
+    "requirements": [
+    "Handle 5000 requests per second for primary operations",
+    "Maintain p95 latency under 250ms for read operations",
+    "Keep error rate under 1.0% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains",
+    "Stream video to 100,000 concurrent viewers with less than 5 seconds startup time"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 5000
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 1.0,
+    "minThroughput": 4000,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 15000
+    },
+    "checks": {
+    "maxLatency": 200,
+    "maxErrorRate": 0.5,
+    "minThroughput": 12000,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 10000
+    },
+    "checks": {
+    "maxLatency": 300,
+    "maxErrorRate": 1.0,
+    "minThroughput": 8000,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 7500
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 3
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.25,
+    "reliability": 0.25,
+    "latency": 0.2,
+    "architecture": 0.2,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "Video Streaming Platform uses caching and CDN for video segments",
+    "Video Streaming Platform horizontally scales streaming application servers",
+    "Video Streaming Platform offloads heavy processing to async workers"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "caching",
+    "horizontal_scaling",
+    "load_balancing"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 3,
+    "minShards": 2
+    },
+    "companyTags": [
+    "Netflix"
+    ],
+    "idealSolutionCharacteristics": [
+    "Serves static video content via CDN backed by origin servers",
+    "Keeps streaming control plane stateless and horizontally scalable",
+    "Uses background workers to transcode and package video asynchronously",
+    "Caches session and metadata lookups to minimize database load"
+    ]
+    },
+    
+    {
+    "id": "sd-025",
+    "title": "Real-Time Gaming Leaderboard",
+    "difficulty": "medium",
+    "description": "Design the Real-Time Gaming Leaderboard to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "leaderboard"
+    ],
+    "requirements": [
+    "Handle 5000 requests per second for primary operations",
+    "Maintain p95 latency under 250ms for read operations",
+    "Keep error rate under 1.0% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains",
+    "Update and read leaderboard positions for 1 million players with p95 latency under 150ms"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 5000
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 1.0,
+    "minThroughput": 4000,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 15000
+    },
+    "checks": {
+    "maxLatency": 200,
+    "maxErrorRate": 0.5,
+    "minThroughput": 12000,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 10000
+    },
+    "checks": {
+    "maxLatency": 300,
+    "maxErrorRate": 1.0,
+    "minThroughput": 8000,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 7500
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 3
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.25,
+    "reliability": 0.25,
+    "latency": 0.2,
+    "architecture": 0.2,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "Real-Time Gaming Leaderboard introduces caching to relieve database hot paths",
+    "Real-Time Gaming Leaderboard scales stateless services horizontally behind a load balancer",
+    "Real-Time Gaming Leaderboard uses async_processing for non-critical background work"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 3,
+    "minShards": 2
+    },
+    "companyTags": [
+    "Amazon",
+    "Google",
+    "Microsoft"
+    ],
+    "idealSolutionCharacteristics": [
+    "Keeps core APIs for Real-Time Gaming Leaderboard stateless and load balanced across multiple app servers",
+    "Introduces a cache layer to reduce repeated database queries for Real-Time Gaming Leaderboard",
+    "Uses a queue and workers to process background tasks for Real-Time Gaming Leaderboard",
+    "Replicates the primary database to improve read scalability for Real-Time Gaming Leaderboard"
+    ]
+    },
+    
+    {
+    "id": "sd-026",
+    "title": "Geo-Distributed Counter",
+    "difficulty": "medium",
+    "description": "Design the Geo-Distributed Counter to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "geo-distributed"
+    ],
+    "requirements": [
+    "Handle 5000 requests per second for primary operations",
+    "Maintain p95 latency under 250ms for read operations",
+    "Keep error rate under 1.0% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 5000
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 1.0,
+    "minThroughput": 4000,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 15000
+    },
+    "checks": {
+    "maxLatency": 200,
+    "maxErrorRate": 0.5,
+    "minThroughput": 12000,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 10000
+    },
+    "checks": {
+    "maxLatency": 300,
+    "maxErrorRate": 1.0,
+    "minThroughput": 8000,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 7500
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 3
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.25,
+    "reliability": 0.25,
+    "latency": 0.2,
+    "architecture": 0.2,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "Geo-Distributed Counter introduces caching to relieve database hot paths",
+    "Geo-Distributed Counter scales stateless services horizontally behind a load balancer",
+    "Geo-Distributed Counter uses async_processing for non-critical background work"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 3,
+    "minShards": 2
+    },
+    "companyTags": [
+    "Amazon"
+    ],
+    "idealSolutionCharacteristics": [
+    "Keeps core APIs for Geo-Distributed Counter stateless and load balanced across multiple app servers",
+    "Introduces a cache layer to reduce repeated database queries for Geo-Distributed Counter",
+    "Uses a queue and workers to process background tasks for Geo-Distributed Counter",
+    "Replicates the primary database to improve read scalability for Geo-Distributed Counter"
+    ]
+    },
+    
+    {
+    "id": "sd-027",
+    "title": "E-commerce Checkout Backend",
+    "difficulty": "medium",
+    "description": "Design the E-commerce Checkout Backend to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "e-commerce"
+    ],
+    "requirements": [
+    "Handle 5000 requests per second for primary operations",
+    "Maintain p95 latency under 250ms for read operations",
+    "Keep error rate under 1.0% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 5000
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 1.0,
+    "minThroughput": 4000,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 15000
+    },
+    "checks": {
+    "maxLatency": 200,
+    "maxErrorRate": 0.5,
+    "minThroughput": 12000,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 10000
+    },
+    "checks": {
+    "maxLatency": 300,
+    "maxErrorRate": 1.0,
+    "minThroughput": 8000,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 7500
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 3
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.25,
+    "reliability": 0.25,
+    "latency": 0.2,
+    "architecture": 0.2,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "E-commerce Checkout Backend introduces caching to relieve database hot paths",
+    "E-commerce Checkout Backend scales stateless services horizontally behind a load balancer",
+    "E-commerce Checkout Backend uses async_processing for non-critical background work"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 3,
+    "minShards": 2
+    },
+    "companyTags": [
+    "Amazon",
+    "Microsoft"
+    ],
+    "idealSolutionCharacteristics": [
+    "Keeps core APIs for E-commerce Checkout Backend stateless and load balanced across multiple app servers",
+    "Introduces a cache layer to reduce repeated database queries for E-commerce Checkout Backend",
+    "Uses a queue and workers to process background tasks for E-commerce Checkout Backend",
+    "Replicates the primary database to improve read scalability for E-commerce Checkout Backend"
+    ]
+    },
+    
+    {
+    "id": "sd-028",
+    "title": "Background Task Queue and Workers",
+    "difficulty": "medium",
+    "description": "Design the Background Task Queue and Workers to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "workers"
+    ],
+    "requirements": [
+    "Handle 5000 requests per second for primary operations",
+    "Maintain p95 latency under 250ms for read operations",
+    "Keep error rate under 1.0% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 5000
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 1.0,
+    "minThroughput": 4000,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 15000
+    },
+    "checks": {
+    "maxLatency": 200,
+    "maxErrorRate": 0.5,
+    "minThroughput": 12000,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 10000
+    },
+    "checks": {
+    "maxLatency": 300,
+    "maxErrorRate": 1.0,
+    "minThroughput": 8000,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 7500
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 3
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.25,
+    "reliability": 0.25,
+    "latency": 0.2,
+    "architecture": 0.2,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "Background Task Queue and Workers introduces caching to relieve database hot paths",
+    "Background Task Queue and Workers scales stateless services horizontally behind a load balancer",
+    "Background Task Queue and Workers uses async_processing for non-critical background work"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "async_processing",
+    "horizontal_scaling"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 3,
+    "minShards": 2
+    },
+    "companyTags": [
+    "Amazon"
+    ],
+    "idealSolutionCharacteristics": [
+    "Keeps core APIs for Background Task Queue and Workers stateless and load balanced across multiple app servers",
+    "Introduces a cache layer to reduce repeated database queries for Background Task Queue and Workers",
+    "Uses a queue and workers to process background tasks for Background Task Queue and Workers",
+    "Replicates the primary database to improve read scalability for Background Task Queue and Workers"
+    ]
+    },
+    
+    {
+    "id": "sd-029",
+    "title": "Metrics and Monitoring Pipeline",
+    "difficulty": "medium",
+    "description": "Design the Metrics and Monitoring Pipeline to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "metrics"
+    ],
+    "requirements": [
+    "Handle 5000 requests per second for primary operations",
+    "Maintain p95 latency under 250ms for read operations",
+    "Keep error rate under 1.0% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 5000
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 1.0,
+    "minThroughput": 4000,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 15000
+    },
+    "checks": {
+    "maxLatency": 200,
+    "maxErrorRate": 0.5,
+    "minThroughput": 12000,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 10000
+    },
+    "checks": {
+    "maxLatency": 300,
+    "maxErrorRate": 1.0,
+    "minThroughput": 8000,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 7500
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 3
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.25,
+    "reliability": 0.25,
+    "latency": 0.2,
+    "architecture": 0.2,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "Metrics and Monitoring Pipeline introduces caching to relieve database hot paths",
+    "Metrics and Monitoring Pipeline scales stateless services horizontally behind a load balancer",
+    "Metrics and Monitoring Pipeline uses async_processing for non-critical background work"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "async_processing",
+    "horizontal_scaling"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 3,
+    "minShards": 2
+    },
+    "companyTags": [
+    "Microsoft"
+    ],
+    "idealSolutionCharacteristics": [
+    "Keeps core APIs for Metrics and Monitoring Pipeline stateless and load balanced across multiple app servers",
+    "Introduces a cache layer to reduce repeated database queries for Metrics and Monitoring Pipeline",
+    "Uses a queue and workers to process background tasks for Metrics and Monitoring Pipeline",
+    "Replicates the primary database to improve read scalability for Metrics and Monitoring Pipeline"
+    ]
+    },
+    
+    {
+    "id": "sd-030",
+    "title": "Ad Impression Tracker",
+    "difficulty": "medium",
+    "description": "Design the Ad Impression Tracker to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "ads"
+    ],
+    "requirements": [
+    "Handle 5000 requests per second for primary operations",
+    "Maintain p95 latency under 250ms for read operations",
+    "Keep error rate under 1.0% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 5000
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 1.0,
+    "minThroughput": 4000,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 15000
+    },
+    "checks": {
+    "maxLatency": 200,
+    "maxErrorRate": 0.5,
+    "minThroughput": 12000,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 10000
+    },
+    "checks": {
+    "maxLatency": 300,
+    "maxErrorRate": 1.0,
+    "minThroughput": 8000,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 7500
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 3
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.25,
+    "reliability": 0.25,
+    "latency": 0.2,
+    "architecture": 0.2,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "Ad Impression Tracker introduces caching to relieve database hot paths",
+    "Ad Impression Tracker scales stateless services horizontally behind a load balancer",
+    "Ad Impression Tracker uses async_processing for non-critical background work"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "async_processing",
+    "horizontal_scaling"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 3,
+    "minShards": 2
+    },
+    "companyTags": [
+    "Amazon"
+    ],
+    "idealSolutionCharacteristics": [
+    "Keeps core APIs for Ad Impression Tracker stateless and load balanced across multiple app servers",
+    "Introduces a cache layer to reduce repeated database queries for Ad Impression Tracker",
+    "Uses a queue and workers to process background tasks for Ad Impression Tracker",
+    "Replicates the primary database to improve read scalability for Ad Impression Tracker"
+    ]
+    },
+    
+    {
+    "id": "sd-031",
+    "title": "Collaborative Document Editing",
+    "difficulty": "medium",
+    "description": "Design the Collaborative Document Editing to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "collaboration"
+    ],
+    "requirements": [
+    "Handle 5000 requests per second for primary operations",
+    "Maintain p95 latency under 250ms for read operations",
+    "Keep error rate under 1.0% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 5000
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 1.0,
+    "minThroughput": 4000,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 15000
+    },
+    "checks": {
+    "maxLatency": 200,
+    "maxErrorRate": 0.5,
+    "minThroughput": 12000,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 10000
+    },
+    "checks": {
+    "maxLatency": 300,
+    "maxErrorRate": 1.0,
+    "minThroughput": 8000,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 7500
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 3
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.25,
+    "reliability": 0.25,
+    "latency": 0.2,
+    "architecture": 0.2,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "Collaborative Document Editing introduces caching to relieve database hot paths",
+    "Collaborative Document Editing scales stateless services horizontally behind a load balancer",
+    "Collaborative Document Editing uses async_processing for non-critical background work"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 3,
+    "minShards": 2
+    },
+    "companyTags": [
+    "Google",
+    "Microsoft"
+    ],
+    "idealSolutionCharacteristics": [
+    "Keeps core APIs for Collaborative Document Editing stateless and load balanced across multiple app servers",
+    "Introduces a cache layer to reduce repeated database queries for Collaborative Document Editing",
+    "Uses a queue and workers to process background tasks for Collaborative Document Editing",
+    "Replicates the primary database to improve read scalability for Collaborative Document Editing"
+    ]
+    },
+    
+    {
+    "id": "sd-032",
+    "title": "Real-Time Bidding Service",
+    "difficulty": "medium",
+    "description": "Design the Real-Time Bidding Service to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "ads",
+    "rtb"
+    ],
+    "requirements": [
+    "Handle 5000 requests per second for primary operations",
+    "Maintain p95 latency under 250ms for read operations",
+    "Keep error rate under 1.0% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 5000
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 1.0,
+    "minThroughput": 4000,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 15000
+    },
+    "checks": {
+    "maxLatency": 200,
+    "maxErrorRate": 0.5,
+    "minThroughput": 12000,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 10000
+    },
+    "checks": {
+    "maxLatency": 300,
+    "maxErrorRate": 1.0,
+    "minThroughput": 8000,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 7500
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 3
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.25,
+    "reliability": 0.25,
+    "latency": 0.2,
+    "architecture": 0.2,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "Real-Time Bidding Service introduces caching to relieve database hot paths",
+    "Real-Time Bidding Service scales stateless services horizontally behind a load balancer",
+    "Real-Time Bidding Service uses async_processing for non-critical background work"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "async_processing",
+    "horizontal_scaling"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 3,
+    "minShards": 2
+    },
+    "companyTags": [
+    "Meta"
+    ],
+    "idealSolutionCharacteristics": [
+    "Keeps core APIs for Real-Time Bidding Service stateless and load balanced across multiple app servers",
+    "Introduces a cache layer to reduce repeated database queries for Real-Time Bidding Service",
+    "Uses a queue and workers to process background tasks for Real-Time Bidding Service",
+    "Replicates the primary database to improve read scalability for Real-Time Bidding Service"
+    ]
+    },
+    
+    {
+    "id": "sd-033",
+    "title": "IoT Device Command Hub",
+    "difficulty": "medium",
+    "description": "Design the IoT Device Command Hub to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "iot"
+    ],
+    "requirements": [
+    "Handle 5000 requests per second for primary operations",
+    "Maintain p95 latency under 250ms for read operations",
+    "Keep error rate under 1.0% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 5000
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 1.0,
+    "minThroughput": 4000,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 15000
+    },
+    "checks": {
+    "maxLatency": 200,
+    "maxErrorRate": 0.5,
+    "minThroughput": 12000,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 10000
+    },
+    "checks": {
+    "maxLatency": 300,
+    "maxErrorRate": 1.0,
+    "minThroughput": 8000,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 7500
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 3
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.25,
+    "reliability": 0.25,
+    "latency": 0.2,
+    "architecture": 0.2,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "IoT Device Command Hub introduces caching to relieve database hot paths",
+    "IoT Device Command Hub scales stateless services horizontally behind a load balancer",
+    "IoT Device Command Hub uses async_processing for non-critical background work"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 3,
+    "minShards": 2
+    },
+    "companyTags": [
+    "Amazon"
+    ],
+    "idealSolutionCharacteristics": [
+    "Keeps core APIs for IoT Device Command Hub stateless and load balanced across multiple app servers",
+    "Introduces a cache layer to reduce repeated database queries for IoT Device Command Hub",
+    "Uses a queue and workers to process background tasks for IoT Device Command Hub",
+    "Replicates the primary database to improve read scalability for IoT Device Command Hub"
+    ]
+    },
+    
+    {
+    "id": "sd-034",
+    "title": "Recommendation Feed Generator",
+    "difficulty": "medium",
+    "description": "Design the Recommendation Feed Generator to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "recommendation"
+    ],
+    "requirements": [
+    "Handle 5000 requests per second for primary operations",
+    "Maintain p95 latency under 250ms for read operations",
+    "Keep error rate under 1.0% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 5000
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 1.0,
+    "minThroughput": 4000,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 15000
+    },
+    "checks": {
+    "maxLatency": 200,
+    "maxErrorRate": 0.5,
+    "minThroughput": 12000,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 10000
+    },
+    "checks": {
+    "maxLatency": 300,
+    "maxErrorRate": 1.0,
+    "minThroughput": 8000,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 7500
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 3
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.25,
+    "reliability": 0.25,
+    "latency": 0.2,
+    "architecture": 0.2,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "Recommendation Feed Generator introduces caching to relieve database hot paths",
+    "Recommendation Feed Generator scales stateless services horizontally behind a load balancer",
+    "Recommendation Feed Generator uses async_processing for non-critical background work"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 3,
+    "minShards": 2
+    },
+    "companyTags": [
+    "Amazon",
+    "Google",
+    "Microsoft"
+    ],
+    "idealSolutionCharacteristics": [
+    "Keeps core APIs for Recommendation Feed Generator stateless and load balanced across multiple app servers",
+    "Introduces a cache layer to reduce repeated database queries for Recommendation Feed Generator",
+    "Uses a queue and workers to process background tasks for Recommendation Feed Generator",
+    "Replicates the primary database to improve read scalability for Recommendation Feed Generator"
+    ]
+    },
+    
+    {
+    "id": "sd-035",
+    "title": "Comment and Like Service",
+    "difficulty": "medium",
+    "description": "Design the Comment and Like Service to handle high traffic with horizontal scalability. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "social"
+    ],
+    "requirements": [
+    "Handle 5000 requests per second for primary operations",
+    "Maintain p95 latency under 250ms for read operations",
+    "Keep error rate under 1.0% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 5000
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 1.0,
+    "minThroughput": 4000,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 15000
+    },
+    "checks": {
+    "maxLatency": 200,
+    "maxErrorRate": 0.5,
+    "minThroughput": 12000,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 10000
+    },
+    "checks": {
+    "maxLatency": 300,
+    "maxErrorRate": 1.0,
+    "minThroughput": 8000,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 7500
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 3
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.25,
+    "reliability": 0.25,
+    "latency": 0.2,
+    "architecture": 0.2,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "Comment and Like Service introduces caching to relieve database hot paths",
+    "Comment and Like Service scales stateless services horizontally behind a load balancer",
+    "Comment and Like Service uses async_processing for non-critical background work"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 3,
+    "minShards": 2
+    },
+    "companyTags": [
+    "Meta"
+    ],
+    "idealSolutionCharacteristics": [
+    "Keeps core APIs for Comment and Like Service stateless and load balanced across multiple app servers",
+    "Introduces a cache layer to reduce repeated database queries for Comment and Like Service",
+    "Uses a queue and workers to process background tasks for Comment and Like Service",
+    "Replicates the primary database to improve read scalability for Comment and Like Service"
+    ]
+    },
+    
+    {
+    "id": "sd-036",
+    "title": "Global Ride-Sharing Platform",
+    "difficulty": "hard",
+    "description": "Design the Global Ride-Sharing Platform to handle internet-scale, multi-region traffic and failures. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "ride-sharing",
+    "global"
+    ],
+    "requirements": [
+    "Handle 20000 requests per second for primary operations",
+    "Maintain p95 latency under 200ms for read operations",
+    "Keep error rate under 0.5% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains",
+    "Match riders and drivers within 5 seconds for 95% of ride requests in a city"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 20000
+    },
+    "checks": {
+    "maxLatency": 200,
+    "maxErrorRate": 0.5,
+    "minThroughput": 16000,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 60000
+    },
+    "checks": {
+    "maxLatency": 150,
+    "maxErrorRate": 0.25,
+    "minThroughput": 48000,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 40000
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 0.5,
+    "minThroughput": 32000,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 30000
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 4
+    }
+    },
+    {
+    "name": "Peak Load and Efficiency Test",
+    "input": {
+    "traffic": 80000
+    },
+    "checks": {
+    "maxLatency": 130,
+    "maxErrorRate": 0.2,
+    "minThroughput": 64000,
+    "requiredCapabilities": [
+    "async_processing",
+    "horizontal_scaling"
+    ],
+    "minShards": 3
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.3,
+    "reliability": 0.25,
+    "latency": 0.2,
+    "architecture": 0.15,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "Global Ride-Sharing Platform processes ride events asynchronously via queues",
+    "Global Ride-Sharing Platform scales dispatch services horizontally",
+    "Global Ride-Sharing Platform caches nearby driver locations for fast matching"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "async_processing",
+    "horizontal_scaling"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 4,
+    "minShards": 3
+    },
+    "companyTags": [
+    "Grab"
+    ],
+    "idealSolutionCharacteristics": [
+    "Maintains driver and rider state in a fast, centralized store",
+    "Uses async queues to process ride events and pricing updates",
+    "Horizontally scales matching and dispatch services behind a load balancer",
+    "Caches nearby driver lists per region to accelerate matching queries"
+    ]
+    },
+    
+    {
+    "id": "sd-037",
+    "title": "Multi-Region News Feed with Ranking",
+    "difficulty": "hard",
+    "description": "Design the Multi-Region News Feed with Ranking to handle internet-scale, multi-region traffic and failures. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "news-feed",
+    "ranking"
+    ],
+    "requirements": [
+    "Handle 20000 requests per second for primary operations",
+    "Maintain p95 latency under 200ms for read operations",
+    "Keep error rate under 0.5% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains",
+    "Generate personalized feeds for 1 million daily active users within 2 seconds per request"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 20000
+    },
+    "checks": {
+    "maxLatency": 200,
+    "maxErrorRate": 0.5,
+    "minThroughput": 16000,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 60000
+    },
+    "checks": {
+    "maxLatency": 150,
+    "maxErrorRate": 0.25,
+    "minThroughput": 48000,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 40000
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 0.5,
+    "minThroughput": 32000,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 30000
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 4
+    }
+    },
+    {
+    "name": "Peak Load and Efficiency Test",
+    "input": {
+    "traffic": 80000
+    },
+    "checks": {
+    "maxLatency": 130,
+    "maxErrorRate": 0.2,
+    "minThroughput": 64000,
+    "requiredCapabilities": [
+    "async_processing",
+    "horizontal_scaling"
+    ],
+    "minShards": 3
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.3,
+    "reliability": 0.25,
+    "latency": 0.2,
+    "architecture": 0.15,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "Multi-Region News Feed with Ranking precomputes feeds asynchronously via queues",
+    "Multi-Region News Feed with Ranking scales horizontally for feed reads and writes",
+    "Multi-Region News Feed with Ranking caches feed pages to reduce database load"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "caching",
+    "horizontal_scaling",
+    "load_balancing"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 4,
+    "minShards": 3
+    },
+    "companyTags": [
+    "Meta"
+    ],
+    "idealSolutionCharacteristics": [
+    "Generates feeds asynchronously using workers consuming from a queue",
+    "Stores feed entries in a database optimized for time-ordered reads",
+    "Caches feed pages per user to serve read-heavy workloads",
+    "Scales feed read APIs horizontally behind a load balancer"
+    ]
+    },
+    
+    {
+    "id": "sd-038",
+    "title": "End-to-End Encrypted Messaging",
+    "difficulty": "hard",
+    "description": "Design the End-to-End Encrypted Messaging to handle internet-scale, multi-region traffic and failures. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "chat",
+    "encryption"
+    ],
+    "requirements": [
+    "Handle 20000 requests per second for primary operations",
+    "Maintain p95 latency under 200ms for read operations",
+    "Keep error rate under 0.5% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains",
+    "Support at least 50,000 concurrent connected clients with message fan-out under 1 second"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 20000
+    },
+    "checks": {
+    "maxLatency": 200,
+    "maxErrorRate": 0.5,
+    "minThroughput": 16000,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 60000
+    },
+    "checks": {
+    "maxLatency": 150,
+    "maxErrorRate": 0.25,
+    "minThroughput": 48000,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 40000
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 0.5,
+    "minThroughput": 32000,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 30000
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 4
+    }
+    },
+    {
+    "name": "Peak Load and Efficiency Test",
+    "input": {
+    "traffic": 80000
+    },
+    "checks": {
+    "maxLatency": 130,
+    "maxErrorRate": 0.2,
+    "minThroughput": 64000,
+    "requiredCapabilities": [
+    "async_processing",
+    "horizontal_scaling"
+    ],
+    "minShards": 3
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.3,
+    "reliability": 0.25,
+    "latency": 0.2,
+    "architecture": 0.15,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "End-to-End Encrypted Messaging uses async_processing to fan out messages",
+    "End-to-End Encrypted Messaging horizontally scales chat gateways handling connections",
+    "End-to-End Encrypted Messaging leverages caching for recent conversations and presence state"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 4,
+    "minShards": 3
+    },
+    "companyTags": [
+    "Amazon",
+    "Google",
+    "Microsoft"
+    ],
+    "idealSolutionCharacteristics": [
+    "Keeps chat gateways stateless and scales them horizontally behind a load balancer",
+    "Uses a message broker or queue to fan out messages to recipients asynchronously",
+    "Stores message history in a database with efficient write patterns",
+    "Caches recent conversations and presence to reduce database reads"
+    ]
+    },
+    
+    {
+    "id": "sd-039",
+    "title": "Large-Scale Distributed Cache",
+    "difficulty": "hard",
+    "description": "Design the Large-Scale Distributed Cache to handle internet-scale, multi-region traffic and failures. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "cache"
+    ],
+    "requirements": [
+    "Handle 20000 requests per second for primary operations",
+    "Maintain p95 latency under 200ms for read operations",
+    "Keep error rate under 0.5% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 20000
+    },
+    "checks": {
+    "maxLatency": 200,
+    "maxErrorRate": 0.5,
+    "minThroughput": 16000,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 60000
+    },
+    "checks": {
+    "maxLatency": 150,
+    "maxErrorRate": 0.25,
+    "minThroughput": 48000,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 40000
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 0.5,
+    "minThroughput": 32000,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 30000
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 4
+    }
+    },
+    {
+    "name": "Peak Load and Efficiency Test",
+    "input": {
+    "traffic": 80000
+    },
+    "checks": {
+    "maxLatency": 130,
+    "maxErrorRate": 0.2,
+    "minThroughput": 64000,
+    "requiredCapabilities": [
+    "async_processing",
+    "horizontal_scaling"
+    ],
+    "minShards": 3
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.3,
+    "reliability": 0.25,
+    "latency": 0.2,
+    "architecture": 0.15,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "Large-Scale Distributed Cache introduces caching to relieve database hot paths",
+    "Large-Scale Distributed Cache scales stateless services horizontally behind a load balancer",
+    "Large-Scale Distributed Cache uses async_processing for non-critical background work"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 4,
+    "minShards": 3
+    },
+    "companyTags": [
+    "Google",
+    "Microsoft"
+    ],
+    "idealSolutionCharacteristics": [
+    "Keeps core APIs for Large-Scale Distributed Cache stateless and load balanced across multiple app servers",
+    "Introduces a cache layer to reduce repeated database queries for Large-Scale Distributed Cache",
+    "Uses a queue and workers to process background tasks for Large-Scale Distributed Cache",
+    "Replicates the primary database to improve read scalability for Large-Scale Distributed Cache"
+    ]
+    },
+    
+    {
+    "id": "sd-040",
+    "title": "Cross-Region Strongly Consistent File Store",
+    "difficulty": "hard",
+    "description": "Design the Cross-Region Strongly Consistent File Store to handle internet-scale, multi-region traffic and failures. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "file-storage",
+    "strong-consistency"
+    ],
+    "requirements": [
+    "Handle 20000 requests per second for primary operations",
+    "Maintain p95 latency under 200ms for read operations",
+    "Keep error rate under 0.5% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains",
+    "Store at least 100 TB of files with 11 nines of annual durability"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 20000
+    },
+    "checks": {
+    "maxLatency": 200,
+    "maxErrorRate": 0.5,
+    "minThroughput": 16000,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 60000
+    },
+    "checks": {
+    "maxLatency": 150,
+    "maxErrorRate": 0.25,
+    "minThroughput": 48000,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 40000
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 0.5,
+    "minThroughput": 32000,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 30000
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 4
+    }
+    },
+    {
+    "name": "Peak Load and Efficiency Test",
+    "input": {
+    "traffic": 80000
+    },
+    "checks": {
+    "maxLatency": 130,
+    "maxErrorRate": 0.2,
+    "minThroughput": 64000,
+    "requiredCapabilities": [
+    "async_processing",
+    "horizontal_scaling"
+    ],
+    "minShards": 3
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.3,
+    "reliability": 0.25,
+    "latency": 0.2,
+    "architecture": 0.15,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "Cross-Region Strongly Consistent File Store uses caching for frequently accessed file metadata",
+    "Cross-Region Strongly Consistent File Store scales storage and metadata services horizontally",
+    "Cross-Region Strongly Consistent File Store processes background tasks like thumbnails asynchronously"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "caching",
+    "horizontal_scaling",
+    "load_balancing"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 4,
+    "minShards": 3
+    },
+    "companyTags": [
+    "Dropbox"
+    ],
+    "idealSolutionCharacteristics": [
+    "Stores file metadata in a durable database and blobs in object storage",
+    "Uses caching for frequently accessed metadata and signed URLs",
+    "Processes heavy operations like virus scanning via async workers",
+    "Scales upload and download endpoints horizontally behind a load balancer"
+    ]
+    },
+    
+    {
+    "id": "sd-041",
+    "title": "Live Video Streaming with Chat",
+    "difficulty": "hard",
+    "description": "Design the Live Video Streaming with Chat to handle internet-scale, multi-region traffic and failures. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "video-streaming",
+    "chat"
+    ],
+    "requirements": [
+    "Handle 20000 requests per second for primary operations",
+    "Maintain p95 latency under 200ms for read operations",
+    "Keep error rate under 0.5% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains",
+    "Support at least 50,000 concurrent connected clients with message fan-out under 1 second"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 20000
+    },
+    "checks": {
+    "maxLatency": 200,
+    "maxErrorRate": 0.5,
+    "minThroughput": 16000,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 60000
+    },
+    "checks": {
+    "maxLatency": 150,
+    "maxErrorRate": 0.25,
+    "minThroughput": 48000,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 40000
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 0.5,
+    "minThroughput": 32000,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 30000
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 4
+    }
+    },
+    {
+    "name": "Peak Load and Efficiency Test",
+    "input": {
+    "traffic": 80000
+    },
+    "checks": {
+    "maxLatency": 130,
+    "maxErrorRate": 0.2,
+    "minThroughput": 64000,
+    "requiredCapabilities": [
+    "async_processing",
+    "horizontal_scaling"
+    ],
+    "minShards": 3
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.3,
+    "reliability": 0.25,
+    "latency": 0.2,
+    "architecture": 0.15,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "Live Video Streaming with Chat uses async_processing to fan out messages",
+    "Live Video Streaming with Chat horizontally scales chat gateways handling connections",
+    "Live Video Streaming with Chat leverages caching for recent conversations and presence state"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "caching",
+    "horizontal_scaling",
+    "load_balancing"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 4,
+    "minShards": 3
+    },
+    "companyTags": [
+    "Amazon",
+    "Netflix",
+    "YouTube"
+    ],
+    "idealSolutionCharacteristics": [
+    "Keeps chat gateways stateless and scales them horizontally behind a load balancer",
+    "Uses a message broker or queue to fan out messages to recipients asynchronously",
+    "Stores message history in a database with efficient write patterns",
+    "Caches recent conversations and presence to reduce database reads"
+    ]
+    },
+    
+    {
+    "id": "sd-042",
+    "title": "Multi-Tenant SaaS Platform",
+    "difficulty": "hard",
+    "description": "Design the Multi-Tenant SaaS Platform to handle internet-scale, multi-region traffic and failures. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "saas"
+    ],
+    "requirements": [
+    "Handle 20000 requests per second for primary operations",
+    "Maintain p95 latency under 200ms for read operations",
+    "Keep error rate under 0.5% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 20000
+    },
+    "checks": {
+    "maxLatency": 200,
+    "maxErrorRate": 0.5,
+    "minThroughput": 16000,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 60000
+    },
+    "checks": {
+    "maxLatency": 150,
+    "maxErrorRate": 0.25,
+    "minThroughput": 48000,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 40000
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 0.5,
+    "minThroughput": 32000,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 30000
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 4
+    }
+    },
+    {
+    "name": "Peak Load and Efficiency Test",
+    "input": {
+    "traffic": 80000
+    },
+    "checks": {
+    "maxLatency": 130,
+    "maxErrorRate": 0.2,
+    "minThroughput": 64000,
+    "requiredCapabilities": [
+    "async_processing",
+    "horizontal_scaling"
+    ],
+    "minShards": 3
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.3,
+    "reliability": 0.25,
+    "latency": 0.2,
+    "architecture": 0.15,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "Multi-Tenant SaaS Platform introduces caching to relieve database hot paths",
+    "Multi-Tenant SaaS Platform scales stateless services horizontally behind a load balancer",
+    "Multi-Tenant SaaS Platform uses async_processing for non-critical background work"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 4,
+    "minShards": 3
+    },
+    "companyTags": [
+    "Salesforce"
+    ],
+    "idealSolutionCharacteristics": [
+    "Keeps core APIs for Multi-Tenant SaaS Platform stateless and load balanced across multiple app servers",
+    "Introduces a cache layer to reduce repeated database queries for Multi-Tenant SaaS Platform",
+    "Uses a queue and workers to process background tasks for Multi-Tenant SaaS Platform",
+    "Replicates the primary database to improve read scalability for Multi-Tenant SaaS Platform"
+    ]
+    },
+    
+    {
+    "id": "sd-043",
+    "title": "Real-Time Fraud Detection Engine",
+    "difficulty": "hard",
+    "description": "Design the Real-Time Fraud Detection Engine to handle internet-scale, multi-region traffic and failures. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "fraud-detection"
+    ],
+    "requirements": [
+    "Handle 20000 requests per second for primary operations",
+    "Maintain p95 latency under 200ms for read operations",
+    "Keep error rate under 0.5% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains",
+    "Score at least 10,000 transactions per second with decision latency under 200ms"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 20000
+    },
+    "checks": {
+    "maxLatency": 200,
+    "maxErrorRate": 0.5,
+    "minThroughput": 16000,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 60000
+    },
+    "checks": {
+    "maxLatency": 150,
+    "maxErrorRate": 0.25,
+    "minThroughput": 48000,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 40000
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 0.5,
+    "minThroughput": 32000,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 30000
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 4
+    }
+    },
+    {
+    "name": "Peak Load and Efficiency Test",
+    "input": {
+    "traffic": 80000
+    },
+    "checks": {
+    "maxLatency": 130,
+    "maxErrorRate": 0.2,
+    "minThroughput": 64000,
+    "requiredCapabilities": [
+    "async_processing",
+    "horizontal_scaling"
+    ],
+    "minShards": 3
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.3,
+    "reliability": 0.25,
+    "latency": 0.2,
+    "architecture": 0.15,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "Real-Time Fraud Detection Engine introduces caching to relieve database hot paths",
+    "Real-Time Fraud Detection Engine scales stateless services horizontally behind a load balancer",
+    "Real-Time Fraud Detection Engine uses async_processing for non-critical background work"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "async_processing",
+    "horizontal_scaling"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 4,
+    "minShards": 3
+    },
+    "companyTags": [
+    "Amazon",
+    "Google",
+    "Microsoft"
+    ],
+    "idealSolutionCharacteristics": [
+    "Keeps core APIs for Real-Time Fraud Detection Engine stateless and load balanced across multiple app servers",
+    "Introduces a cache layer to reduce repeated database queries for Real-Time Fraud Detection Engine",
+    "Uses a queue and workers to process background tasks for Real-Time Fraud Detection Engine",
+    "Replicates the primary database to improve read scalability for Real-Time Fraud Detection Engine"
+    ]
+    },
+    
+    {
+    "id": "sd-044",
+    "title": "Global Search Indexing Pipeline",
+    "difficulty": "hard",
+    "description": "Design the Global Search Indexing Pipeline to handle internet-scale, multi-region traffic and failures. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "search",
+    "indexing"
+    ],
+    "requirements": [
+    "Handle 20000 requests per second for primary operations",
+    "Maintain p95 latency under 200ms for read operations",
+    "Keep error rate under 0.5% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains",
+    "Index new documents so they become searchable within 60 seconds of ingestion"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 20000
+    },
+    "checks": {
+    "maxLatency": 200,
+    "maxErrorRate": 0.5,
+    "minThroughput": 16000,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 60000
+    },
+    "checks": {
+    "maxLatency": 150,
+    "maxErrorRate": 0.25,
+    "minThroughput": 48000,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 40000
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 0.5,
+    "minThroughput": 32000,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 30000
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 4
+    }
+    },
+    {
+    "name": "Peak Load and Efficiency Test",
+    "input": {
+    "traffic": 80000
+    },
+    "checks": {
+    "maxLatency": 130,
+    "maxErrorRate": 0.2,
+    "minThroughput": 64000,
+    "requiredCapabilities": [
+    "async_processing",
+    "horizontal_scaling"
+    ],
+    "minShards": 3
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.3,
+    "reliability": 0.25,
+    "latency": 0.2,
+    "architecture": 0.15,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "Global Search Indexing Pipeline ingests documents asynchronously for indexing",
+    "Global Search Indexing Pipeline shards and scales search index horizontally",
+    "Global Search Indexing Pipeline uses caching for hot queries and autocomplete suggestions"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "caching",
+    "horizontal_scaling",
+    "load_balancing"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 4,
+    "minShards": 3
+    },
+    "companyTags": [
+    "Elastic",
+    "Google",
+    "Microsoft"
+    ],
+    "idealSolutionCharacteristics": [
+    "Separates read APIs from indexing pipelines using queues",
+    "Shards the search index and scales query nodes horizontally",
+    "Caches popular queries and suggestions at the application layer",
+    "Uses background workers to update the index without blocking writes"
+    ]
+    },
+    
+    {
+    "id": "sd-045",
+    "title": "HTAP Analytics Service",
+    "difficulty": "hard",
+    "description": "Design the HTAP Analytics Service to handle internet-scale, multi-region traffic and failures. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "htap"
+    ],
+    "requirements": [
+    "Handle 20000 requests per second for primary operations",
+    "Maintain p95 latency under 200ms for read operations",
+    "Keep error rate under 0.5% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 20000
+    },
+    "checks": {
+    "maxLatency": 200,
+    "maxErrorRate": 0.5,
+    "minThroughput": 16000,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 60000
+    },
+    "checks": {
+    "maxLatency": 150,
+    "maxErrorRate": 0.25,
+    "minThroughput": 48000,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 40000
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 0.5,
+    "minThroughput": 32000,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 30000
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 4
+    }
+    },
+    {
+    "name": "Peak Load and Efficiency Test",
+    "input": {
+    "traffic": 80000
+    },
+    "checks": {
+    "maxLatency": 130,
+    "maxErrorRate": 0.2,
+    "minThroughput": 64000,
+    "requiredCapabilities": [
+    "async_processing",
+    "horizontal_scaling"
+    ],
+    "minShards": 3
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.3,
+    "reliability": 0.25,
+    "latency": 0.2,
+    "architecture": 0.15,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "HTAP Analytics Service introduces caching to relieve database hot paths",
+    "HTAP Analytics Service scales stateless services horizontally behind a load balancer",
+    "HTAP Analytics Service uses async_processing for non-critical background work"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 4,
+    "minShards": 3
+    },
+    "companyTags": [
+    "Databricks"
+    ],
+    "idealSolutionCharacteristics": [
+    "Keeps core APIs for HTAP Analytics Service stateless and load balanced across multiple app servers",
+    "Introduces a cache layer to reduce repeated database queries for HTAP Analytics Service",
+    "Uses a queue and workers to process background tasks for HTAP Analytics Service",
+    "Replicates the primary database to improve read scalability for HTAP Analytics Service"
+    ]
+    },
+    
+    {
+    "id": "sd-046",
+    "title": "Event-Driven Microservices Platform",
+    "difficulty": "hard",
+    "description": "Design the Event-Driven Microservices Platform to handle internet-scale, multi-region traffic and failures. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "microservices",
+    "events"
+    ],
+    "requirements": [
+    "Handle 20000 requests per second for primary operations",
+    "Maintain p95 latency under 200ms for read operations",
+    "Keep error rate under 0.5% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 20000
+    },
+    "checks": {
+    "maxLatency": 200,
+    "maxErrorRate": 0.5,
+    "minThroughput": 16000,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 60000
+    },
+    "checks": {
+    "maxLatency": 150,
+    "maxErrorRate": 0.25,
+    "minThroughput": 48000,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 40000
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 0.5,
+    "minThroughput": 32000,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 30000
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 4
+    }
+    },
+    {
+    "name": "Peak Load and Efficiency Test",
+    "input": {
+    "traffic": 80000
+    },
+    "checks": {
+    "maxLatency": 130,
+    "maxErrorRate": 0.2,
+    "minThroughput": 64000,
+    "requiredCapabilities": [
+    "async_processing",
+    "horizontal_scaling"
+    ],
+    "minShards": 3
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.3,
+    "reliability": 0.25,
+    "latency": 0.2,
+    "architecture": 0.15,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "Event-Driven Microservices Platform introduces caching to relieve database hot paths",
+    "Event-Driven Microservices Platform scales stateless services horizontally behind a load balancer",
+    "Event-Driven Microservices Platform uses async_processing for non-critical background work"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 4,
+    "minShards": 3
+    },
+    "companyTags": [
+    "Amazon",
+    "Google",
+    "Microsoft"
+    ],
+    "idealSolutionCharacteristics": [
+    "Keeps core APIs for Event-Driven Microservices Platform stateless and load balanced across multiple app servers",
+    "Introduces a cache layer to reduce repeated database queries for Event-Driven Microservices Platform",
+    "Uses a queue and workers to process background tasks for Event-Driven Microservices Platform",
+    "Replicates the primary database to improve read scalability for Event-Driven Microservices Platform"
+    ]
+    },
+    
+    {
+    "id": "sd-047",
+    "title": "Multi-Region Notification Orchestrator",
+    "difficulty": "hard",
+    "description": "Design the Multi-Region Notification Orchestrator to handle internet-scale, multi-region traffic and failures. Define storage, caching, and messaging components to meet latency and reliability goals. Specify trade-offs between consistency, availability, and operational complexity.",
+    "tags": [
+    "caching",
+    "scaling",
+    "database",
+    "queue",
+    "real-time",
+    "consistency",
+    "notification",
+    "global"
+    ],
+    "requirements": [
+    "Handle 20000 requests per second for primary operations",
+    "Maintain p95 latency under 200ms for read operations",
+    "Keep error rate under 0.5% during normal load",
+    "Eliminate single points of failure via redundancy in critical components",
+    "Store data durably with at least 2 replicas across failure domains",
+    "Deliver 99% of notifications within 60 seconds of event generation"
+    ],
+    "visibleTests": [
+    {
+    "name": "Baseline Load Test",
+    "input": {
+    "traffic": 20000
+    },
+    "checks": {
+    "maxLatency": 200,
+    "maxErrorRate": 0.5,
+    "minThroughput": 16000,
+    "requiredComponents": [
+    "load_balancer",
+    "application_servers",
+    "database"
+    ]
+    }
+    }
+    ],
+    "hiddenTests": [
+    {
+    "name": "High Throughput Load",
+    "input": {
+    "traffic": 60000
+    },
+    "checks": {
+    "maxLatency": 150,
+    "maxErrorRate": 0.25,
+    "minThroughput": 48000,
+    "requiredCapabilities": [
+    "horizontal_scaling",
+    "load_balancing"
+    ]
+    }
+    },
+    {
+    "name": "Database Stress Test",
+    "input": {
+    "traffic": 40000
+    },
+    "checks": {
+    "maxLatency": 250,
+    "maxErrorRate": 0.5,
+    "minThroughput": 32000,
+    "requiredCapabilities": [
+    "caching"
+    ]
+    }
+    },
+    {
+    "name": "Reliability and Replication Test",
+    "input": {
+    "traffic": 30000
+    },
+    "checks": {
+    "noSinglePointOfFailure": true,
+    "minReplicas": 4
+    }
+    },
+    {
+    "name": "Peak Load and Efficiency Test",
+    "input": {
+    "traffic": 80000
+    },
+    "checks": {
+    "maxLatency": 130,
+    "maxErrorRate": 0.2,
+    "minThroughput": 64000,
+    "requiredCapabilities": [
+    "async_processing",
+    "horizontal_scaling"
+    ],
+    "minShards": 3
+    }
+    }
+    ],
+    "evaluationCriteria": {
+    "scalability": 0.3,
+    "reliability": 0.25,
+    "latency": 0.2,
+    "architecture": 0.15,
+    "efficiency": 0.1
+    },
+    "expectedPatterns": [
+    "Multi-Region Notification Orchestrator uses queues to decouple notification ingestion and delivery",
+    "Multi-Region Notification Orchestrator scales notification workers horizontally",
+    "Multi-Region Notification Orchestrator caches user channel preferences to reduce database lookups"
+    ],
+    "antiPatterns": [
+    "single_point_of_failure",
+    "synchronous_processing",
+    "db_bottleneck"
+    ],
+    "requiredCapabilities": [
+    "async_processing",
+    "horizontal_scaling"
+    ],
+    "scalingExpectations": {
+    "minReplicas": 4,
+    "minShards": 3
+    },
+    "companyTags": [
+    "Amazon",
+    "Meta",
+    "Twilio"
+    ],
+    "idealSolutionCharacteristics": [
+    "Accepts notification requests via stateless APIs behind a load balancer",
+    "Queues notifications for asynchronous delivery by workers",
+    "Caches user channel preferences to avoid repeated database lookups",
+    "Scales delivery workers horizontally to handle spikes in notifications"
+    ]
+},
+{ "id": "sd-048",
+"title": "Offline Sync for Mobile Clients",
+"difficulty": "hard",
+"description": "Design an offline sync backend that reconciles updates from mobile clients when they reconnect. The system should accept batched changes, resolve conflicts, and update central state efficiently.",
+"tags": [
+"sync",
+"queue",
+"scaling",
+"database",
+"real-time",
+"caching",
+"consistency"
+],
+"requirements": [
+"Process sync requests for 20,000 devices per second under normal operation",
+"Complete server-side processing for a sync batch with p95 latency under 500ms",
+"Keep error rate under 0.5% for accepted sync batches",
+"Avoid single points of failure in sync API and processing workers",
+"Support horizontal scaling of sync processors and metadata stores"
+],
+"visibleTests": [
+{
+"name": "Baseline Sync Load",
+"input": {
+"traffic": 20000
+},
+"checks": {
+"maxLatency": 500,
+"maxErrorRate": 0.5,
+"minThroughput": 16000,
+"requiredComponents": [
+"load_balancer",
+"syncApi",
+"syncStore"
+]
+}
+},
+{
+"name": "Moderate Conflict Load",
+"input": {
+"traffic": 10000
+},
+"checks": {
+"maxLatency": 450,
+"maxErrorRate": 0.5,
+"minThroughput": 8000,
+"requiredCapabilities": [
+"async_processing"
+]
+}
+}
+],
+"hiddenTests": [
+{
+"name": "High Sync Burst",
+"input": {
+"traffic": 60000
+},
+"checks": {
+"maxLatency": 520,
+"maxErrorRate": 0.5,
+"minThroughput": 48000,
+"requiredCapabilities": [
+"async_processing",
+"horizontal_scaling"
+]
+}
+},
+{
+"name": "Metadata Hotspot Test",
+"input": {
+"traffic": 35000
+},
+"checks": {
+"maxLatency": 480,
+"maxErrorRate": 0.4,
+"minThroughput": 28000,
+"requiredCapabilities": [
+"caching"
+]
+}
+},
+{
+"name": "Resilience Test",
+"input": {
+"traffic": 25000
+},
+"checks": {
+"noSinglePointOfFailure": true,
+"minReplicas": 3,
+"minShards": 2
+}
+},
+{
+"name": "Peak Global Sync Window",
+"input": {
+"traffic": 80000
+},
+"checks": {
+"maxLatency": 500,
+"maxErrorRate": 0.3,
+"minThroughput": 64000,
+"requiredCapabilities": [
+"async_processing",
+"horizontal_scaling",
+"load_balancing"
+]
+}
+}
+],
+"evaluationCriteria": {
+"scalability": 0.3,
+"reliability": 0.25,
+"latency": 0.2,
+"architecture": 0.15,
+"efficiency": 0.1
+},
+"expectedPatterns": [
+"Accepts client deltas as batches and processes them asynchronously",
+"Keeps sync APIs stateless and horizontally scalable",
+"Caches per-user sync metadata such as version vectors or timestamps"
+],
+"antiPatterns": [
+"Applying all client changes synchronously on the request thread",
+"Using a single central node to compute all conflict resolutions",
+"Re-reading full user state from the database on every sync"
+],
+"requiredCapabilities": [
+"async_processing",
+"horizontal_scaling",
+"load_balancing",
+"caching"
+],
+"scalingExpectations": {
+"minReplicas": 3,
+"minShards": 2
+},
+"companyTags": [
+"Dropbox",
+"Google",
+"Microsoft"
+],
+"idealSolutionCharacteristics": [
+"Provides a stateless sync API that queues incoming batches for processing",
+"Runs a pool of worker services that apply changes and resolve conflicts",
+"Stores per-entity and per-user version metadata in a scalable data store",
+"Caches recent sync metadata for active users to speed up reconciliation"
+]
+},
+{ "id": "sd-049",
+"title": "Global Payments Processing System",
+"difficulty": "hard",
+"description": "Design a payments processing backend that validates, routes, and records payment transactions. The system must sustain high throughput and ensure reliable processing with clear separation of concerns.",
+"tags": [
+"payments",
+"queue",
+"scaling",
+"database",
+"real-time",
+"caching",
+"consistency"
+],
+"requirements": [
+"Handle 20,000 payment authorization requests per second",
+"Maintain p95 latency under 300ms for authorization responses",
+"Keep error rate under 0.5% for valid payment requests",
+"Ensure no single point of failure in the authorization and ledger components",
+"Support horizontal scaling of authorization workers and ledger writers"
+],
+"visibleTests": [
+{
+"name": "Baseline Authorization Load",
+"input": {
+"traffic": 20000
+},
+"checks": {
+"maxLatency": 300,
+"maxErrorRate": 0.5,
+"minThroughput": 16000,
+"requiredComponents": [
+"load_balancer",
+"authService",
+"ledgerStore"
+]
+}
+},
+{
+"name": "Steady Ledger Write Load",
+"input": {
+"traffic": 12000
+},
+"checks": {
+"maxLatency": 280,
+"maxErrorRate": 0.5,
+"minThroughput": 9000,
+"requiredCapabilities": [
+"async_processing"
+]
+}
+}
+],
+"hiddenTests": [
+{
+"name": "High Auth Throughput",
+"input": {
+"traffic": 60000
+},
+"checks": {
+"maxLatency": 320,
+"maxErrorRate": 0.5,
+"minThroughput": 48000,
+"requiredCapabilities": [
+"horizontal_scaling",
+"load_balancing"
+]
+}
+},
+{
+"name": "Ledger Stress Test",
+"input": {
+"traffic": 40000
+},
+"checks": {
+"maxLatency": 300,
+"maxErrorRate": 0.4,
+"minThroughput": 32000,
+"requiredCapabilities": [
+"caching",
+"async_processing"
+]
+}
+},
+{
+"name": "Reliability and Redundancy",
+"input": {
+"traffic": 25000
+},
+"checks": {
+"noSinglePointOfFailure": true,
+"minReplicas": 4,
+"minShards": 2
+}
+},
+{
+"name": "Peak Shopping Day Load",
+"input": {
+"traffic": 80000
+},
+"checks": {
+"maxLatency": 300,
+"maxErrorRate": 0.3,
+"minThroughput": 64000,
+"requiredCapabilities": [
+"async_processing",
+"horizontal_scaling",
+"load_balancing"
+]
+}
+}
+],
+"evaluationCriteria": {
+"scalability": 0.3,
+"reliability": 0.25,
+"latency": 0.2,
+"architecture": 0.15,
+"efficiency": 0.1
+},
+"expectedPatterns": [
+"Separates synchronous authorization path from asynchronous ledger posting",
+"Uses queues to buffer ledger writes and reconciliation tasks",
+"Horizontally scales stateless authorization services behind a load balancer"
+],
+"antiPatterns": [
+"Performing full ledger writes synchronously before returning to the client",
+"Using a single database node as both ledger and authorization store",
+"Relying on one authorization service instance for all transactions"
+],
+"requiredCapabilities": [
+"async_processing",
+"horizontal_scaling",
+"load_balancing",
+"caching"
+],
+"scalingExpectations": {
+"minReplicas": 4,
+"minShards": 2
+},
+"companyTags": [
+"Stripe",
+"Adyen",
+"Amazon"
+],
+"idealSolutionCharacteristics": [
+"Fronts authorization services with a load balancer and keeps them stateless",
+"Uses a durable queue between authorization and ledger writing components",
+"Stores ledger entries in an append-only data store with replication",
+"Caches frequently accessed merchant and card metadata to speed decisions"
+]
+},
+{ "id": "sd-050",
+"title": "Multi-Datacenter Disaster Recovery Control Plane",
+"difficulty": "hard",
+"description": "Design a control plane that orchestrates disaster recovery operations across multiple datacenters. The system should track health, manage failover plans, and coordinate recovery workflows reliably.",
+"tags": [
+"control-plane",
+"queue",
+"scaling",
+"database",
+"real-time",
+"caching",
+"consistency"
+],
+"requirements": [
+"Handle 20,000 health and status update messages per second",
+"Execute control-plane operations with p95 latency under 300ms for orchestration decisions",
+"Keep error rate under 0.5% for accepted control commands",
+"Avoid single points of failure in the control-plane services and state store",
+"Support horizontal scaling of orchestrator services and workflow workers"
+],
+"visibleTests": [
+{
+"name": "Baseline Health Update Load",
+"input": {
+"traffic": 20000
+},
+"checks": {
+"maxLatency": 300,
+"maxErrorRate": 0.5,
+"minThroughput": 16000,
+"requiredComponents": [
+"load_balancer",
+"orchestrator",
+"stateStore"
+]
+}
+},
+{
+"name": "Moderate Workflow Execution Load",
+"input": {
+"traffic": 10000
+},
+"checks": {
+"maxLatency": 280,
+"maxErrorRate": 0.5,
+"minThroughput": 8000,
+"requiredCapabilities": [
+"async_processing"
+]
+}
+}
+],
+"hiddenTests": [
+{
+"name": "High Status Storm",
+"input": {
+"traffic": 60000
+},
+"checks": {
+"maxLatency": 320,
+"maxErrorRate": 0.5,
+"minThroughput": 48000,
+"requiredCapabilities": [
+"horizontal_scaling",
+"load_balancing"
+]
+}
+},
+{
+"name": "Workflow Stress Test",
+"input": {
+"traffic": 35000
+},
+"checks": {
+"maxLatency": 300,
+"maxErrorRate": 0.4,
+"minThroughput": 28000,
+"requiredCapabilities": [
+"async_processing",
+"caching"
+]
+}
+},
+{
+"name": "Control Plane Resilience",
+"input": {
+"traffic": 25000
+},
+"checks": {
+"noSinglePointOfFailure": true,
+"minReplicas": 4,
+"minShards": 2
+}
+},
+{
+"name": "Peak Incident Load",
+"input": {
+"traffic": 80000
+},
+"checks": {
+"maxLatency": 300,
+"maxErrorRate": 0.3,
+"minThroughput": 64000,
+"requiredCapabilities": [
+"async_processing",
+"horizontal_scaling",
+"load_balancing"
+]
+}
+}
+],
+"evaluationCriteria": {
+"scalability": 0.3,
+"reliability": 0.25,
+"latency": 0.2,
+"architecture": 0.15,
+"efficiency": 0.1
+},
+"expectedPatterns": [
+"Consumes health and telemetry updates via a scalable messaging layer",
+"Uses a control-plane service that orchestrates workflows asynchronously",
+"Horizontally scales both the orchestrator and worker fleets for DR tasks"
+],
+"antiPatterns": [
+"Embedding control-plane logic directly into individual data-plane services",
+"Executing multi-step disaster recovery workflows synchronously on request threads",
+"Running the entire control plane on a single node or process"
+],
+"requiredCapabilities": [
+"async_processing",
+"horizontal_scaling",
+"load_balancing",
+"caching"
+],
+"scalingExpectations": {
+"minReplicas": 4,
+"minShards": 2
+},
+"companyTags": [
+"Netflix",
+"Google",
+"Amazon"
+],
+"idealSolutionCharacteristics": [
+"Ingests heartbeat and status signals into a durable message bus",
+"Runs a stateless orchestrator service behind a load balancer for control decisions",
+"Persists control-plane state and plans in a replicated data store",
+"Dispatches DR workflows to horizontally scaled worker services via queues"
+]
+}
+]
+}

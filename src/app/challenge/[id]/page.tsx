@@ -56,12 +56,12 @@ export default function ChallengePage() {
     setShowTests(true);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!isLoggedIn) {
       toggleLoginModal(true);
       return;
     }
-    runAllTests(nodes, edges);
+    await runAllTests(nodes, edges);
     setShowTests(true);
   };
 
@@ -79,7 +79,7 @@ export default function ChallengePage() {
                   transition-all cursor-pointer"
               >
                 <FlaskConical size={14} />
-                Run Tests
+                Run Test
               </button>
               <button
                 onClick={handleSubmit}
@@ -98,17 +98,16 @@ export default function ChallengePage() {
         {/* 3-column layout */}
         <div className="flex flex-1 overflow-hidden">
           {/* Left — Problem Panel */}
-          <CollapsibleAside side="left" expandedClassName="w-[340px]" label="problem and tests">
+          <CollapsibleAside side="left" expandedClassName="w-[360px]" label="problem">
             <div className="flex flex-1 flex-col overflow-hidden min-h-0">
               <div className="flex-1 overflow-y-auto min-h-0">
                 <ProblemPanel challenge={challenge} />
               </div>
 
-              {/* Test Results — bottom of left panel */}
               {showTestResults && showTests && (
                 <>
                   <div className="h-px bg-zinc-800/60 shrink-0" />
-                  <div className="max-h-[40%] overflow-y-auto min-h-0">
+                  <div className="max-h-[42%] overflow-y-auto min-h-0 border-t border-zinc-800/30">
                     <TestResultsPanel />
                   </div>
                 </>

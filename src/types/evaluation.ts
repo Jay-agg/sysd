@@ -55,17 +55,57 @@ export interface SingleTestEvaluation {
   testName: string;
   passed: boolean;
   summaryMessage: string;
-  /** 0–100 for this test (0 if failed). */
-  score: number;
   checklist: ChecklistItem[];
   traffic: number;
+}
+
+/** Five-dimensional score breakdown (0–100 each before weighting). */
+export interface ScoreBreakdown {
+  scalability: number;
+  reliability: number;
+  latency: number;
+  architecture: number;
+  efficiency: number;
+}
+
+export interface ExplainabilityOutput {
+  score: number;
+  breakdown: ScoreBreakdown;
+  penalties: string[];
+  highlights: string[];
+}
+
+export type GraphInsightSeverity = 'high' | 'medium' | 'low';
+
+/** Deterministic graph / rule insights for the submission panel. */
+export interface GraphInsightItem {
+  type: 'anti-pattern' | 'pattern' | 'info';
+  message: string;
+  severity: GraphInsightSeverity;
+}
+
+export interface AiSuggestion {
+  title: string;
+  explanation: string;
+  impact: 'high' | 'medium' | 'low';
 }
 
 export interface ChallengeEvaluationResult {
   tests: SingleTestEvaluation[];
   overallPass: boolean;
-  /** 0–100 weighted across evaluated tests. */
+  /** Final weighted score; meaningful only when overallPass and mode is submit. */
   overallScore: number;
+  /** Populated only when all tests pass on submit. */
+  explainability: ExplainabilityOutput | null;
+  graphInsights: GraphInsightItem[];
+  /** Snapshot at peak test traffic (for scoring / AI payload). */
+  peakTraffic: number;
+}
+
+export interface RunTestResult {
+  testName: string;
+  passed: boolean;
+  reason: string;
 }
 
 export interface PlaygroundBottleneck {
